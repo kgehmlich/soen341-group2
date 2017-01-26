@@ -6,3 +6,4 @@ Members:
 -David Benalal (6295975)
 -Charles-Antoine Hardy (27417888)
 -Kyle Gehmlich (26743749)
+-Yufeng Ding (27749317)
