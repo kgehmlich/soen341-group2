@@ -8,4 +8,5 @@
   - David Benalal (6295975)
   - Kyle Gehmlich (26743749)
   - Yufeng Ding (27749317)
-  -Charles-Antoine Hardy 27417888
+  - Charles-Antoine Hardy (27417888)
+  
