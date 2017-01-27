@@ -9,4 +9,4 @@
   - Kyle Gehmlich (26743749)
   - Yufeng Ding (27749317)
   - Charles-Antoine Hardy (27417888)
-  
+  - Kevin Yau (27058276)
