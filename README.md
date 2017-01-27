@@ -10,3 +10,4 @@
   - Yufeng Ding (27749317)
   - Charles-Antoine Hardy (27417888)
   - Kevin Yau (27058276)
+  - John Hua (27056958)
