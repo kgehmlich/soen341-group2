@@ -1,6 +1,6 @@
 language: android
 
-sudo: required
+before_script: - chmod +x AWSCognitoSampleApp/MySampleApp/gradlew  
 
 
 script: ./AWSCognitoSampleApp/MySampleApp/gradlew build connectedCheck
