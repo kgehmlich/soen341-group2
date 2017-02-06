@@ -12,16 +12,14 @@ android:
   - extra-android-m2repository
   - extra-google-m2repository
 
- licenses:
-  - 'android-sdk-license-.+' 
+# licenses:
+#  - 'android-sdk-license-.+' 
 
 
 
 
 before_script: 
   - chmod +x AWSCognitoSampleApp/MySampleApp/gradlew  
-#  - echo y | android update sdk --no-ui --all --filter build-tools-24.0.2,android-24,extra-android-m2repository
-#  - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2,android-23,extra-android-m2repository
 
 
 
