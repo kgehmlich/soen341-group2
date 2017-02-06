@@ -1,4 +1,6 @@
 language: android
 
+sudo: required
+
 
 script: ./AWSCognitoSampleApp/MySampleApp/gradlew build connectedCheck
