@@ -34,7 +34,7 @@ import com.mysampleapp.navigation.NavigationDrawer;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /** Class name for log messages. */
-    private static final String LOG_TAG = MainActivity.classgetSimpleName();
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     /** Bundle key for saving/restoring the toolbar title. */
     private static final String BUNDLE_KEY_TOOLBAR_TITLE = "title";
