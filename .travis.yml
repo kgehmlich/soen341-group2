@@ -7,8 +7,12 @@ android:
   - platform-tools
   - tools
   - tools
+#build tools version
   - build-tools-24.0.2
-  - android-23
+
+#compiled sdk version
+  - android-25
+
   - extra-android-m2repository
   - extra-google-m2repository
 
