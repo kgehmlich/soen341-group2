@@ -8,10 +8,9 @@
 //
 package com.mysampleapp;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -20,7 +19,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,9 +26,6 @@ import android.widget.ListView;
 
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.IdentityManager;
-import com.mysampleapp.demo.DemoConfiguration;
-import com.mysampleapp.demo.HomeDemoFragment;
-import com.mysampleapp.navigation.NavigationDrawer;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /** Class name for log messages. */
@@ -42,12 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /** The identity manager used to keep track of the current user account. */
     private IdentityManager identityManager;
 
-    /** The toolbar view control. */
-    private Toolbar toolbar;
-
-    /** Our navigation drawer class for handling navigation drawer logic. */
-    private NavigationDrawer navigationDrawer;
-
     /** The helper class used to toggle the left navigation drawer open and closed. */
     private ActionBarDrawerToggle drawerToggle;
 
@@ -56,9 +45,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button   signOutButton;
 
+    // for navigation bar
+    private DrawerLayout drawerLayout;
+
+    // for navigation bar
+    private ActionBarDrawerToggle toggle;
+
+    // for navigation bar
+    private Toolbar toolbar;
+
+    private FragmentTransaction fragmentTransaction;
+
+    private NavigationView navigationView;
+
+
     /**
      * Initializes the Toolbar for use with the activity.
      */
+    /*
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Set up the activity to use this toolbar. As a side effect this sets the Toolbar's title
@@ -74,45 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 savedInstanceState.getCharSequence(BUNDLE_KEY_TOOLBAR_TITLE));
         }
     }
-
-    /**
-     * Initializes the sign-in and sign-out buttons.
-     */
-    private void setupSignInButtons() {
-
-        signOutButton = (Button) findViewById(R.id.button_signout);
-        signOutButton.setOnClickListener(this);
-
-    }
-
-    /**
-     * Initializes the navigation drawer menu to allow toggling via the toolbar or swipe from the
-     * side of the screen.
-     */
-    private void setupNavigationMenu(final Bundle savedInstanceState) {
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final ListView drawerItems = (ListView) findViewById(R.id.nav_drawer_items);
-
-        // Create the navigation drawer.
-        navigationDrawer = new NavigationDrawer(this, toolbar, drawerLayout, drawerItems,
-            R.id.main_fragment_container);
-
-        // Add navigation drawer menu items.
-        // Home isn't a demo, but is fake as a demo.
-        DemoConfiguration.DemoFeature home = new DemoConfiguration.DemoFeature();
-        home.iconResId = R.mipmap.icon_home;
-        home.titleResId = R.string.main_nav_menu_item_home;
-        navigationDrawer.addDemoFeatureToMenu(home);
-
-        for (DemoConfiguration.DemoFeature demoFeature : DemoConfiguration.getDemoFeatureList()) {
-            navigationDrawer.addDemoFeatureToMenu(demoFeature);
-        }
-
-        if (savedInstanceState == null) {
-            // Add the home fragment to be displayed initially.
-            navigationDrawer.showHome();
-        }
-    }
+*/
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -130,9 +96,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
-        setupToolbar(savedInstanceState);
+        //setupToolbar(savedInstanceState);
 
-        setupNavigationMenu(savedInstanceState);
+        //setupNavigationMenu(savedInstanceState);
+        toolbar  =(Toolbar) findViewById(R.id.nav_action);
+        setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.main_container, new HomeFragment());
+        fragmentTransaction.commit();
+        getSupportActionBar().setTitle("Home");
+        navigationView = (NavigationView) findViewById(R.id.navigation_menu);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+
+            public boolean onNavigationItemSelected(MenuItem item)
+            {
+                switch (item.getItemId())
+                {
+                    case R.id.home:
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new HomeFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Home");
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+
+                    case R.id.sign_out:
+
+                        getIdentityManager().signOut();
+                        startActivity(new Intent(MainActivity.this, SignInActivity.class));
+                        finish();
+                }
+                return false;
+            }
+        });
+    }
+
+    public IdentityManager getIdentityManager()
+    {
+        return identityManager;
     }
 
     @Override
@@ -148,12 +158,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        setupSignInButtons();
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle action bar item clicks here excluding the home button.
+
+        if(toggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -187,52 +201,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
     }
 
-    @Override
-    public void onBackPressed() {
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        
-        if (navigationDrawer.isDrawerOpen()) {
-            navigationDrawer.closeDrawer();
-            return;
-        }
-
-        if (fragmentManager.getBackStackEntryCount() == 0) {
-            if (fragmentManager.findFragmentByTag(HomeDemoFragment.class.getSimpleName()) == null) {
-                final Class fragmentClass = HomeDemoFragment.class;
-                // if we aren't on the home fragment, navigate home.
-                final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
-
-                fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
-
-                // Set the title for the fragment.
-                final ActionBar actionBar = this.getSupportActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle(getString(R.string.app_name));
-                }
-                return;
-            }
-        }
-        super.onBackPressed();
-    }
-
-
-    /**
-     * Stores data to be passed between fragments.
-     * @param fragmentBundle fragment data
-     */
-    public void setFragmentBundle(final Bundle fragmentBundle) {
-        this.fragmentBundle = fragmentBundle;
-    }
-
-    /**
-     * Gets data to be passed between fragments.
-     * @return fragmentBundle fragment data
-     */
-    public Bundle getFragmentBundle() {
-        return this.fragmentBundle;
-    }
 }
