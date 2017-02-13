@@ -129,6 +129,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawers();
                         break;
 
+                    case R.id.documents:
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new DocumentFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Documents");
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+
                     case R.id.sign_out:
 
                         getIdentityManager().signOut();
