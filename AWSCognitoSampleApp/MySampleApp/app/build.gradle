@@ -50,8 +50,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
 }
 
-repositories{
-    flatDir{
+repositories {
+    flatDir {
         dirs 'libs'
     }
 }
