@@ -137,6 +137,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;
+						
+					case R.id.add_document:
+                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, new AddDocumentFragment());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Add Document");
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;	
 
                     case R.id.sign_out:
 

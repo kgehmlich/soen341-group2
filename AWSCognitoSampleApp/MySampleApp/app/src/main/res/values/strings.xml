@@ -8,6 +8,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="home">Home Page</string>
     <string name="add_class">Add Class</string>
+	<string name="add_document">Add Document</string>
 
     <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->
 
