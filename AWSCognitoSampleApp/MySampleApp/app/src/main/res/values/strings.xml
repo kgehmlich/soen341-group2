@@ -8,6 +8,9 @@
     <string name="sign_out">Sign Out</string>
     <string name="home">Home Page</string>
     <string name="add_class">Add Class</string>
+    <string name="click_to_upload_document">Click to upload document</string>
+    <string name="default_status">Status: No files Selected</string>
+    <string name="upload_document">Upload Document</string>
 
     <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->
 
