@@ -8,8 +8,10 @@
 //
 package com.mysampleapp;
 
+
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
+
 
 import com.amazonaws.mobile.AWSMobileClient;
 
@@ -17,7 +19,8 @@ import com.amazonaws.mobile.AWSMobileClient;
  * Application class responsible for initializing singletons and other common components.
  */
 public class Application extends MultiDexApplication {
-    private static final String LOG_TAG = Application.class.getSimpleName();
+
+    private final static String LOG_TAG = Application.class.getSimpleName();
 
     @Override
     public void onCreate() {
@@ -28,8 +31,13 @@ public class Application extends MultiDexApplication {
     }
 
     private void initializeApplication() {
+
+        // Initialize the AWS Mobile Client
         AWSMobileClient.initializeMobileClientIfNecessary(getApplicationContext());
 
-        // ...Put any application-specific initialization logic here...
+        // ... Put any application-specific initialization logic here ...
+
     }
 }
+
+
