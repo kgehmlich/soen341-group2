@@ -30,9 +30,9 @@ public class DocumentsFragment extends Fragment {
     Button backButton;
     TextView folder;
 
-    ListView dialog_ListView;
+    ListView listView;
 
-    File root;
+    File rootDirectoryPath;
     File currentFolder;
     private List<String> fileList = new ArrayList<String>();
 
@@ -47,10 +47,10 @@ public class DocumentsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_documents, container, false);
 
         //Get root path in android device
-        root = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        rootDirectoryPath = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
 
         // Specify the current folder to begin at root
-        currentFolder = root;
+        currentFolder = rootDirectoryPath;
 
         folder = (TextView)v.findViewById(R.id.folder);
 
@@ -60,7 +60,7 @@ public class DocumentsFragment extends Fragment {
 
         backButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                ListDirectory(currentFolder.getParentFile());            }
+                DirectoryFiles(currentFolder.getParentFile());            }
         });
 
 
@@ -73,14 +73,14 @@ public class DocumentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 backButton.setEnabled(true);
-                ListDirectory(root);
+                DirectoryFiles(rootDirectoryPath);
             }});
 
-        // Prepare ListView in dialogFragment
-        dialog_ListView = (ListView)v.findViewById(R.id.dialoglist);
+        // get ListView in fragment_document
+        listView = (ListView)v.findViewById(R.id.directorylist);
 
         // Set on click listener to listen to the file the use chooses
-        dialog_ListView.setOnItemClickListener(new OnItemClickListener(){
+        listView.setOnItemClickListener(new OnItemClickListener(){
 
             // When a file/directory is clicked. If a file is chosen change status message to File Selected
             // When a directory is clicked. Go into the directory to view files
@@ -90,7 +90,7 @@ public class DocumentsFragment extends Fragment {
 
                 File selected = new File(fileList.get(position));
                 if(selected.isDirectory()){
-                    ListDirectory(selected);
+                    DirectoryFiles(selected);
                 }else {
                     setUploadStatusMessage("Status: File Selected");
                     backButton.setEnabled(false);
@@ -102,27 +102,28 @@ public class DocumentsFragment extends Fragment {
 
     }
 
-    public void ListDirectory(File f){
+    public void DirectoryFiles(File file){
 
-        if(f.equals(root)){
+        // Only allow the user to go to parent directory if he is not already at the root
+        if(file.equals(rootDirectoryPath)){
             backButton.setEnabled(false);
         }else{
             backButton.setEnabled(true);
         }
 
-        currentFolder = f;
-        folder.setText(f.getPath());
+        currentFolder = file;
+        folder.setText(file.getPath());
 
-        File[] files = f.listFiles();
+        File[] files = file.listFiles();
         fileList.clear();
-        for (File file : files){
-            fileList.add(file.getPath());
+        for (File tempFile : files){
+            fileList.add(tempFile.getPath());
         }
 
         ArrayAdapter<String> directoryList
                 = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, fileList);
-        dialog_ListView.setAdapter(directoryList);
+        listView.setAdapter(directoryList);
     }
 
     // Once a file is selected this method can update the Status message in fragment_add_document
