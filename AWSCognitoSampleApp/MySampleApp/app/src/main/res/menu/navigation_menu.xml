@@ -8,6 +8,10 @@
     <item android:id="@+id/add_class"
         android:icon="@mipmap/ic_add_black_24dp"
         android:title="@string/add_class"/>
+		
+	<item android:id="@+id/add_document"
+        android:icon="@mipmap/ic_add_black_24dp"
+        android:title="Add Document"/>	
 
     <item android:id="@+id/documents"
         android:icon="@mipmap/ic_assignment_black_24dp"
