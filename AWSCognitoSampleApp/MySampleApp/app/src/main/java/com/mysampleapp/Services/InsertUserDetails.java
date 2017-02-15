@@ -23,8 +23,8 @@ public class InsertUserDetails  {
         // Fetch the default configured DynamoDB ObjectMapper
         final DynamoDBMapper dynamoDBMapper = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final UserDetailsDO note = new UserDetailsDO(); // Initialize the Notes Object
-
-        note.setUserId(AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString());
+        final String UserID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
+        note.setUserId(UserID);
         note.setClassName(ClassName);
         note.setTA(TA);
 

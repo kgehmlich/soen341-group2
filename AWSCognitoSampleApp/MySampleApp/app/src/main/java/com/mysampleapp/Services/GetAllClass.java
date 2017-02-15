@@ -5,6 +5,7 @@ package com.mysampleapp.Services;
  */
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.handlers.AsyncHandler;
@@ -22,134 +23,15 @@ import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import java.util.*;
 
 public class GetAllClass {
-
-
+    static List AllClass;
+    private final static String TAG = "Activity";
     public List<String> GetListOfClass() {
         // Fetch the default configured DynamoDB ObjectMapper
 
         AmazonDynamoDBClient client = AWSMobileClient.defaultMobileClient().getDynamoDBClient();
+        AllClass = null;
+        AllClass = new ArrayList<String>();
 
-        List<String> AllClass = new List<String>() {
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean contains(Object o) {
-                return false;
-            }
-
-            @NonNull
-            @Override
-            public Iterator<String> iterator() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @NonNull
-            @Override
-            public <T> T[] toArray(T[] ts) {
-                return null;
-            }
-
-            @Override
-            public boolean add(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(Collection<? extends String> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(int i, Collection<? extends String> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public String get(int i) {
-                return null;
-            }
-
-            @Override
-            public String set(int i, String s) {
-                return null;
-            }
-
-            @Override
-            public void add(int i, String s) {
-
-            }
-
-            @Override
-            public String remove(int i) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public int lastIndexOf(Object o) {
-                return 0;
-            }
-
-            @Override
-            public ListIterator<String> listIterator() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public ListIterator<String> listIterator(int i) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public List<String> subList(int i, int i1) {
-                return null;
-            }
-        };
         Map<String, String> attributeName = new HashMap<String, String>();
         attributeName.put("#ClassName", "ClassName");
 
@@ -171,21 +53,19 @@ public class GetAllClass {
                 try{
                     AttributeValue v = map.get("ClassName");
                     String classN = v.getS();
-
+                     Log.d(TAG, classN);
                     AllClass.add(classN);
 
                 }
                 catch(Exception e){
-                    System.out.println(e.getMessage());
+                    Log.e(TAG, e.getMessage());
                 }
             }
-
-
-
-
-
         }while (result.getLastEvaluatedKey() != null);
-
+        if(AllClass.size() > 0){
+            Log.d(TAG, "MORe than 0");
+        }
+        else{Log.d(TAG, "LOWER 0 in ALLCLASS");}
         return AllClass;
     }
 }
