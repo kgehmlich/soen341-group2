@@ -4,6 +4,7 @@ package com.mysampleapp;
 import android.app.AlertDialog;
 
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+
 import java.util.*;
 import com.mysampleapp.Services.GetAllClass;
 import com.mysampleapp.Services.InsertUserDetails;
@@ -147,11 +149,20 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
         /*TextView classChoice = (TextView) view;
         Toast.makeText(this.getContext(), classChoice.getText(),Toast.LENGTH_SHORT).show();
 */
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
+
+
+
+
+
+
 
 }
