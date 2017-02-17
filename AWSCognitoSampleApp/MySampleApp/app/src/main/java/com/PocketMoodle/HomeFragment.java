@@ -1,4 +1,4 @@
-package com.mysampleapp;
+package com.PocketMoodle;
 
 
 import android.os.Bundle;

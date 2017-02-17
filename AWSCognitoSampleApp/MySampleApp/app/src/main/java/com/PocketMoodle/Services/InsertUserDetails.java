@@ -1,4 +1,4 @@
-package com.mysampleapp.Services;
+package com.PocketMoodle.Services;
 
 
 import com.amazonaws.AmazonClientException;

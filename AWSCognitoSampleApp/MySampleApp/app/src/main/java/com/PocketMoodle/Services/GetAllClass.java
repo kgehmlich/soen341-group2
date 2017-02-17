@@ -1,20 +1,13 @@
-package com.mysampleapp.Services;
+package com.PocketMoodle.Services;
 
 /**
  * Created by Winterhart on 2017-02-14.
  */
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.handlers.AsyncHandler;
 import com.amazonaws.mobile.AWSMobileClient;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.models.nosql.ListOfClassDO;
-import com.amazonaws.models.nosql.UserDetailsDO;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.model.AttributeAction;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;

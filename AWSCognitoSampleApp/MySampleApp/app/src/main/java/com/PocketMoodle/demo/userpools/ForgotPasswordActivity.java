@@ -6,7 +6,7 @@
 //
 // Source code generated from template: aws-my-sample-app-android v0.14
 //
-package com.mysampleapp.demo.userpools;
+package com.PocketMoodle.demo.userpools;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,37 +15,36 @@ import android.util.Log;
 import android.view.View;
 
 import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
-import com.mysampleapp.R;
-import com.mysampleapp.util.ViewHelper;
+import com.PocketMoodle.R;
+import com.PocketMoodle.util.ViewHelper;
 
 /**
- * Activity to prompt for sign-up confirmation information.
+ * Activity to prompt for a new password along with the verification code.
  */
-public class SignUpConfirmActivity extends Activity {
+public class ForgotPasswordActivity extends Activity {
     /** Log tag. */
-    private static final String LOG_TAG = SignUpConfirmActivity.class.getSimpleName();
+    private static final String LOG_TAG = ForgotPasswordActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up_confirm);
+        setContentView(R.layout.activity_forgot_password);
     }
 
     /**
      * Retrieve input and return to caller.
      * @param view the Android View
      */
-    public void confirmAccount(final View view) {
-        final String username =
-                ViewHelper.getStringValue(this, R.id.confirm_account_username);
+    public void forgotPassword(final View view) {
+        final String password =
+                ViewHelper.getStringValue(this, R.id.forgot_password_password);
         final String verificationCode =
-                ViewHelper.getStringValue(this, R.id.confirm_account_confirmation_code);
+                ViewHelper.getStringValue(this, R.id.forgot_password_verification_code);
 
-        Log.d(LOG_TAG, "username = " + username);
         Log.d(LOG_TAG, "verificationCode = " + verificationCode);
 
         final Intent intent = new Intent();
-        intent.putExtra(CognitoUserPoolsSignInProvider.AttributeKeys.USERNAME, username);
+        intent.putExtra(CognitoUserPoolsSignInProvider.AttributeKeys.PASSWORD, password);
         intent.putExtra(CognitoUserPoolsSignInProvider.AttributeKeys.VERIFICATION_CODE, verificationCode);
 
         setResult(RESULT_OK, intent);

@@ -1,4 +1,4 @@
-package com.mysampleapp;
+package com.PocketMoodle;
 
 
 import android.app.AlertDialog;
@@ -17,8 +17,8 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import java.util.*;
-import com.mysampleapp.Services.GetAllClass;
-import com.mysampleapp.Services.InsertUserDetails;
+import com.PocketMoodle.Services.GetAllClass;
+import com.PocketMoodle.Services.InsertUserDetails;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 

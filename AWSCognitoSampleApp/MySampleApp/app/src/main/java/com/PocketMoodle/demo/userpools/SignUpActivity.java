@@ -6,7 +6,7 @@
 //
 // Source code generated from template: aws-my-sample-app-android v0.14
 //
-package com.mysampleapp.demo.userpools;
+package com.PocketMoodle.demo.userpools;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,8 +15,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
-import com.mysampleapp.R;
-import com.mysampleapp.util.ViewHelper;
+import com.PocketMoodle.R;
+import com.PocketMoodle.util.ViewHelper;
 
 /**
  * Activity to prompt for account sign up information.

@@ -6,7 +6,7 @@
 //
 // Source code generated from template: aws-my-sample-app-android v0.14
 //
-package com.mysampleapp.demo.userpools;
+package com.PocketMoodle.demo.userpools;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,36 +15,32 @@ import android.util.Log;
 import android.view.View;
 
 import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
-import com.mysampleapp.R;
-import com.mysampleapp.util.ViewHelper;
+import com.PocketMoodle.R;
+import com.PocketMoodle.util.ViewHelper;
 
 /**
- * Activity to prompt for a new password along with the verification code.
+ * Activity to prompt for a a verification code.
  */
-public class ForgotPasswordActivity extends Activity {
+public class MFAActivity extends Activity {
     /** Log tag. */
-    private static final String LOG_TAG = ForgotPasswordActivity.class.getSimpleName();
+    private static final String LOG_TAG = MFAActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.activity_mfa);
     }
 
     /**
      * Retrieve input and return to caller.
      * @param view the Android View
      */
-    public void forgotPassword(final View view) {
-        final String password =
-                ViewHelper.getStringValue(this, R.id.forgot_password_password);
-        final String verificationCode =
-                ViewHelper.getStringValue(this, R.id.forgot_password_verification_code);
+    public void verify(final View view) {
+        final String verificationCode = ViewHelper.getStringValue(this, R.id.mfa_code);
 
         Log.d(LOG_TAG, "verificationCode = " + verificationCode);
 
         final Intent intent = new Intent();
-        intent.putExtra(CognitoUserPoolsSignInProvider.AttributeKeys.PASSWORD, password);
         intent.putExtra(CognitoUserPoolsSignInProvider.AttributeKeys.VERIFICATION_CODE, verificationCode);
 
         setResult(RESULT_OK, intent);

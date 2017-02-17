@@ -6,12 +6,11 @@
 //
 // Source code generated from template: aws-my-sample-app-android v0.14
 //
-package com.mysampleapp.util;
+package com.PocketMoodle.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.view.View;
 import android.widget.EditText;
 
 /**
