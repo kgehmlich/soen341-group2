@@ -1,6 +1,8 @@
 package com.PocketMoodle.Services;
 
 
+import android.util.Log;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -13,7 +15,7 @@ import com.amazonaws.models.nosql.UserDetailsDO;
 public class InsertUserDetails  {
 
     // Post a class in DB
-
+    private final static String TAG = "FromInsertUserDetails:";
     /**
      * Function to post details about user, add a class to a userId
      * @param ClassName
@@ -35,10 +37,7 @@ public class InsertUserDetails  {
         try {
             dynamoDBMapper.save(note);
         } catch (final AmazonClientException ex) {
-
-            //Log.e(LOG_TAG, "Failed saving item : " + ex.getMessage(), ex);
-            //lastException = ex;
-            System.out.println("Failed saving item: " + ex.getMessage());
+            Log.e(TAG, ex.getMessage());
         }
     }
 }
