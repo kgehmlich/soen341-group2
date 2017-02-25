@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         fragmentTransaction.replace(R.id.main_container, new HomeFragment());
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle("Home");
-                        item.setChecked(true);
+                        item.setChecked(false);
                         drawerLayout.closeDrawers();
                         break;
 
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         fragmentTransaction.replace(R.id.main_container, new AddClassFragment());
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle("Add Class");
-                        item.setChecked(true);
+                        item.setChecked(false);
                         drawerLayout.closeDrawers();
                         break;
 
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         fragmentTransaction.replace(R.id.main_container, new DocumentsFragment());
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle("Documents");
-                        item.setChecked(true);
+                        item.setChecked(false);
                         drawerLayout.closeDrawers();
                         break;
 
