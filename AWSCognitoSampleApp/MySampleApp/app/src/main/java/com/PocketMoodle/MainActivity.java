@@ -9,6 +9,7 @@
 package com.PocketMoodle;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
@@ -16,12 +17,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.IdentityManager;
+import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /** Class name for log messages. */
@@ -110,6 +115,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentTransaction.commit();
         getSupportActionBar().setTitle("Home");
         navigationView = (NavigationView) findViewById(R.id.navigation_menu);
+
+
+        //Initializing a view for the header of the navigation bar
+        View navigationHeaderView = navigationView.getHeaderView(0);
+
+        //Initializing a text used to modify the textview created in navigation_header.xml with
+        //id navigation_username
+        TextView username = (TextView) navigationHeaderView.findViewById(R.id.navigation_username);
+
+        //Setting the textview to display the user's username
+        username.setText(awsMobileClient.getIdentityManager().getUserName());
+
+        //In order to display any other user info you must decode the following token with JSON (unless
+        // there are predefined methods that I missed)
+       // awsMobileClient.getIdentityManager().getCurrentIdentityProvider().getToken();
+
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 
             public boolean onNavigationItemSelected(MenuItem item)
