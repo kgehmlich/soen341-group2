@@ -93,4 +93,7 @@
         <item>class3</item>
     </string-array>
 
+    <!-- The following line is used to display the username in the header of the navigation bar -->
+    <string name="username"> %s </string>
+
 </resources>
