@@ -95,5 +95,6 @@
 
     <!-- The following line is used to display the username in the header of the navigation bar -->
     <string name="username"> %s </string>
+    <string name="user_email"> %s </string>
 
 </resources>
