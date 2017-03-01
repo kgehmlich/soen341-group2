@@ -8,7 +8,10 @@
     <string name="sign_out">Sign Out</string>
     <string name="home">Home Page</string>
     <string name="add_class">Add Class</string>
+    <string name="remove_class">Remove Class</string>
+    <string name="documents">Documents</string>
     <string name="click_to_upload_document">Click To Upload Document</string>
+    <string name="class_to_remove">Choose the class you want to remove</string>
     <string name="default_status">Status: No Files Selected</string>
     <string name="upload_document">Upload Document</string>
 
