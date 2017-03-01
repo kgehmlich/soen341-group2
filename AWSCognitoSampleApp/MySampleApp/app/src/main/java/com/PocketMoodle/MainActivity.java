@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.PocketMoodle.util.JWTUtils;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.IdentityManager;
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentTransaction fragmentTransaction;
 
     private NavigationView navigationView;
-
 
     /**
      * Initializes the Toolbar for use with the activity.
@@ -117,9 +117,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle("Home");
         navigationView = (NavigationView) findViewById(R.id.navigation_menu);
 
-
         //Initializing a view for the header of the navigation bar
         View navigationHeaderView = navigationView.getHeaderView(0);
+
 
         //Initializing a text used to modify the textview created in navigation_header.xml with
         //id navigation_username
@@ -128,10 +128,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Setting the textview to display the user's username
         username.setText(awsMobileClient.getIdentityManager().getUserName());
 
-        //In order to display any other user info you must decode the following token with JSON (unless
-        // there are predefined methods that I missed)
-       // awsMobileClient.getIdentityManager().getCurrentIdentityProvider().getToken();
-
+        //Textview for user email
+        TextView email = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navigation_email);
+        try {
+            //Displaying the user's email
+            email.setText(JWTUtils.getUserEmail(JWTUtils.decode(awsMobileClient.getIdentityManager().getCurrentIdentityProvider().getToken())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 
