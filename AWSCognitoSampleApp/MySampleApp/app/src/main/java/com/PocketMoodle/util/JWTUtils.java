@@ -1,6 +1,7 @@
 package com.PocketMoodle.util;
 
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
@@ -10,13 +11,16 @@ import java.util.regex.Pattern;
  */
 
 public class JWTUtils {
+    
+        private static final String TAG = "JWTUtils";
+    
     public static String decode(String accessToken) throws Exception{
         String decodedToken= "";
         try{
             String[] encodedToken = accessToken.split("[.]"); // split the token according to the dots
              decodedToken = getJson(encodedToken[1]);
         }catch (UnsupportedEncodingException e){
-
+            Log.d(TAG,"Unsupported Encoding Exception while decoding token to retrieve email" );
         }
         return decodedToken;
     }
@@ -36,11 +40,11 @@ public class JWTUtils {
        String emailPattern = "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$)";
 
         //Array of strings split according to the spaces
-       String [] test = bodyDecodedToken.split(" ");
-        for (int i = 0; i<test.length; i++){
+       String [] splitDecodedToken = bodyDecodedToken.split(" ");
+        for (int i = 0; i<splitDecodedToken.length; i++){
             //if pattern matches email pattern save it and return it
-            if(Pattern.matches(emailPattern,test[i])) {
-                userEmail = test[i];
+            if(Pattern.matches(emailPattern,splitDecodedToken[i])) {
+                userEmail = splitDecodedToken[i];
                 break;
             }
         }
