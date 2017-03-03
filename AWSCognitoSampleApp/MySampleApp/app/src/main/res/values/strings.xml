@@ -11,6 +11,8 @@
     <string name="click_to_upload_document">Click To Upload Document</string>
     <string name="default_status">Status: No Files Selected</string>
     <string name="upload_document">Upload Document</string>
+    <string name="class_list">Class List</string>
+
 
 
     <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->
