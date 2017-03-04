@@ -26,7 +26,7 @@ public class RemoveClassFragment extends Fragment {
 
 
     Spinner removeClassSpinner;
-    public static List<String> s = new ArrayList<String>();
+    public static List<String> classList = new ArrayList<String>();
     private static final String TAG = "MyActivity";
     private static final String LOG_TAG = SignInActivity.class.getSimpleName();
 
@@ -35,8 +35,8 @@ public class RemoveClassFragment extends Fragment {
 
         Runnable runnable = new Runnable() {
             public void run() {
-                GetAllClass d = new GetAllClass();
-                s = d.GetListOfClass();
+                GetAllClass getAllClass = new GetAllClass();
+                classList = getAllClass.GetListOfClass();
 
             }
         };
@@ -56,9 +56,9 @@ public class RemoveClassFragment extends Fragment {
         // Inflate the layout for this fragment
         ArrayList<String> option = new ArrayList<String>();
 
-        if(s.size() > 0){
+        if(classList.size() > 0){
             Log.d(TAG, "SIZE more 0");
-            for(String s2: s){
+            for(String s2: classList){
                 option.add(s2);
             }
         }
