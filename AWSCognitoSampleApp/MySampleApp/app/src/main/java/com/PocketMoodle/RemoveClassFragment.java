@@ -15,6 +15,7 @@ import android.widget.Spinner;
 
 import com.PocketMoodle.Services.GetAllClass;
 import com.PocketMoodle.Services.InsertUserDetails;
+import com.PocketMoodle.Services.RemoveClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,10 @@ public class RemoveClassFragment extends Fragment {
 
                         //Call API or something here to do something with the class the user chose to remove
                         //String SpinnerChoice holds the class name the user chose
+
+
+                        RemoveClass remclass = new RemoveClass();
+                        remclass.removeClass(SpinnerChoice);
 
                     }
                 };
