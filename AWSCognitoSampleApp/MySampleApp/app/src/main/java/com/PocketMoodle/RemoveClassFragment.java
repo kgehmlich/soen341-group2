@@ -37,7 +37,8 @@ public class RemoveClassFragment extends Fragment {
         Runnable runnable = new Runnable() {
             public void run() {
                 GetAllClass getAllClass = new GetAllClass();
-                classList = getAllClass.GetListOfClass();
+                //classList = getAllClass.GetListOfClass();
+                classList = getAllClass.GetAllClassRegisteredIn();
 
             }
         };
