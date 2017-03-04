@@ -47,7 +47,13 @@ public class HomeFragment extends Fragment {
         catch (Exception exp){
             Log.e(TAG, exp.getMessage().toString());
         }
+        while(ThreadGetClassForAUser.isAlive()){
 
+        }
+        for(String s: ListOfClassUserIsIn){
+
+
+        }
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);

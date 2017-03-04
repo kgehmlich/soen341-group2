@@ -24,6 +24,12 @@ public class AWSConfiguration {
       Regions.fromName("us-east-1");
     public static final String  AMAZON_COGNITO_IDENTITY_POOL_ID =
         "us-east-1:5151eb5b-e3b0-4188-b21b-75c6c42a0b97";
+    // S3 BUCKET
+    public static final String AMAZON_S3_USER_FILES_BUCKET =
+        "soengroup-userfiles-mobilehub-1153046571";
+    // S3 BUCKET REGION
+    public static final Regions AMAZON_S3_USER_FILES_BUCKET_REGION =
+        Regions.fromName("us-east-1");
     public static final Regions AMAZON_DYNAMODB_REGION =
        Regions.fromName("us-east-1");
     public static final String AMAZON_COGNITO_USER_POOL_ID =
