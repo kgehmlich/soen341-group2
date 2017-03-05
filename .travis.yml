@@ -37,5 +37,5 @@ before_script:
 
 script: 
         - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp connectedCheck
-        - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp/app/src/test test
+        - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp test
 
