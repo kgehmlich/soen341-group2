@@ -49,7 +49,7 @@ public class JWTUtilsTest {
                 "  \"iat\": 1488199751,\n" +
                 "  \"email\": \"momo_lebest@hotmail.fr\"\n" +
                 "}";
-        String expected ="momo_lebest@hotmail.f";
+        String expected ="momo_lebest@hotmail.fr";
         String output;
         output = JWTUtils.getUserEmail(input);
         assertEquals(expected,output);
