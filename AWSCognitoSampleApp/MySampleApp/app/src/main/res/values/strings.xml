@@ -18,6 +18,8 @@
     <string name="class_to_remove">Choose the class you want to remove</string>
     <string name="default_status">Status: No Files Selected</string>
     <string name="upload_document">Upload Document</string>
+    <string name="class_list">Class List</string>
+
 
 
     <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->
