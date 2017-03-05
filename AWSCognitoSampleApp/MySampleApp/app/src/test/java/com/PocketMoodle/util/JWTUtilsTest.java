@@ -34,9 +34,6 @@ public class JWTUtilsTest {
                 "}";
 
         String split = input.split("[.]")[1];
-        //byte [] decoded = Base64.decode(split, Base64.URL_SAFE);
-
-      //  byte [] decoded = com.amazonaws.util.Base64.decode(split);
         byte [] decoded = com.amazonaws.util.Base64.decode(split);
         String output;
         output = new String(decoded, "UTF-8");
