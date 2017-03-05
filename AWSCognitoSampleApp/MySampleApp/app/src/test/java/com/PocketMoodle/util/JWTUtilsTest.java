@@ -52,6 +52,7 @@ public class JWTUtilsTest {
         String expected ="momo_lebest@hotmail.f";
         String output;
         output = JWTUtils.getUserEmail(input);
+        assertEquals(expected,output);
     }
 
 }
