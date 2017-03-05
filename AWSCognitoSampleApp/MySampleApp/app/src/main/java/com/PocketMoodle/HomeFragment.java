@@ -35,10 +35,10 @@ public class HomeFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        classListXmlLink = (ListView)v.findViewById(R.id.classList);
+        classListXmlLink = (ListView) v.findViewById(R.id.classList);
 
         // Set on click listener to listen to the class the person
-        classListXmlLink.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        classListXmlLink.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             // When a class from the class list is clicked do something
             @Override
@@ -46,7 +46,8 @@ public class HomeFragment extends Fragment {
                                     int position, long id) {
 
 
-            }});
+            }
+        });
 
         /**
          * ListOfClassIsIn is a list of all class the user is registered in...
@@ -61,23 +62,26 @@ public class HomeFragment extends Fragment {
 
         Thread ThreadGetClassForAUser = new Thread(runnable);
 
-        try{
+        try {
             ThreadGetClassForAUser.start();
             // For now sleep until we find a better way to waste time. Since wait keeps getting woken up
             Thread.sleep(1000);
-        }
-        catch (Exception exp){
+        } catch (Exception exp) {
             Log.e(TAG, exp.getMessage().toString());
         }
+        while (ThreadGetClassForAUser.isAlive()) {
 
+        }
         // Allows for the list of classes the user is in to appear in the list view in the xml
         ArrayAdapter<String> studentClassListAdapter
                 = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, ListOfClassUserIsIn);
         classListXmlLink.setAdapter(studentClassListAdapter);
 
+
         // Inflate the layout for this fragment
         return v;
-    }
 
+
+    }
 }
