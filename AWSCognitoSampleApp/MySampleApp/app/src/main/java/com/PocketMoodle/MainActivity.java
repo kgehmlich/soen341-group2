@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         fragmentTransaction.replace(R.id.main_container, new RemoveClassFragment());
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle("Remove Class");
-                        item.setChecked(true);
+                        item.setChecked(false);
                         drawerLayout.closeDrawers();
                         break;
 
