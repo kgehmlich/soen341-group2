@@ -10,7 +10,7 @@
         android:title="@string/add_class"/>
 
     <item android:id="@+id/remove_class"
-        android:icon="@mipmap/ic_add_black_24dp"
+        android:icon="@mipmap/ic_delete_black_24dp"
         android:title="@string/remove_class"/>
 
     <item android:id="@+id/documents"
