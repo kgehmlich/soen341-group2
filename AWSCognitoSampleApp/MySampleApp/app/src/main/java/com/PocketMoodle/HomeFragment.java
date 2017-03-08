@@ -3,6 +3,7 @@ package com.PocketMoodle;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.ListView;
 
 import com.PocketMoodle.Services.GetAllClass;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +47,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                Fragment newFragment = new DocumentsFragment();
+                android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.main_container,newFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
 
 
             }
@@ -57,7 +63,12 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
+                    Fragment newFragment = new DocumentsFragment();
+                        android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
+                        transaction.replace(R.id.main_container,newFragment);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
                     }
 
@@ -104,4 +115,9 @@ public class HomeFragment extends Fragment {
 
 
     }
+
+    /*void goToDocumentFragment(){
+        Intent intent = new Intent (getActivity(), DocumentsFragment.class);                        // Connects profile activity with mainactivity for the transition
+        startActivity(intent);
+    }*/
 }
