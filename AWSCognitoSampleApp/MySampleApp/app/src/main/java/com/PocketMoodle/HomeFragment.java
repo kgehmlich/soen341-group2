@@ -22,8 +22,10 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
     private static final String TAG = "FromHomeFragment";
-    public static List<String> ListOfClassUserIsIn = new ArrayList<String>();
-    public ListView classListXmlLink;
+    public static List<String> ListOfSTUClassUserIsIn = new ArrayList<String>();
+    public static List<String> ListOfTAClassUserIsIn = new ArrayList<String>();
+    public ListView STUclassListXmlLink;
+    public ListView TAclassListXmlLink;
 
     public HomeFragment() {
 
@@ -35,12 +37,13 @@ public class HomeFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
-        classListXmlLink = (ListView) v.findViewById(R.id.classList);
+        STUclassListXmlLink = (ListView) v.findViewById(R.id.STUclassList);
+        TAclassListXmlLink = (ListView) v.findViewById(R.id.TAclassList);
 
         // Set on click listener to listen to the class the person
-        classListXmlLink.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        STUclassListXmlLink.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            // When a class from the class list is clicked do something
+            // When a class from the student class list is clicked do something
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -48,6 +51,18 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        TAclassListXmlLink.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    // When a class from the TA class list is clicked do something
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+
+
+                    }
+
+
+                });
 
         /**
          * ListOfClassIsIn is a list of all class the user is registered in...
@@ -56,7 +71,8 @@ public class HomeFragment extends Fragment {
         Runnable runnable = new Runnable() {
             public void run() {
                 GetAllClass GetClassForUser = new GetAllClass();
-                ListOfClassUserIsIn = GetClassForUser.GetAllClassRegisteredIn();
+                ListOfSTUClassUserIsIn = GetClassForUser.GetAllClassRegisteredIn();
+                ListOfTAClassUserIsIn = GetClassForUser.GetAllClassRegisteredIn();
             }
         };
 
@@ -75,9 +91,13 @@ public class HomeFragment extends Fragment {
         // Allows for the list of classes the user is in to appear in the list view in the xml
         ArrayAdapter<String> studentClassListAdapter
                 = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, ListOfClassUserIsIn);
-        classListXmlLink.setAdapter(studentClassListAdapter);
+                android.R.layout.simple_list_item_1, ListOfSTUClassUserIsIn);
+        STUclassListXmlLink.setAdapter(studentClassListAdapter);
 
+        ArrayAdapter<String> TAClassListAdapter
+                = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, ListOfTAClassUserIsIn);
+        TAclassListXmlLink.setAdapter(TAClassListAdapter);
 
         // Inflate the layout for this fragment
         return v;
