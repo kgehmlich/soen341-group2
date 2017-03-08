@@ -21,7 +21,7 @@ import com.PocketMoodle.Services.GetAllClass;
 import com.PocketMoodle.Services.InsertUserDetails;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
+import android.widget.Toast;
 
 
 /**
@@ -92,9 +92,11 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                     SpinnerChoice = addClassSpinner.getSelectedItem().toString();
                 }
                 else{
-                    final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
+                    Toast savetoast = Toast.makeText(getActivity(), "Please choose a course", Toast.LENGTH_LONG);
+                    savetoast.show();
+                    /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
                     errorDialogBuilder.setTitle("Please choose a course");
-                    errorDialogBuilder.show();
+                    errorDialogBuilder.show();*/
                     return;
                     }
 
@@ -107,9 +109,11 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                     }
                 }
                 else{
-                    final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
+                    Toast savetoast = Toast.makeText(getActivity(), "Please choose TA or Student", Toast.LENGTH_LONG);
+                    savetoast.show();
+                    /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
                     errorDialogBuilder.setTitle("Please choose TA or Student");
-                    errorDialogBuilder.show();
+                    errorDialogBuilder.show();*/
                     TAorSTU = "0.0";
                     return;
                 }
@@ -127,9 +131,11 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                     };
                     Thread mythread2 = new Thread(runnable);
                     mythread2.start();
-                    final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
+                    Toast savetoast = Toast.makeText(getActivity(), "Request has been sent", Toast.LENGTH_LONG);
+                    savetoast.show();
+                    /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
                     errorDialogBuilder.setTitle("Request have been sent...");
-                    errorDialogBuilder.show();
+                    errorDialogBuilder.show();*/
                 }
 
 
