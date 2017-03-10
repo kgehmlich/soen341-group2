@@ -1,8 +1,18 @@
 language: android
 jdk: oraclejdk8
+sudo: required 
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 android:
+ update_sdk: true
  components:
   - platform-tools
   - tools
@@ -15,7 +25,7 @@ android:
 
   - extra-android-m2repository
   - extra-google-m2repository
-
+    
 
 
 
@@ -25,4 +35,7 @@ before_script:
 
 
 
-script: ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp connectedCheck
+script: 
+        - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp connectedCheck
+        - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp test
+
