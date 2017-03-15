@@ -53,7 +53,7 @@ public class SignInActivityTest {
         }
 
         ViewInteraction view = onView(
-                allOf(withId(R.id.signIn_editText_email),
+                allOf(withId(R.id.nav_action),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.drawer_layout),
