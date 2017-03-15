@@ -57,7 +57,7 @@ public class SignInTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        textView.check(matches(withText("Home")));
+        textView.check(matches(withText("Hom")));
 
     }
 
