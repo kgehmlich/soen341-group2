@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main_background">
+        android:background="#ffffff">
 
         <include layout="@layout/navigation_action"
             android:layout_height="wrap_content"

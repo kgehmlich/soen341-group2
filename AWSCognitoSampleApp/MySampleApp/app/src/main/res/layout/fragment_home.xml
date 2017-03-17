@@ -1,23 +1,59 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.PocketMoodle.HomeFragment"
     android:padding="20dp">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/class_list"
-        android:gravity="center"/>
 
     <ListView
-        android:id="@+id/classList"
+        android:id="@+id/STUclassList"
         android:layout_width="fill_parent"
         android:padding="10dp"
-        android:layout_height="match_parent"
+        android:layout_below="@+id/stuclass"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
         />
 
-</LinearLayout>
+    <ListView
+        android:id="@+id/TAclassList"
+        android:layout_width="fill_parent"
+        android:padding="10dp"
+        android:layout_below="@+id/taclass"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="@string/class_list"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_height="30dp"
+        android:id="@+id/ClassList" />
+
+    <TextView
+        android:text="Class acting as Student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_below="@+id/ClassList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/stuclass" />
+
+    <TextView
+        android:text="Class acting as TA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/taclass"
+        android:layout_below="@+id/STUclassList"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
