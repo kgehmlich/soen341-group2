@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.PocketMoodle.Services.GetAllClass;
 import com.PocketMoodle.Services.InsertUserDetails;
@@ -87,9 +88,11 @@ public class RemoveClassFragment extends Fragment {
                     SpinnerChoice = removeClassSpinner.getSelectedItem().toString();
                 }
                 else{
-                    final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
+                    Toast savetoast = Toast.makeText(getActivity(), "Please choose the course you wish to remove", Toast.LENGTH_LONG);
+                    savetoast.show();
+                    /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
                     errorDialogBuilder.setTitle("Please choose a course you wish to remove");
-                    errorDialogBuilder.show();
+                    errorDialogBuilder.show();*/
                     return;
                 }
 
@@ -108,9 +111,12 @@ public class RemoveClassFragment extends Fragment {
 
                 Thread mythread2 = new Thread(runnable);
                 mythread2.start();
+                Toast savetoast = Toast.makeText(getActivity(), "Request to remove has been sent", Toast.LENGTH_LONG);
+                savetoast.show();
+                /*
                 final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
                 errorDialogBuilder.setTitle("Request has been sent...");
-                errorDialogBuilder.show();
+                errorDialogBuilder.show();*/
 
             }
         });
