@@ -2,6 +2,15 @@ language: android
 jdk: oraclejdk8
 sudo: required 
 
+env:
+  global:
+    - ANDROID_API_LEVEL=25
+    - EMULATOR_API_LEVEL=22 
+    - ANDROID_ABI=armeabi-v7a
+    - ANDROID_TAG=google_apis
+    - ADB_INSTALL_TIMEOUT=20
+
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -18,24 +27,31 @@ android:
   - tools
   - tools
 #build tools version
-  - build-tools-24.0.2
+  - build-tools-25.0.2
 
 #compiled sdk version
   - android-25
+  - android-$EMULATOR_API_LEVEL
 
   - extra-android-m2repository
   - extra-google-m2repository
     
-
+#system image:
+  - sys-img-armeabi-v7a-google_apis-22
 
 
 
 before_script: 
   - chmod +x AWSCognitoSampleApp/MySampleApp/gradlew  
+  - echo no | android create avd --force -n test -t "android-22" --abi $ANDROID_ABI --tag $ANDROID_TAG
+  - emulator -avd test -no-window &
+  - travis_wait android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 
 
 script: 
-        - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp connectedCheck
+        - travis_wait ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp build connectedCheck
         - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp test
+        - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp connectedAndroidTest
 
