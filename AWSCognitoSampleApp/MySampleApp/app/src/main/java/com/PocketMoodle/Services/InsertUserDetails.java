@@ -26,26 +26,26 @@ public class InsertUserDetails  {
      */
     public void insertData(String ClassName, double TA) {
         // Fetch the default configured DynamoDB ObjectMapper
-        final DynamoDBMapper dynamoDBMapper = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
-        final UserDetailsDO note = new UserDetailsDO(); // Initialize the Notes Object
-        final String UserID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
-        final String username = AWSMobileClient.defaultMobileClient().getIdentityManager().getUserName().toString();
+        final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
+        final UserDetailsDO NOTE = new UserDetailsDO(); // Initialize the Notes Object
+        final String USER_ID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
+        final String USERNAME = AWSMobileClient.defaultMobileClient().getIdentityManager().getUserName().toString();
 
 
-        note.setUserId(UserID);
-        note.setClassName(ClassName);
-        note.setUsername(username);
+        NOTE.setUserId(USER_ID);
+        NOTE.setClassName(ClassName);
+        NOTE.setUsername(USERNAME);
 
-        note.setTA(TA);
+        NOTE.setTA(TA);
 
 
 
         AmazonClientException lastException = null;
 
         try {
-            dynamoDBMapper.save(note);
-        } catch (final AmazonClientException ex) {
-            Log.e(TAG, ex.getMessage());
+            DYNAMO_DB_MAPPER.save(NOTE);
+        } catch (final AmazonClientException EX) {
+            Log.e(TAG, EX.getMessage());
         }
     }
 }

@@ -24,8 +24,8 @@ public class AllGradesDO {
         return _userId;
     }
 
-    public void setUserId(final String _userId) {
-        this._userId = _userId;
+    public void setUserId(final String _USER_ID) {
+        this._userId = _USER_ID;
     }
     @DynamoDBRangeKey(attributeName = "ClassName")
     @DynamoDBAttribute(attributeName = "ClassName")
@@ -33,16 +33,16 @@ public class AllGradesDO {
         return _className;
     }
 
-    public void setClassName(final String _className) {
-        this._className = _className;
+    public void setClassName(final String _CLASS_NAME) {
+        this._className = _CLASS_NAME;
     }
     @DynamoDBAttribute(attributeName = "Grade")
     public Double getGrade() {
         return _grade;
     }
 
-    public void setGrade(final Double _grade) {
-        this._grade = _grade;
+    public void setGrade(final Double _GRADE) {
+        this._grade = _GRADE;
     }
 
 }

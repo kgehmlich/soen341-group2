@@ -44,25 +44,25 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import java.util.*;
 
 public class GetAllClass {
-    static List AllClass;
-    static List AllClassRegisteredIn;
+    static List allClass;
+    static List allClassRegisteredIn;
     private final static String TAG = "From GetAllClass: ";
     static AmazonDynamoDB client = AWSMobileClient.defaultMobileClient().getDynamoDBClient();
-    final String ActualUserID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
-    List<User> AllUserInThisClass;
+    final String ACTUAL_USER_ID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
+    List<User> allUserInThisClass;
 
     class User{
-        private String Username;
-        private Double TaOrStu;
+        private String username;
+        private Double taOrStu;
         User(String username, Double taorstu){
-            this.Username = username;
-            this.TaOrStu = taorstu;
+            this.username = username;
+            this.taOrStu = taorstu;
         }
         public String getUsername(){
-            return this.Username;
+            return this.username;
         }
         public Double getTaOrStu(){
-            return this.TaOrStu;
+            return this.taOrStu;
         }
     }
     /**
@@ -70,8 +70,8 @@ public class GetAllClass {
      * @return List of all classes on pocketMoodle...
      */
     public List<String> GetListOfClass() {
-        AllClass = null;
-        AllClass = new ArrayList<String>();
+        allClass = null;
+        allClass = new ArrayList<String>();
 
         Map<String, String> attributeName = new HashMap<String, String>();
         attributeName.put("#ClassName", "ClassName");
@@ -81,7 +81,6 @@ public class GetAllClass {
         do{
             ScanRequest re = new ScanRequest();
             re.setTableName("soengroup-mobilehub-1153046571-ListOfClass");
-
 
             if(result != null){
                 re.setExclusiveStartKey(result.getLastEvaluatedKey());
@@ -95,19 +94,18 @@ public class GetAllClass {
                     AttributeValue v = map.get("ClassName");
                     String classN = v.getS();
                      Log.d(TAG, classN);
-                    AllClass.add(classN);
-
+                    allClass.add(classN);
                 }
                 catch(Exception e){
                     Log.e(TAG, e.getMessage());
                 }
             }
         }while (result.getLastEvaluatedKey() != null);
-        if(AllClass.size() > 0){
+        if(allClass.size() > 0){
             Log.d(TAG, "MORe than 0");
         }
         else{Log.d(TAG, "LOWER 0 in ALLCLASS");}
-        return AllClass;
+        return allClass;
     }
 
     /**
@@ -115,13 +113,12 @@ public class GetAllClass {
      * @return All Class Linked to a user
      */
     public List<String> GetAllClassRegisteredIn(){
-        AllClassRegisteredIn = null;
-        AllClassRegisteredIn = new ArrayList<String>();
+        allClassRegisteredIn = null;
+        allClassRegisteredIn = new ArrayList<String>();
         DynamoDBMapper mapper = new DynamoDBMapper(client);
-        Log.i(TAG, ActualUserID);
+        Log.i(TAG, ACTUAL_USER_ID);
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        eav.put(":ud", new AttributeValue().withS(ActualUserID));
-
+        eav.put(":ud", new AttributeValue().withS(ACTUAL_USER_ID));
 
         DynamoDBScanExpression ScanExpression = new DynamoDBScanExpression()
                 .withFilterExpression("userId = :ud")
@@ -132,16 +129,15 @@ public class GetAllClass {
             for(UserDetailsDO Classes: ClassesOfTheUser ){
 
                 if(Classes.getClassName() != null){
-                    AllClassRegisteredIn.add(Classes.getClassName());
+                    allClassRegisteredIn.add(Classes.getClassName());
                     Log.d(TAG, Classes.getClassName());
                 }
-
             }
         }
         catch (Exception ex2){
             Log.e(TAG, ex2.getMessage());
         }
-        return AllClassRegisteredIn;
+        return allClassRegisteredIn;
     }
 
     /**
@@ -151,17 +147,15 @@ public class GetAllClass {
      * @return
      */
     public List<User> GetAllUsersInAClass(String TargetClass){
-        AllUserInThisClass = null;
-        AllUserInThisClass = new ArrayList<User>();
+        allUserInThisClass = null;
+        allUserInThisClass = new ArrayList<User>();
         DynamoDBMapper mapper = new DynamoDBMapper(client);
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
         eav.put(":cn", new AttributeValue().withS(TargetClass));
 
-
         DynamoDBScanExpression ScanExpression = new DynamoDBScanExpression()
                 .withFilterExpression("ClassName = :cn")
                 .withExpressionAttributeValues(eav);
-
 
         try{
             List<UserDetailsDO> UsersD = mapper.scan(UserDetailsDO.class, ScanExpression);
@@ -171,20 +165,14 @@ public class GetAllClass {
                     //Log.d(TAG, users.getUsername());
                     //Log.d(TAG, users.getTA().toString());
                     User u = new User(users.getUsername(), users.getTA());
-                    AllClassRegisteredIn.add(u);
-
-
+                    allClassRegisteredIn.add(u);
                 }
-
             }
         }
         catch (Exception ex2){
             Log.e(TAG, ex2.getMessage());
         }
 
-
-
-        return AllUserInThisClass;
+        return allUserInThisClass;
     }
-
 }
