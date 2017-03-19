@@ -10,7 +10,12 @@ package com.PocketMoodle;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +27,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.PocketMoodle.util.JWTUtils;
@@ -29,6 +36,8 @@ import com.amazonaws.ClientConfiguration;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.IdentityManager;
 import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
+
+import java.io.FileNotFoundException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /** Class name for log messages. */
@@ -60,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentTransaction fragmentTransaction;
 
     private NavigationView navigationView;
+
+    ImageView imageView;
+    Button button;
+    private static final int IMAGE_UPLOAD_REQUEST=42;
+    Uri imageUri;
+    private ImageButton imgButton;
 
     /**
      * Initializes the Toolbar for use with the activity.
@@ -188,7 +203,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+
+        imgButton = (ImageButton) navigationHeaderView.findViewById(R.id.imageButton1);
+                imgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+             public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+
+                startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
+                            }
+         });
+
     }
+
+
+
 
     public IdentityManager getIdentityManager()
     {
@@ -250,9 +280,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
     }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+                     if(resultCode == RESULT_CANCELED) return;
+
+                        if (requestCode == IMAGE_UPLOAD_REQUEST) {
+                        ParcelFileDescriptor fd;
+                        try {
+                                fd = getContentResolver().openFileDescriptor(data.getData(), "r");
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                                return;
+                            }
+
+                                Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
+
+                                imgButton.setImageBitmap(bmp);
+                    }
+            }
+
 
 }
