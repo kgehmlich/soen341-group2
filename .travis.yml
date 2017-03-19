@@ -46,6 +46,10 @@ before_script:
   - echo no | android create avd --force -n test -t "android-22" --abi $ANDROID_ABI --tag $ANDROID_TAG
   - emulator -avd test -no-window &
   - travis_wait android-wait-for-emulator
+#next three lines disable animations on the emulator (recommended to improve test results)
+  - adb shell settings put global window_animation_scale 0 &
+  - adb shell settings put global transition_animation_scale 0 &
+  - adb shell settings put global animator_duration_scale 0 &
   - adb shell input keyevent 82 &
 
 
