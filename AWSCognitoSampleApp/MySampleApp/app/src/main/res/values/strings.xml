@@ -19,6 +19,10 @@
     <string name="default_status">Status: No Files Selected</string>
     <string name="upload_document">Upload Document</string>
     <string name="class_list">Class List</string>
+    <string name="add_button_discussion">+</string>
+    <string name="remove_button_discussion">-</string>
+    <string name="hint_send_message">Type Message</string>
+    <string name="send_message">Send</string>
 
 
 

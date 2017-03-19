@@ -7,7 +7,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+"
+        android:text="@string/add_button_discussion"
         android:padding="5dp"
         android:id="@+id/add_discussion_group"
         android:layout_alignParentTop="true"
@@ -16,7 +16,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:text="@string/remove_button_discussion"
         android:padding="5dp"
         android:id="@+id/remove_discussion_group"
         android:layout_alignParentTop="true"

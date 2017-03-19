@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@+id/send_message"
-            android:hint="Type Message" />
+            android:hint="@string/hint_send_message" />
 
         <Button
             android:id="@+id/send_message"
@@ -36,7 +36,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:padding="5dp"
-            android:text="Send" />
+            android:text="@string/send_message" />
 
     </RelativeLayout>
 </LinearLayout>
