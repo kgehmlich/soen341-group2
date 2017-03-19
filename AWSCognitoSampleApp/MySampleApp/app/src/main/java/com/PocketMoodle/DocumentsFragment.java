@@ -136,10 +136,6 @@ public class DocumentsFragment extends Fragment {
     private List<String> fileList = new ArrayList<String>();
 
 
-    // For upload functionality
-    private AmazonS3 s3;
-    private final static String BUCKET_NAME = "soengroup-userfiles-mobilehub-1153046571";
-
     public DocumentsFragment() {
         // Required empty public constructor
     }
@@ -184,12 +180,6 @@ public class DocumentsFragment extends Fragment {
         listView = (ListView)v.findViewById(R.id.directorylist);
 
 
-
-        // Upload stuff
-        s3 = new AmazonS3Client(AWSMobileClient.defaultMobileClient().getIdentityManager().getCredentialsProvider());
-
-        final TransferUtility transferUtility = new TransferUtility(s3, this.getContext());
-
         // Set on click listener to listen to the file the use chooses
         listView.setOnItemClickListener(new OnItemClickListener(){
 
@@ -207,10 +197,7 @@ public class DocumentsFragment extends Fragment {
                     backButton.setEnabled(false);
 
                     // TODO: confirm that chosen file is correct
-
-                    // Upload selected file to Amazon S3 bucket
-                    TransferObserver transferObserver = transferUtility.upload(BUCKET_NAME, "test_upload/"+selected.getName(), selected);
-                    transferObserver.setTransferListener(new UploadListener());
+                    // TODO: get class name then call UploadDocument.upload()
                 }
 
             }});
@@ -252,33 +239,5 @@ public class DocumentsFragment extends Fragment {
     }
 
 
-    /**
-     * Listener for file uploads
-     * Logs progress and state changes. Shows a Toast when upload is complete.
-     */
-    private class UploadListener implements TransferListener {
 
-        private final static String TAG = "S3";
-
-        // Simply updates the UI list when notified.
-        @Override
-        public void onError(int id, Exception e) {
-            Log.e(TAG, "Error during upload: " + id, e);
-        }
-
-        @Override
-        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-            Log.d(TAG, String.format("onProgressChanged: %d, total: %d, current: %d",
-                    id, bytesTotal, bytesCurrent));
-        }
-
-        @Override
-        public void onStateChanged(int id, TransferState newState) {
-            Log.d(TAG, "onStateChanged: " + id + ", " + newState);
-
-            if (newState == TransferState.COMPLETED) {
-                Toast.makeText(getContext(), "Upload complete", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 }
