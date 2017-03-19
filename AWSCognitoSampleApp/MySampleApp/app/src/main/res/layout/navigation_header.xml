@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@android:color/holo_green_dark"
@@ -31,5 +32,15 @@
         android:layout_marginStart="34dp"
         android:layout_marginTop="110dp"
         android:id="@+id/navigation_email" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/navigation_username"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/navigation_username"
+        android:layout_marginTop="11dp"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
 </RelativeLayout>
