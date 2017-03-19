@@ -55,7 +55,7 @@ before_script:
 
 
 script: 
-        - travis_wait ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp build connectedCheck
+        - travis_wait 30 ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp build connectedCheck
         - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp test
         - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp connectedAndroidTest
 
