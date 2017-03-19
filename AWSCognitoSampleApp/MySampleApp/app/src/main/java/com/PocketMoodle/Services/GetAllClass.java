@@ -52,11 +52,17 @@ public class GetAllClass {
     List<User> AllUserInThisClass;
 
     class User{
-        private String ID;
-        private Integer TaOrStu;
-        User(String id, Integer taorstu){
-            this.ID = id;
+        private String Username;
+        private Double TaOrStu;
+        User(String username, Double taorstu){
+            this.Username = username;
             this.TaOrStu = taorstu;
+        }
+        public String getUsername(){
+            return this.Username;
+        }
+        public Double getTaOrStu(){
+            return this.TaOrStu;
         }
     }
     /**
@@ -135,13 +141,12 @@ public class GetAllClass {
         catch (Exception ex2){
             Log.e(TAG, ex2.getMessage());
         }
-
-        GetAllUsersInAClass("COEN 341");
         return AllClassRegisteredIn;
     }
 
     /**
      * This class is returning a List of user details in the same class...
+     * the object returned is List<User> user contains have a username and number for Ta/Student
      * @param TargetClass
      * @return
      */
@@ -149,7 +154,6 @@ public class GetAllClass {
         AllUserInThisClass = null;
         AllUserInThisClass = new ArrayList<User>();
         DynamoDBMapper mapper = new DynamoDBMapper(client);
-        //Log.i(TAG, ActualUserID);
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
         eav.put(":cn", new AttributeValue().withS(TargetClass));
 
@@ -164,8 +168,11 @@ public class GetAllClass {
             for(UserDetailsDO users: UsersD ){
 
                 if(users != null){
-                    Log.d(TAG, users.getUsername());
-                    Log.d(TAG, users.getTA().toString());
+                    //Log.d(TAG, users.getUsername());
+                    //Log.d(TAG, users.getTA().toString());
+                    User u = new User(users.getUsername(), users.getTA());
+                    AllClassRegisteredIn.add(u);
+
 
                 }
 
