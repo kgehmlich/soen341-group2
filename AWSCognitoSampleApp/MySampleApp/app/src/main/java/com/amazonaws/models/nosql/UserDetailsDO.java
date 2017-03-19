@@ -17,6 +17,7 @@ public class UserDetailsDO {
     private String _className;
     private String _userId;
     private Double _tA;
+    private String _username;
 
     @DynamoDBHashKey(attributeName = "ClassName")
     @DynamoDBAttribute(attributeName = "ClassName")
@@ -43,6 +44,14 @@ public class UserDetailsDO {
 
     public void setTA(final Double _tA) {
         this._tA = _tA;
+    }
+    @DynamoDBAttribute(attributeName = "Username")
+    public String getUsername() {
+        return _username;
+    }
+
+    public void setUsername(final String _username) {
+        this._username = _username;
     }
 
 }

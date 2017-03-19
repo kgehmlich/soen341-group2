@@ -4,7 +4,9 @@ package com.PocketMoodle.Services;
 import android.util.Log;
 
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.auth.AWSCognitoIdentityProvider;
 import com.amazonaws.mobile.AWSMobileClient;
+import com.amazonaws.mobile.user.IdentityManager;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.models.nosql.UserDetailsDO;
 
@@ -18,6 +20,7 @@ public class InsertUserDetails  {
     private final static String TAG = "FromInsertUserDetails:";
     /**
      * Function to post details about user, add a class to a userId
+     * Updated to included the user ID...
      * @param ClassName
      * @param TA
      */
@@ -26,8 +29,13 @@ public class InsertUserDetails  {
         final DynamoDBMapper dynamoDBMapper = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final UserDetailsDO note = new UserDetailsDO(); // Initialize the Notes Object
         final String UserID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
+        final String username = AWSMobileClient.defaultMobileClient().getIdentityManager().getUserName().toString();
+
+
         note.setUserId(UserID);
         note.setClassName(ClassName);
+        note.setUsername(username);
+
         note.setTA(TA);
 
 
