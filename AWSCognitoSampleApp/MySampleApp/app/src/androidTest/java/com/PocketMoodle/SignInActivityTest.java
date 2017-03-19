@@ -34,6 +34,12 @@ public class SignInActivityTest {
 
     @Test
     public void signInActivityTest() {
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText.perform(replaceText("mewtrandell"), closeSoftKeyboard());
