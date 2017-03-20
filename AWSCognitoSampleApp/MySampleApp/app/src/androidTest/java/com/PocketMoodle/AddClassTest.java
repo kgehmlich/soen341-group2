@@ -8,11 +8,13 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowManager;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +38,19 @@ public class AddClassTest {
     @Rule
     public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
+    @Before
+    public void unlockScreen() {
+        final SignInActivity activity = mActivityTestRule.getActivity();
+        Runnable wakeUpDevice = new Runnable() {
+            public void run() {
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        };
+        activity.runOnUiThread(wakeUpDevice);
+    }
+
     @Test
     public void addClassTest(){
         try {
@@ -43,7 +58,7 @@ public class AddClassTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText.perform(replaceText("mewtrandell"), closeSoftKeyboard());
