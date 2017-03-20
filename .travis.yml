@@ -8,7 +8,7 @@ env:
     - EMULATOR_API_LEVEL=22 
     - ANDROID_ABI=armeabi-v7a
     - ANDROID_TAG=google_apis
-      #- ADB_INSTALL_TIMEOUT=20
+    - ADB_INSTALL_TIMEOUT=20
 
 
 before_cache:
