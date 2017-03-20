@@ -37,14 +37,14 @@ android:
   - extra-google-m2repository
     
 #system image:
-#- sys-img-armeabi-v7a-google_apis-22
-  - sys-img-armeabi-v7a-android-20
+  - sys-img-armeabi-v7a-google_apis-20
+#  - sys-img-armeabi-v7a-android-20
 
 
 
 before_script: 
   - chmod +x AWSCognitoSampleApp/MySampleApp/gradlew  
-  - echo no | android create avd --force -n test -t "android-20" --abi $ANDROID_ABI #--tag $ANDROID_TAG
+  - echo no | android create avd --force -n test -t "android-20" --abi $ANDROID_ABI --tag $ANDROID_TAG
   - emulator -avd test -no-window &
   - travis_wait android-wait-for-emulator
 #next three lines disable animations on the emulator (recommended to improve test results)
