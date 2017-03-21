@@ -250,9 +250,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
+    }
+
+    public void setActionBarTitle(String title) {
+
+        try {
+            getSupportActionBar().setTitle(title);
+        }
+        catch(Exception e)
+        {
+            Log.d("MainActivity","Error changing title of action bar");
+
+        }
+
     }
 
 }

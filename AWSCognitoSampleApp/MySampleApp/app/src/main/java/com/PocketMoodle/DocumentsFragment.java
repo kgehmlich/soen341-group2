@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,9 @@ import android.widget.TextView;
 public class DocumentsFragment extends Fragment implements View.OnClickListener {
 
     Button uploadButton;
+    Button openDiscussionGroup;
+    String className;
+
     TextView textView;
     private static final String TAG = "DocumentsFragment";
     private int RESULT_CODE = 0;
@@ -39,6 +43,10 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
         // Button to display file explorer begining at root
         uploadButton = (Button)v.findViewById(R.id.uploadDocument);
         uploadButton.setOnClickListener(this);
+
+        // Button to display discussion board
+        openDiscussionGroup = (Button)v.findViewById(R.id.openDiscussionBoard);
+        openDiscussionGroup.setOnClickListener(this);
 
         return v;
     }
@@ -74,7 +82,32 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 // In case the intent fails display error message in log
                 Log.d(TAG, "Error accessing file explorer in class DocumentFragment");
             }
+        }
+        if(v.getId() == R.id.openDiscussionBoard) {
+            try {
+                // Fragment that will display the messages in the group
+                DiscussionGroupsFragment tempFragment = new DiscussionGroupsFragment();
 
+                // Retrieve the arguments passed by the calling class that is needed to display correct messages
+                Bundle tempBundle = getArguments();
+                className = tempBundle.getString("className");
+
+                // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                Bundle bundle = new Bundle();
+                bundle.putString("className", className);
+                tempFragment.setArguments(bundle);
+
+                // Start the new fragment and replace the current fragment with the new one
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, tempFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                ((MainActivity) getActivity()).setActionBarTitle("Discussion Chat");
+
+            } catch (Exception ex) {
+                // In case the open fails display error message in log
+                Log.d(TAG, "Error accessing discussionBoard");
+            }
         }
     }
 }
