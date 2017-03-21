@@ -52,7 +52,6 @@ public class DiscussionGroupsFragment extends Fragment {
     private String userName;  // UserName of message sender
     private String className;  // className chosen from list
 
-
     public DiscussionGroupsFragment() {
         // Required empty public constructor
     }
