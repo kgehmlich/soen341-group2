@@ -31,6 +31,7 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
 
     Spinner addClassSpinner;
     public static List<String> s = new ArrayList<String>();
+    public static List<String> userClassList = new ArrayList<String>();
     private static final String TAG = "MyActivity";
     private static final String LOG_TAG = SignInActivity.class.getSimpleName();
     public AddClassFragment() {
@@ -61,13 +62,13 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
         ArrayList<String> option = new ArrayList<String>();
 
         if(s.size() > 0){
-        Log.d(TAG, "SIZE more 0");
+            Log.d(TAG, "SIZE more 0");
             for(String s2: s){
                 option.add(s2);
             }
         }
         else
-        Log.d(TAG,"Size less than 0" );
+            Log.d(TAG,"Size less than 0" );
 
 
 
@@ -98,7 +99,7 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                     errorDialogBuilder.setTitle("Please choose a course");
                     errorDialogBuilder.show();*/
                     return;
-                    }
+                }
 
                 if(TA.isChecked() ^ STU.isChecked() ){
                     if(TA.isChecked()) {
@@ -120,30 +121,61 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
 
 
                 if(spinnerIsChecked && (TA.isChecked() ^ STU.isChecked() )){
+
+
                     Runnable runnable = new Runnable() {
                         public void run() {
-                            InsertUserDetails InserNewClass = new InsertUserDetails();
-                            double F = Double.valueOf(TAorSTU);
-                            InserNewClass.insertData(SpinnerChoice, F);
 
+                            GetAllClass ClassList = new GetAllClass();
+                            userClassList = ClassList.GetAllClassRegisteredIn();
 
                         }
                     };
-                    Thread mythread2 = new Thread(runnable);
-                    mythread2.start();
-                    Toast savetoast = Toast.makeText(getActivity(), "Request has been sent", Toast.LENGTH_LONG);
-                    savetoast.show();
+
+                    Thread mythread1 = new Thread(runnable);
+                    mythread1.start();
+
+                    // Wait for thread to gather entire list of classes that user is in
+                    while (mythread1.isAlive()) {
+
+                    }
+
+                    if(userClassList.contains(SpinnerChoice)){
+                        Toast savetoast = Toast.makeText(getActivity(), "You are already enrolled in this class", Toast.LENGTH_LONG);
+                        savetoast.show();
+                        /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
+                        errorDialogBuilder.setTitle("Please choose TA or Student");
+                        errorDialogBuilder.show();*/
+                        return;
+                    }
+
+                    else{
+
+                        Runnable runnable2 = new Runnable() {
+                            public void run() {
+
+                                InsertUserDetails InserNewClass = new InsertUserDetails();
+                                double F = Double.valueOf(TAorSTU);
+                                InserNewClass.insertData(SpinnerChoice, F);
+
+
+                            }
+                        };
+
+                        Thread mythread2 = new Thread(runnable2);
+                        mythread2.start();
+                        Toast savetoast = Toast.makeText(getActivity(), "Request has been sent", Toast.LENGTH_LONG);
+                        savetoast.show();
                     /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
                     errorDialogBuilder.setTitle("Request have been sent...");
                     errorDialogBuilder.show();*/
+                    }
                 }
-
 
             }
         });
 
         return v;
-
 
 
 
