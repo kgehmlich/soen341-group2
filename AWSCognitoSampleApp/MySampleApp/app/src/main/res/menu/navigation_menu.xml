@@ -13,9 +13,6 @@
         android:icon="@mipmap/ic_delete_black_24dp"
         android:title="@string/remove_class"/>
 
-    <item android:id="@+id/documents"
-        android:icon="@mipmap/ic_assignment_black_24dp"
-        android:title="@string/documents" />
 
     <item android:id="@+id/sign_out"
         android:icon="@mipmap/ic_power_settings_new_black_24dp"

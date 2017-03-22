@@ -170,14 +170,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawers();
                         break;
 
-                    case R.id.documents:
+                    /*case R.id.documents:
                         fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.main_container, new DocumentsFragment());
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle("Documents");
                         item.setChecked(false);
                         drawerLayout.closeDrawers();
-                        break;
+                        break;*/
 
                     case R.id.sign_out:
 
@@ -249,6 +249,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+    }
+
+    public void setActionBarTitle(String title) {
+
+        try {
+            getSupportActionBar().setTitle(title);
+        }
+        catch(Exception e)
+        {
+            Log.d("MainActivity","Error changing title of action bar");
+
+        }
+
     }
 
 }
