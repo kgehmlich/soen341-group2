@@ -1,136 +1,153 @@
 package com.PocketMoodle;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import android.os.Environment;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.PocketMoodle.Services.GetAllClass;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DocumentsFragment extends Fragment {
+public class DocumentsFragment extends Fragment implements View.OnClickListener {
 
     Button uploadButton;
-    Button backButton;
-    TextView folder;
+    Button openDiscussionGroup;
+    String className;
+    Spinner changeClassSpinner;
 
-    ListView listView;
+    TextView textView;
+    private static final String TAG = "DocumentsFragment";
+    private int RESULT_CODE = 0;
 
-    File rootDirectoryPath;
-    File currentFolder;
-    private List<String> fileList = new ArrayList<String>();
+    public static List<String> registeredClasses = new ArrayList<String>();
+
+
 
     public DocumentsFragment() {
+        Runnable runnable = new Runnable() {
+            public void run(){
+                GetAllClass registered = new GetAllClass();
+                registeredClasses = registered.GetAllClassRegisteredIn();
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
+        // TODO find another wait to do that wait time
+        while (mythread.isAlive()){
+
+        }
+
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ArrayList<String> selectOption = new ArrayList<String>();
+
+        if(registeredClasses.size() > 0){
+            for(String r: registeredClasses){
+                selectOption.add(r);
+            }
+        }
+
         View v = inflater.inflate(R.layout.fragment_documents, container, false);
+        textView = (TextView) v.findViewById(R.id.uploadStatus);
+        changeClassSpinner = (Spinner) v.findViewById(R.id.change_class_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, selectOption);
+        changeClassSpinner.setAdapter(adapter);
 
-        //Get root path in android device
-        rootDirectoryPath = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
+        Button submitB = (Button) v.findViewById(R.id.submitButton);
 
-        // Specify the current folder to begin at root
-        currentFolder = rootDirectoryPath;
-
-        folder = (TextView)v.findViewById(R.id.folder);
-
-        // Button to display file explorer begining at root
-        backButton = (Button)v.findViewById(R.id.backParent);
-        backButton.setEnabled(false);
-
-        backButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                DirectoryFiles(currentFolder.getParentFile());            }
-        });
-
-
+//        submitB.setOnClickListener();
         // Button to display file explorer begining at root
         uploadButton = (Button)v.findViewById(R.id.uploadDocument);
-        uploadButton.setOnClickListener(new OnClickListener(){
+        uploadButton.setOnClickListener(this);
 
-            // When going through file explorer reclicking upload document allows u to
-            //  to go back to the file list(i.e the parent file of what u are in)
-            @Override
-            public void onClick(View v) {
-                backButton.setEnabled(true);
-                DirectoryFiles(rootDirectoryPath);
-            }});
-
-        // get ListView in fragment_document
-        listView = (ListView)v.findViewById(R.id.directorylist);
-
-        // Set on click listener to listen to the file the use chooses
-        listView.setOnItemClickListener(new OnItemClickListener(){
-
-            // When a file/directory is clicked. If a file is chosen change status message to File Selected
-            // When a directory is clicked. Go into the directory to view files
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                File selected = new File(fileList.get(position));
-                if(selected.isDirectory()){
-                    DirectoryFiles(selected);
-                }else {
-                    setUploadStatusMessage("Status: File Selected");
-                    backButton.setEnabled(false);
-                }
-
-            }});
+        // Button to display discussion board
+        openDiscussionGroup = (Button)v.findViewById(R.id.openDiscussionBoard);
+        openDiscussionGroup.setOnClickListener(this);
 
         return v;
-
     }
 
-    public void DirectoryFiles(File file){
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // Only allow the user to go to parent directory if he is not already at the root
-        if(file.equals(rootDirectoryPath)){
-            backButton.setEnabled(false);
-        }else{
-            backButton.setEnabled(true);
+
+        // Check which request we're responding to
+        if (requestCode == RESULT_CODE) {
+            // Make sure the request was successful
+            if (resultCode == Activity.RESULT_OK) {
+
+                Uri uri = data.getData();
+                textView.setText("Status: File selected - " + uri.getPath());
+                textView.setTextColor(Color.GREEN);
+
+                // Use this data variable to get the path or whatever detail of the chosen file details you need for the api
+
+            }
         }
-
-        currentFolder = file;
-        folder.setText(file.getPath());
-
-        File[] files = file.listFiles();
-        fileList.clear();
-        for (File tempFile : files){
-            fileList.add(tempFile.getPath());
-        }
-
-        ArrayAdapter<String> directoryList
-                = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, fileList);
-        listView.setAdapter(directoryList);
     }
 
-    // Once a file is selected this method can update the Status message in fragment_add_document
-    public void setUploadStatusMessage(String uploadStatusMessage)
-    {
-        TextView textView = (TextView) getView().findViewById(R.id.uploadStatus);
-        textView.setText(uploadStatusMessage);
-        textView.setTextColor(Color.GREEN);
+    public void onClick(View v) {
+
+        if(v.getId() == R.id.uploadDocument) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                startActivityForResult(Intent.createChooser(intent, "Select a Document to Upload"), RESULT_CODE);
+
+            } catch (Exception ex) {
+                // In case the intent fails display error message in log
+                Log.d(TAG, "Error accessing file explorer in class DocumentFragment");
+            }
+        }
+        if(v.getId() == R.id.openDiscussionBoard) {
+            try {
+                // Fragment that will display the messages in the group
+                DiscussionGroupsFragment tempFragment = new DiscussionGroupsFragment();
+
+                // Retrieve the arguments passed by the calling class that is needed to display correct messages
+                Bundle tempBundle = getArguments();
+                className = tempBundle.getString("className");
+
+                // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                Bundle bundle = new Bundle();
+                bundle.putString("className", className);
+                tempFragment.setArguments(bundle);
+
+                // Start the new fragment and replace the current fragment with the new one
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, tempFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                ((MainActivity) getActivity()).setActionBarTitle("Discussion Chat");
+
+            } catch (Exception ex) {
+                // In case the open fails display error message in log
+                Log.d(TAG, "Error accessing discussionBoard");
+            }
+        }
     }
 }
