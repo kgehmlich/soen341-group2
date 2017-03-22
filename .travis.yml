@@ -37,7 +37,7 @@ android:
   - extra-google-m2repository
     
 #system image:
-- sys-img-armeabi-v7a-google_apis-24
+  - sys-img-armeabi-v7a-google_apis-24
  #  - sys-img-armeabi-v7a-android-19
 
 
