@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.PocketMoodle.Services.GetAllClass;
 
@@ -47,12 +48,21 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Fragment newFragment = new DocumentsFragment();
-                android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                ClassPageFragment classPageFragment = new ClassPageFragment();
 
-                transaction.replace(R.id.main_container,newFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                String className = ((TextView)view).getText().toString();
+
+                // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                Bundle bundle = new Bundle();
+                bundle.putString("className", className);
+                classPageFragment.setArguments(bundle);
+
+                // Start the new fragment and replace the current fragment with the new one
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                ((MainActivity) getActivity()).setActionBarTitle(className);
 
 
             }
@@ -63,16 +73,22 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-                    Fragment newFragment = new DocumentsFragment();
-                        android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        ClassPageFragment classPageFragment = new ClassPageFragment();
 
-                        transaction.replace(R.id.main_container,newFragment);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
+                        String className = ((TextView)view).getText().toString(); // Get chosen class name from list
 
+                        // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                        Bundle bundle = new Bundle();
+                        bundle.putString("className", className);
+                        classPageFragment.setArguments(bundle);
+
+                        // Start the new fragment and replace the current fragment with the new one
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        ((MainActivity) getActivity()).setActionBarTitle(className);
                     }
-
-
                 });
 
         /**
