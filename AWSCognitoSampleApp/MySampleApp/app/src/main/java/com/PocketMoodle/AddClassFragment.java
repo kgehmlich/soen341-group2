@@ -132,11 +132,11 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                         }
                     };
 
-                    Thread mythread1 = new Thread(runnable);
-                    mythread1.start();
+                    Thread myThread2 = new Thread(runnable);
+                    myThread2.start();
 
                     // Wait for thread to gather entire list of classes that user is in
-                    while (mythread1.isAlive()) {
+                    while (myThread2.isAlive()) {
 
                     }
 
@@ -162,8 +162,8 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                             }
                         };
 
-                        Thread mythread2 = new Thread(runnable2);
-                        mythread2.start();
+                        Thread myThread3 = new Thread(runnable2);
+                        myThread3.start();
                         Toast savetoast = Toast.makeText(getActivity(), "Request has been sent", Toast.LENGTH_LONG);
                         savetoast.show();
                     /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
