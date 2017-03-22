@@ -38,7 +38,7 @@ android:
     
 #system image:
 - sys-img-armeabi-v7a-google_apis-24
-    #  - sys-img-armeabi-v7a-android-19
+ #  - sys-img-armeabi-v7a-android-19
 
 
 
