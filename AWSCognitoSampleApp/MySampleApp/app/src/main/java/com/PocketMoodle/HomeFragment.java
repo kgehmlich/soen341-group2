@@ -48,18 +48,18 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                DocumentsFragment docFragment = new DocumentsFragment();
+                ClassPageFragment classPageFragment = new ClassPageFragment();
 
                 String className = ((TextView)view).getText().toString();
 
                 // Bundle to add arguments the fragment will need to function(like what a constructor does)
                 Bundle bundle = new Bundle();
                 bundle.putString("className", className);
-                docFragment.setArguments(bundle);
+                classPageFragment.setArguments(bundle);
 
                 // Start the new fragment and replace the current fragment with the new one
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_container, docFragment);
+                fragmentTransaction.replace(R.id.main_container, classPageFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 ((MainActivity) getActivity()).setActionBarTitle(className);
@@ -73,18 +73,18 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-                        DocumentsFragment docFragment = new DocumentsFragment();
+                        ClassPageFragment classPageFragment = new ClassPageFragment();
 
                         String className = ((TextView)view).getText().toString(); // Get chosen class name from list
 
                         // Bundle to add arguments the fragment will need to function(like what a constructor does)
                         Bundle bundle = new Bundle();
                         bundle.putString("className", className);
-                        docFragment.setArguments(bundle);
+                        classPageFragment.setArguments(bundle);
 
                         // Start the new fragment and replace the current fragment with the new one
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.main_container, docFragment);
+                        fragmentTransaction.replace(R.id.main_container, classPageFragment);
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         ((MainActivity) getActivity()).setActionBarTitle(className);
