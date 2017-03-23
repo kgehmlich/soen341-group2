@@ -1,14 +1,14 @@
 <resources>
 
-    <color name="top_bar_background">#F58535</color>
-    <color name="splash_text">#000000</color>
-    <color name="splash_background">#FFFFFF</color>
-    <color name="main_background">#FFFFFF</color>
+    <color name="splash_text">#000000</color> <!-- the color of the text on the loading screen  -->
+    <color name="splash_background">#FFFFFF</color> <!-- the color of the background on the loading screen  -->
 
-    <color name="black_overlay">#66000000</color>
-    <color name="nav_drawer_background">#FFFFFF</color>
-    <color name="nav_drawer_top_background">#CCCCCC</color>
-    <color name="nav_drawer_no_user_background">#AAAAAA</color>
-    <color name="sign_in_separator_color">#DDDDDD</color>
-    <color name="instructions_list_border_color">#FFDDDDDD</color>
+    <color name="sign_in_separator_color">#DDDDDD</color> <!-- the color of the line which separates user information and the log in button on the loading screen  -->
+
+    <color name="topBarText">#ffffff</color> <!-- color that should be use when the text is under the top bar  -->
+    <color name="mainText">#000000</color> <!-- the color of the text on the main activity container -->
+    <color name="topBar">#741717</color> <!-- the color of the top bar -->
+    <color name="submitButton">#606060</color> <!-- all the submit button should use this color -->
+    <color name="primaryDark">#741717</color> <!-- primary dark is the defined name of the phone status bar, according to the official android studio website -->
+    <color name="menuText">#bf9d2a</color> <!-- the color of the text on the side navigation menu -->
 </resources>
