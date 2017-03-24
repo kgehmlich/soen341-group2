@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/topBar"
@@ -33,5 +34,21 @@
         android:layout_marginStart="34dp"
         android:layout_marginTop="110dp"
         android:id="@+id/navigation_email" />
+
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:background="@drawable/round_button"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_toEndOf="@+id/navigation_email"
+        android:layout_toRightOf="@+id/navigation_email"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
 
 </RelativeLayout>
