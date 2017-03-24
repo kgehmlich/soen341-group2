@@ -303,4 +303,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
 
+    public void setActionBarTitle(String title) {
+
+        try {
+            getSupportActionBar().setTitle(title);
+        }
+        catch(Exception e)
+        {
+            Log.d("MainActivity","Error changing title of action bar");
+
+        }
+
+    }
+
 }

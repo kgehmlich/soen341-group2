@@ -2,7 +2,12 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">@color/primaryDark</item> <!-- this changes the status bar color on the phone to match our APP theme -->
+        <item name="colorPrimary">@color/primaryDark</item> <!-- this changes top bar color on the activities containers -->
+        <!--
+        <item name="android:navigationBarColor">@color/primaryDark</item> : this could be use to change the bottom victual navigation bar on the phone ,
+                                                                            if we have an API level over 22 with the "android:Theme.Material" as the theme of our app
+        -->
     </style>
 
     <!-- Backward-compatible version of ?android:attr/buttonBarStyle -->

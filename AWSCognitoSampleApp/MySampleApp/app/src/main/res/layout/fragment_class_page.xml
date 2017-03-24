@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.PocketMoodle.ClassPageFragment"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="20dp"
+    android:minWidth="300dp">
+
+    <TextView
+        android:text=""
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:id="@+id/setclassTitle" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <Button
+            android:id="@+id/openUploadDocument"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:text="@string/upload_document"/>
+
+        <Button
+            android:id="@+id/openDiscussionBoard"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_below="@+id/openUploadDocument"
+            android:text="@string/open_discussion_board"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

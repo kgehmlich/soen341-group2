@@ -22,6 +22,7 @@ import android.widget.TextView;
 public class DocumentsFragment extends Fragment implements View.OnClickListener {
 
     Button uploadButton;
+
     TextView textView;
     private static final String TAG = "DocumentsFragment";
     private int RESULT_CODE = 0;
@@ -46,7 +47,6 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
         // Check which request we're responding to
         if (requestCode == RESULT_CODE) {
             // Make sure the request was successful
@@ -57,7 +57,6 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 textView.setTextColor(Color.GREEN);
 
                 // Use this data variable to get the path or whatever detail of the chosen file details you need for the api
-
             }
         }
     }
@@ -74,7 +73,6 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 // In case the intent fails display error message in log
                 Log.d(TAG, "Error accessing file explorer in class DocumentFragment");
             }
-
         }
     }
 }
