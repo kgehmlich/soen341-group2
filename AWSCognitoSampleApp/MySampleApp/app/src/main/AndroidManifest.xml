@@ -71,7 +71,6 @@
         </activity>
         <activity
             android:name="com.PocketMoodle.MainActivity"
-            android:launchMode="singleInstance"
             android:label="@string/title_activity_main">
         </activity>
         <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" android:enabled="true" />

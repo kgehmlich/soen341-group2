@@ -18,6 +18,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -185,14 +187,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawers();
                         break;
 
-                    case R.id.documents:
-                        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.main_container, new DocumentsFragment());
-                        fragmentTransaction.commit();
-                        getSupportActionBar().setTitle("Documents");
-                        item.setChecked(false);
-                        drawerLayout.closeDrawers();
-                        break;
 
                     case R.id.sign_out:
 
@@ -296,10 +290,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 return;
                             }
 
-                                Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
+                            // Get the image file location
+                            Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
 
-                                imgButton.setImageBitmap(bmp);
-                    }
+                            // Make the image into a circle
+                            RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
+                            roundedBitmapDrawable.setCircular(true);
+                            imgButton.setImageDrawable(roundedBitmapDrawable);
+
+
+                        }
             }
 
 

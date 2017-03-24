@@ -38,7 +38,7 @@
         android:id="@+id/imageButton1"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:scaleType="fitCenter"
+        android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:background="@drawable/round_button"
         android:gravity="center_vertical|center_horizontal"
