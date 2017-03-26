@@ -101,6 +101,8 @@ public class HomeFragment extends Fragment {
         Runnable runnable = new Runnable() {
             public void run() {
                 GetAllClass GetClassForUser = new GetAllClass();
+                AnnounServices aS = new AnnounServices();
+                aS.InsertAnnouncement("COEN 341", "This is a Title", "Class is cancel because of snow");
                 ListOfSTUClassUserIsIn = GetClassForUser.GetAllClassYouAreStudent();
                 ListOfTAClassUserIsIn = GetClassForUser.GetAllClassYouAreTA();
             }

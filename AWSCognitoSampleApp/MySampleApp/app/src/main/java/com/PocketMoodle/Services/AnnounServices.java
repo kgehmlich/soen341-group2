@@ -44,10 +44,12 @@ public class AnnounServices {
         private String annouMainObj;
         private String annouDate;
         private String annouAuthor;
-         Announcement(String mainobj, String annoudate, String annouauthor){
+        private String annouTitle;
+         Announcement(String mainobj, String annoudate, String annouauthor, String title){
             this.annouMainObj = mainobj;
             this.annouDate = annoudate;
             this.annouAuthor = annouauthor;
+             this.annouTitle = title;
         }
         public String getAnnouMainObj(){
             return this.annouMainObj;
@@ -58,6 +60,7 @@ public class AnnounServices {
         public String getAnnouAuthor(){
             return  this.annouAuthor;
         }
+        public String getAnnouTitle(){return  this.annouTitle;}
 
     }
     /**
@@ -66,7 +69,7 @@ public class AnnounServices {
      * @param announcement
      * The parameter username, userId and Date are added automatically
      */
-    public void InsertAnnouncement(String classname, String announcement){
+    public void InsertAnnouncement(String classname, String title, String announcement){
         // Fetch the default configured DynamoDB ObjectMapper
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final AnnouncementDO anAnnoucement = new AnnouncementDO();
@@ -85,6 +88,7 @@ public class AnnounServices {
         anAnnoucement.setUsername(USERNAME);
         anAnnoucement.setDate(CURRENT_DATE);
         anAnnoucement.setID(ANNOUNCEMENT_ID);
+        anAnnoucement.setTitle(title);
 
 
 
@@ -106,7 +110,7 @@ public class AnnounServices {
      * @param classname
      * @return List of type Announcement
      */
-    public List<Announcement> GetAllAnnoucementForClass(String classname){
+    public List<Announcement> GetAllAnnouncementsForClass(String classname){
         allAnnouncementForOneClases = null;
         allAnnouncementForOneClases = new ArrayList<Announcement>();
 
@@ -123,7 +127,7 @@ public class AnnounServices {
             if(!announForOneClass.isEmpty()){
                 for(AnnouncementDO announcementDO: announForOneClass){
                     Log.d(TAG, announcementDO.getMessage());
-                    Announcement announcement =  new Announcement(announcementDO.getMessage(), announcementDO.getDate(), announcementDO.getUsername());
+                    Announcement announcement =  new Announcement(announcementDO.getMessage(), announcementDO.getDate(), announcementDO.getUsername(), announcementDO.getTitle());
                     allAnnouncementForOneClases.add(announcement);
 
                 }

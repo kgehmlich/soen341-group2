@@ -18,6 +18,7 @@ public class AnnouncementDO {
     private String _className;
     private String _date;
     private String _message;
+    private String _title;
     private String _userId;
     private String _username;
 
@@ -54,6 +55,14 @@ public class AnnouncementDO {
 
     public void setMessage(final String _message) {
         this._message = _message;
+    }
+    @DynamoDBAttribute(attributeName = "title")
+    public String getTitle() {
+        return _title;
+    }
+
+    public void setTitle(final String _title) {
+        this._title = _title;
     }
     @DynamoDBAttribute(attributeName = "userId")
     public String getUserId() {
