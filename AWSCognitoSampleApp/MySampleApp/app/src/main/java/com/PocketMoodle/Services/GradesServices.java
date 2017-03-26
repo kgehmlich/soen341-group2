@@ -4,17 +4,13 @@ package com.PocketMoodle.Services;
  * Created by Winterhart on 2017-03-25.
  */
 import android.util.Log;
-
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
-import com.amazonaws.models.nosql.UserDetailsDO;
 import com.amazonaws.models.nosql.AllGradesDO;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.dynamodbv2.model.UpdateItemRequest;
 import com.amazonaws.services.dynamodbv2.model.UpdateItemResult;
 
@@ -108,9 +104,9 @@ public class GradesServices {
                 .withUpdateExpression("set Grade = :gr")
                 .withExpressionAttributeValues(eav2);
 
-        try{
+        try {
             UpdateItemResult resultOfUpdate = client.updateItem(updateRequest);
-            status = "Update have been a sucess";
+            status = "OK";
         }
         catch (Exception ee){
             Log.e(TAG, ee.getMessage());
