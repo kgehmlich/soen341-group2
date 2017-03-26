@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.PocketMoodle.Services.GetAllClass;
+import com.PocketMoodle.Services.GradesServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +100,6 @@ public class HomeFragment extends Fragment {
         Runnable runnable = new Runnable() {
             public void run() {
                 GetAllClass GetClassForUser = new GetAllClass();
-
                 ListOfSTUClassUserIsIn = GetClassForUser.GetAllClassYouAreStudent();
                 ListOfTAClassUserIsIn = GetClassForUser.GetAllClassYouAreTA();
             }

@@ -5,42 +5,14 @@ package com.PocketMoodle.Services;
  */
 
 import android.util.Log;
-
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.AmazonWebServiceRequest;
-import com.amazonaws.ResponseMetadata;
-import com.amazonaws.auth.AWSCognitoIdentityProvider;
 import com.amazonaws.mobile.AWSMobileClient;
-import com.amazonaws.mobile.api.idjk9qys1cb9.UserAndClassMobileHubClient;
-import com.amazonaws.mobileconnectors.apigateway.ApiRequest;
-import com.amazonaws.mobileconnectors.apigateway.ApiResponse;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUser;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
-import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExpression;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
-import com.amazonaws.models.nosql.ListOfClassDO;
 import com.amazonaws.models.nosql.UserDetailsDO;
-import com.amazonaws.regions.Region;
-import com.amazonaws.services.cognitoidentity.AmazonCognitoIdentity;
-import com.amazonaws.services.cognitoidentity.model.GetCredentialsForIdentityRequest;
-import com.amazonaws.services.cognitoidentity.model.GetCredentialsForIdentityResult;
-import com.amazonaws.services.cognitoidentity.model.GetIdRequest;
-import com.amazonaws.services.cognitoidentity.model.GetIdResult;
-import com.amazonaws.services.cognitoidentity.model.GetOpenIdTokenRequest;
-import com.amazonaws.services.cognitoidentity.model.GetOpenIdTokenResult;
-import com.amazonaws.services.cognitoidentityprovider.model.GetUserRequest;
-import com.amazonaws.services.cognitoidentityprovider.model.GetUserResult;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.amazonaws.services.s3.AmazonS3Client;
-
 import java.util.*;
 
 public class GetAllClass {
@@ -60,9 +32,11 @@ public class GetAllClass {
     class User{
         private String username;
         private Double taOrStu;
-        User(String username, Double taorstu){
+        private String userId;
+        User(String username, Double taorstu, String userid){
             this.username = username;
             this.taOrStu = taorstu;
+            this.userId = userid;
         }
         public String getUsername(){
             return this.username;
@@ -70,6 +44,7 @@ public class GetAllClass {
         public Double getTaOrStu(){
             return this.taOrStu;
         }
+        public String getUserId(){ return  this.userId;}
     }
     /**
      * This function get all classes on table ListOfClass and return it
@@ -170,7 +145,7 @@ public class GetAllClass {
                         if(users != null){
                         //Log.d(TAG, users.getUsername());
                         //Log.d(TAG, users.getTA().toString());
-                        User u = new User(users.getUsername(), users.getTA());
+                        User u = new User(users.getUsername(), users.getTA(), users.getUserId());
                         allClassRegisteredIn.add(u);
                     }
                 }
