@@ -25,3 +25,17 @@ allprojects {
         jcenter()
     }
 }
+
+// Improve Build Server performance by disabling pre-dexing
+project.ext.preDexLibs = !project.hasProperty('disablePreDex')
+
+subprojects {
+    // Disable pre-dexing only on your build server.
+    project.plugins.whenPluginAdded { plugin ->
+        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        } else if ("com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        }
+    }
+}
