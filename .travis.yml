@@ -56,7 +56,7 @@ before_script:
 
 
 script: 
-        - ./AWSCognitoSampleApp/MySampleApp/gradlew clean cAT -PdisablePreDex
+        - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp clean cAT -PdisablePreDex
         - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp test
         - travis_wait 30 ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp connectedAndroidTest 
         - travis_wait 30 ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp build connectedCheck
