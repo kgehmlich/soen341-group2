@@ -177,7 +177,7 @@ public class GetAllClass {
             List<UserDetailsDO> detailsInClass = mapper.scan(UserDetailsDO.class, scan);
             if(!detailsInClass.isEmpty()){
                 for (UserDetailsDO details : detailsInClass ){
-                    if(details.getTA() == 2.0){
+                    if(details.getTA() == 1.0){
                         allClassYouAreTA.add(details.getClassName());
                     }
                 }
@@ -208,7 +208,7 @@ public class GetAllClass {
             List<UserDetailsDO> detailsInClass = mapper.scan(UserDetailsDO.class, scan);
             if(!detailsInClass.isEmpty()){
                 for (UserDetailsDO details : detailsInClass ){
-                    if(details.getTA() == 1.0){
+                    if(details.getTA() == 2.0){
                         allClassYouAreStu.add(details.getClassName());
                     }
                 }
