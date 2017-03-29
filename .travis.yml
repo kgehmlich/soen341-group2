@@ -57,7 +57,7 @@ before_script:
 
 script: 
         - ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp test
-        - travis_wait 30 ./AWSCognitoSampleApp/MySampleApp/gradlew -p -PdisablePreDex AWSCognitoSampleApp/MySampleApp connectedAndroidTest 
+        - travis_wait 30 ./AWSCognitoSampleApp/MySampleApp/gradlew -p-PdisablePreDex AWSCognitoSampleApp/MySampleApp connectedAndroidTest 
         - travis_wait 30 ./AWSCognitoSampleApp/MySampleApp/gradlew -p AWSCognitoSampleApp/MySampleApp build connectedCheck
 
 after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"
