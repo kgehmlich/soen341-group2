@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
@@ -35,7 +36,7 @@ import static org.hamcrest.Matchers.is;
 public class DiscussionTest {
 
     @Rule
-    public ActivityTestRule<SplashActivity> mActivityTestRule = new ActivityTestRule<>(SplashActivity.class);
+    public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
     @Test
     public void discussionTest() {
@@ -43,26 +44,15 @@ public class DiscussionTest {
  // The recommended way to handle such scenarios is to use Espresso idling resources:
   // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
 try {
- Thread.sleep(3597128);
+ Thread.sleep(15000);
  } catch (InterruptedException e) {
  e.printStackTrace();
  }
         
-        ViewInteraction editText = onView(
-allOf(withId(R.id.signIn_editText_email), isDisplayed()));
-        editText.perform(replaceText("mewt"), closeSoftKeyboard());
-        
-         // Added a sleep statement to match the app's execution delay.
- // The recommended way to handle such scenarios is to use Espresso idling resources:
-  // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-try {
- Thread.sleep(5000);
- } catch (InterruptedException e) {
- e.printStackTrace();
- }
+
         
         ViewInteraction editText2 = onView(
-allOf(withId(R.id.signIn_editText_email), withText("mewt"), isDisplayed()));
+allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText2.perform(replaceText("mewtrandell"), closeSoftKeyboard());
         
         ViewInteraction editText3 = onView(
@@ -72,15 +62,12 @@ allOf(withId(R.id.signIn_editText_password), isDisplayed()));
         ViewInteraction imageButton = onView(
 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
-        
-         // Added a sleep statement to match the app's execution delay.
- // The recommended way to handle such scenarios is to use Espresso idling resources:
-  // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-try {
- Thread.sleep(3512020);
- } catch (InterruptedException e) {
- e.printStackTrace();
- }
+
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
         ViewInteraction appCompatImageButton = onView(
 allOf(withContentDescription("Open"),
@@ -154,7 +141,7 @@ allOf(withId(R.id.send_message), withText("Send"), isDisplayed()));
         appCompatButton5.perform(click());
         
         ViewInteraction textView = onView(
-allOf(withId(android.R.id.text1), withText("mewtrandell Posted by Mar 28, 2017 11:19:20 PM\n\nhello"),
+allOf(withId(android.R.id.text1), withText(endsWith("hello")),
 childAtPosition(
 allOf(withId(R.id.message_list),
 childAtPosition(
@@ -162,7 +149,7 @@ IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class),
 0)),
 0),
 isDisplayed()));
-        textView.check(matches(withText("mewtrandell Posted by Mar 28, 2017 11:19:20 PM  hello")));
+        textView.check(matches(withText(endsWith("hello"))));
         
         pressBack();
         
