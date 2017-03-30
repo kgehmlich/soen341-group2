@@ -41,12 +41,14 @@ public class AnnounServices {
         }
     }
     public class Announcement {
+        private String annouID;
         private String annouMainObj;
         private String annouDate;
         private String annouAuthor;
         private String annouTitle;
-         Announcement(String mainobj, String annoudate, String annouauthor, String title){
-            this.annouMainObj = mainobj;
+         Announcement(String id, String mainobj, String annoudate, String annouauthor, String title){
+            this.annouID = id;
+             this.annouMainObj = mainobj;
             this.annouDate = annoudate;
             this.annouAuthor = annouauthor;
              this.annouTitle = title;
@@ -60,7 +62,12 @@ public class AnnounServices {
         public String getAnnouAuthor(){
             return  this.annouAuthor;
         }
-        public String getAnnouTitle(){return  this.annouTitle;}
+        public String getAnnouTitle(){
+            return  this.annouTitle;
+        }
+        public String getAnnouID(){
+            return this.annouID;
+        }
 
     }
     /**
@@ -127,7 +134,7 @@ public class AnnounServices {
             if(!announForOneClass.isEmpty()){
                 for(AnnouncementDO announcementDO: announForOneClass){
                     Log.d(TAG, announcementDO.getMessage());
-                    Announcement announcement =  new Announcement(announcementDO.getMessage(), announcementDO.getDate(), announcementDO.getUsername(), announcementDO.getTitle());
+                    Announcement announcement =  new Announcement(announcementDO.getID(), announcementDO.getMessage(), announcementDO.getDate(), announcementDO.getUsername(), announcementDO.getTitle());
                     allAnnouncementForOneClases.add(announcement);
 
                 }
@@ -140,5 +147,23 @@ public class AnnounServices {
         return allAnnouncementForOneClases;
     }
 
+    /**
+     * Function to remove an announcement, the ID is inside the object Announcement
+     * @param announcementid unique string linked to an announcement
+     */
+    public void RemoveAnAnnouncement(String announcementid, String classname){
+        final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
+        final AnnouncementDO anAnnoucement = new AnnouncementDO();
+        final String announcementID = announcementid;
+        final String className = classname;
+        anAnnoucement.setID(announcementID);
+        anAnnoucement.setClassName(className);
+        AmazonClientException lastException = null;
+        try {
+            DYNAMO_DB_MAPPER.delete(anAnnoucement);
+        } catch (final AmazonClientException ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+    }
 
 }
