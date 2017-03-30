@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
                 // Bundle to add arguments the fragment will need to function(like what a constructor does)
                 Bundle bundle = new Bundle();
                 bundle.putString("className", className);
+                bundle.putString("TAOrStudent", "Student");
                 classPageFragment.setArguments(bundle);
 
                 // Start the new fragment and replace the current fragment with the new one
@@ -82,6 +83,7 @@ public class HomeFragment extends Fragment {
                         // Bundle to add arguments the fragment will need to function(like what a constructor does)
                         Bundle bundle = new Bundle();
                         bundle.putString("className", className);
+                        bundle.putString("TAOrStudent", "TA");
                         classPageFragment.setArguments(bundle);
 
                         // Start the new fragment and replace the current fragment with the new one

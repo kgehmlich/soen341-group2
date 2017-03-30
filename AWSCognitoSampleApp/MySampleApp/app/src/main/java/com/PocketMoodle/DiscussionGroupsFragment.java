@@ -51,6 +51,7 @@ public class DiscussionGroupsFragment extends Fragment {
 
     private String userName;  // UserName of message sender
     private String className;  // className chosen from list
+    private String TAOrStudent; // Will hold "TA" or "Student"
 
     public DiscussionGroupsFragment() {
         // Required empty public constructor
@@ -65,6 +66,7 @@ public class DiscussionGroupsFragment extends Fragment {
         // Retrieve passed class name
         Bundle bundle = getArguments();
         className = bundle.getString("className");
+        TAOrStudent = bundle.getString("TAOrStudent");
 
         /* Create an instance of the class that can add and remove messages/discussion groups
             It will be used to add and delete messages/discussion from database
@@ -74,6 +76,12 @@ public class DiscussionGroupsFragment extends Fragment {
         // Find the buttons
         addDiscusionTopic    = (Button) view.findViewById(R.id.add_discussion_group);
         removeDiscusionTopic = (Button) view.findViewById(R.id.remove_discussion_group);
+
+        // If student is using this fragment, prevent them from adding remove discussion groups.
+        if(TAOrStudent.equals("Student")) {
+            addDiscusionTopic.setVisibility(View.INVISIBLE);
+            removeDiscusionTopic.setVisibility(View.INVISIBLE);
+        }
 
         // Find the listView that the discussion group list will be appended
         fragmentDiscussionTopicList = (ListView) view.findViewById(R.id.discussion_group_list);
