@@ -147,11 +147,13 @@ public class AnnounServices {
      * Function to remove an announcement, the ID is inside the object Announcement
      * @param announcementid unique string linked to an announcement
      */
-    public void RemoveAnAnnouncement(String announcementid){
+    public void RemoveAnAnnouncement(String announcementid, String classname){
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final AnnouncementDO anAnnoucement = new AnnouncementDO();
         final String announcementID = announcementid;
+        final String className = classname;
         anAnnoucement.setID(announcementID);
+        anAnnoucement.setClassName(className);
         AmazonClientException lastException = null;
         try {
             DYNAMO_DB_MAPPER.delete(anAnnoucement);
