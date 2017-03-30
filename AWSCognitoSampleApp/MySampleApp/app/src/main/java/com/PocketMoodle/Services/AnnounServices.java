@@ -62,8 +62,12 @@ public class AnnounServices {
         public String getAnnouAuthor(){
             return  this.annouAuthor;
         }
-        public String getAnnouTitle(){return  this.annouTitle;}
-        public String getAnnouID(){return this.annouID;}
+        public String getAnnouTitle(){
+            return  this.annouTitle;
+        }
+        public String getAnnouID(){
+            return this.annouID;
+        }
 
     }
     /**
