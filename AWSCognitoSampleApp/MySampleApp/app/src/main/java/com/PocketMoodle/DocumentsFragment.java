@@ -129,6 +129,8 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
     private static final String TAG = "DocumentsFragment";
     private int RESULT_DOCUMENT_SUCCESSFUL = 20;
 
+    private String className;
+    private String TAOrStudent;
 
     public DocumentsFragment() {
         // Required empty public constructor
@@ -139,6 +141,11 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_documents, container, false);
         textView = (TextView) v.findViewById(R.id.uploadStatus);
+
+        // Retrieve the arguments passed by the calling class that is needed to display correct messages
+        Bundle tempBundle = getArguments();
+        className = tempBundle.getString("className");
+        TAOrStudent = tempBundle.getString("TAOrStudent");
 
         // Button to display file explorer begining at root
         uploadButton = (Button)v.findViewById(R.id.uploadDocument);

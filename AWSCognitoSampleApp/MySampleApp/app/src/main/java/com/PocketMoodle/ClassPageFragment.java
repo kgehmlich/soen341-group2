@@ -105,6 +105,12 @@ public class ClassPageFragment extends Fragment {
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
 
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", TAOrStudent);
+                    documentsFragment.setArguments(bundle);
+
                 } catch (Exception ex) {
                     // In case the open fails display error message in log
                     Log.d(TAG, "Error accessing Upload Document");
