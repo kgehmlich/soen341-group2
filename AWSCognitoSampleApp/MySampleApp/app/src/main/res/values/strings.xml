@@ -25,7 +25,12 @@
     <string name="send_message">Send</string>
     <string name="discussion_board">Discussion Board</string>
     <string name="open_discussion_board">Open Discussion Board</string>
-
+    <string name="announcement">Announcement</string>
+    <string name="add_announcement">Add Announcement</string>
+    <string name="okay">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="enter_description">Enter Description</string>
 
     <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->
 

@@ -166,7 +166,7 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 // TODO: get class name and document title to pass to UploadDocument.upload()
 
                 UploadDocument ud = new UploadDocument(getContext());
-                ud.upload(selected, "TEMP_TITLE", "TEMP_DIR");
+                // ud.upload(selected, "TEMP_TITLE", "TEMP_DIR");
             }
         }
 
