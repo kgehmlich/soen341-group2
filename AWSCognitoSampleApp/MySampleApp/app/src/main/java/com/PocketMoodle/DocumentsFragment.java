@@ -25,7 +25,7 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
 
     TextView textView;
     private static final String TAG = "DocumentsFragment";
-    private int RESULT_CODE = 0;
+    private int RESULT_DOCUMENT_SUCCESSFUL = 20;
 
     public DocumentsFragment() {
         // Required empty public constructor
@@ -47,9 +47,10 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // Check which request we're responding to
-        if (requestCode == RESULT_CODE) {
-            // Make sure the request was successful
+        // Check the request we are responding to
+        if (requestCode == RESULT_DOCUMENT_SUCCESSFUL) {
+
+            // If the request was successful get the path and print it onto the screen
             if (resultCode == Activity.RESULT_OK) {
 
                 Uri uri = data.getData();
@@ -59,6 +60,7 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 // Use this data variable to get the path or whatever detail of the chosen file details you need for the api
             }
         }
+
     }
 
     public void onClick(View v) {
@@ -67,7 +69,7 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
             try {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("*/*");
-                startActivityForResult(Intent.createChooser(intent, "Select a Document to Upload"), RESULT_CODE);
+                startActivityForResult(Intent.createChooser(intent, "Select a Document to Upload"), RESULT_DOCUMENT_SUCCESSFUL);
 
             } catch (Exception ex) {
                 // In case the intent fails display error message in log
