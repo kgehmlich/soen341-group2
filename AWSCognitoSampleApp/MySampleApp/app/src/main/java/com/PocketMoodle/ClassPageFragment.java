@@ -99,17 +99,17 @@ public class ClassPageFragment extends Fragment {
                     // Fragment that will display the messages in the group
                     DocumentsFragment documentsFragment = new DocumentsFragment();
 
-                    // Start the new fragment and replace the current fragment with the new one
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_container, documentsFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-
                     // Bundle to add arguments the fragment will need to function(like what a constructor does)
                     Bundle bundle = new Bundle();
                     bundle.putString("className", className);
                     bundle.putString("TAOrStudent", TAOrStudent);
                     documentsFragment.setArguments(bundle);
+
+                    // Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, documentsFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
 
                 } catch (Exception ex) {
                     // In case the open fails display error message in log
