@@ -17,6 +17,7 @@ public class UserDetailsDO {
     private String _className;
     private String _userId;
     private Double _tA;
+    private String _userName;
 
     @DynamoDBHashKey(attributeName = "ClassName")
     @DynamoDBAttribute(attributeName = "ClassName")
@@ -24,8 +25,8 @@ public class UserDetailsDO {
         return _className;
     }
 
-    public void setClassName(final String _className) {
-        this._className = _className;
+    public void setClassName(final String _CLASS_NAME) {
+        this._className = _CLASS_NAME;
     }
     @DynamoDBRangeKey(attributeName = "userId")
     @DynamoDBAttribute(attributeName = "userId")
@@ -33,16 +34,24 @@ public class UserDetailsDO {
         return _userId;
     }
 
-    public void setUserId(final String _userId) {
-        this._userId = _userId;
+    public void setUserId(final String _USER_ID) {
+        this._userId = _USER_ID;
     }
     @DynamoDBAttribute(attributeName = "TA")
     public Double getTA() {
         return _tA;
     }
 
-    public void setTA(final Double _tA) {
-        this._tA = _tA;
+    public void setTA(final Double _TA) {
+        this._tA = _TA;
+    }
+    @DynamoDBAttribute(attributeName = "Username")
+    public String getUsername() {
+        return _userName;
+    }
+
+    public void setUsername(final String _USER_NAME) {
+        this._userName = _USER_NAME;
     }
 
 }

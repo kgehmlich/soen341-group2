@@ -19,7 +19,12 @@
     <string name="default_status">Status: No Files Selected</string>
     <string name="upload_document">Upload Document</string>
     <string name="class_list">Class List</string>
-
+    <string name="add_button_discussion">+</string>
+    <string name="remove_button_discussion">-</string>
+    <string name="hint_send_message">Type Message</string>
+    <string name="send_message">Send</string>
+    <string name="discussion_board">Discussion Board</string>
+    <string name="open_discussion_board">Open Discussion Board</string>
 
 
     <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->

@@ -1,7 +1,10 @@
 package com.PocketMoodle;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,13 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.os.Environment;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -124,122 +121,70 @@ import com.amazonaws.services.s3.model.VersionListing;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DocumentsFragment extends Fragment {
+public class DocumentsFragment extends Fragment implements View.OnClickListener {
 
     Button uploadButton;
-    Button backButton;
-    TextView folder;
 
-    ListView listView;
-
-    File rootDirectoryPath;
-    File currentFolder;
-    private List<String> fileList = new ArrayList<String>();
+    TextView textView;
+    private static final String TAG = "DocumentsFragment";
+    private int RESULT_DOCUMENT_SUCCESSFUL = 20;
 
 
     public DocumentsFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_documents, container, false);
-
-        //Get root path in android device
-        rootDirectoryPath = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
-
-        // Specify the current folder to begin at root
-        currentFolder = rootDirectoryPath;
-
-        folder = (TextView)v.findViewById(R.id.folder);
-
-        // Button to display file explorer begining at root
-        backButton = (Button)v.findViewById(R.id.backParent);
-        backButton.setEnabled(false);
-
-        backButton.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                DirectoryFiles(currentFolder.getParentFile());            }
-        });
-
+        textView = (TextView) v.findViewById(R.id.uploadStatus);
 
         // Button to display file explorer begining at root
         uploadButton = (Button)v.findViewById(R.id.uploadDocument);
-        uploadButton.setOnClickListener(new OnClickListener(){
-
-            // When going through file explorer reclicking upload document allows u to
-            //  to go back to the file list(i.e the parent file of what u are in)
-            @Override
-            public void onClick(View v) {
-                backButton.setEnabled(true);
-                DirectoryFiles(rootDirectoryPath);
-            }});
-
-        // get ListView in fragment_document
-        listView = (ListView)v.findViewById(R.id.directorylist);
-
-
-        // Set on click listener to listen to the file the use chooses
-        listView.setOnItemClickListener(new OnItemClickListener(){
-
-            // When a file/directory is clicked. If a file is chosen change status message to File Selected
-            // When a directory is clicked. Go into the directory to view files
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                File selected = new File(fileList.get(position));
-                if(selected.isDirectory()){
-                    DirectoryFiles(selected);
-                }else {
-                    setUploadStatusMessage("Status: File Selected - " + selected.getName());
-                    backButton.setEnabled(false);
-
-                    // TODO: confirm that chosen file is correct
-                    // TODO: get class name and document title to pass to UploadDocument.upload()
-
-                    UploadDocument ud = new UploadDocument(getContext());
-                    ud.upload(selected, "TEMP_TITLE", "TEMP_DIR");
-                }
-
-            }});
+        uploadButton.setOnClickListener(this);
 
         return v;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Check the request we are responding to
+        if (requestCode == RESULT_DOCUMENT_SUCCESSFUL) {
+
+            // If the request was successful get the path and print it onto the screen
+            if (resultCode == Activity.RESULT_OK) {
+
+                Uri uri = data.getData();
+                textView.setText("Status: File selected - " + uri.getPath());
+                textView.setTextColor(Color.GREEN);
+
+                // Use this data variable to get the path or whatever detail of the chosen file details you need for the api
+              
+                // TODO: confirm that chosen file is correct
+                // TODO: get class name and document title to pass to UploadDocument.upload()
+
+                UploadDocument ud = new UploadDocument(getContext());
+                ud.upload(selected, "TEMP_TITLE", "TEMP_DIR");
+            }
+        }
 
     }
 
-    public void DirectoryFiles(File file){
+    public void onClick(View v) {
 
-        // Only allow the user to go to parent directory if he is not already at the root
-        if(file.equals(rootDirectoryPath)){
-            backButton.setEnabled(false);
-        }else{
-            backButton.setEnabled(true);
+        if(v.getId() == R.id.uploadDocument) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("*/*");
+                startActivityForResult(Intent.createChooser(intent, "Select a Document to Upload"), RESULT_DOCUMENT_SUCCESSFUL);
+
+            } catch (Exception ex) {
+                // In case the intent fails display error message in log
+                Log.d(TAG, "Error accessing file explorer in class DocumentFragment");
+            }
         }
-
-        currentFolder = file;
-        folder.setText(file.getPath());
-
-        File[] files = file.listFiles();
-        fileList.clear();
-        for (File tempFile : files){
-            fileList.add(tempFile.getPath());
-        }
-
-        ArrayAdapter<String> directoryList
-                = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, fileList);
-        listView.setAdapter(directoryList);
-    }
-
-    // Once a file is selected this method can update the Status message in fragment_add_document
-    public void setUploadStatusMessage(String uploadStatusMessage)
-    {
-        TextView textView = (TextView) getView().findViewById(R.id.uploadStatus);
-        textView.setText(uploadStatusMessage);
-        textView.setTextColor(Color.GREEN);
     }
 
 

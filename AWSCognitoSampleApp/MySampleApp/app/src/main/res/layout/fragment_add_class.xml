@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="100dp"
-        android:background="#006400"
+        android:background="@color/submitButton"
         android:textColor="#ffffff"
         android:id="@+id/button" />
 
