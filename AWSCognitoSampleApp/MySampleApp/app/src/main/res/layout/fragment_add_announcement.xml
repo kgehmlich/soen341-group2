@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context="com.PocketMoodle.AddAnnouncementFragment">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_announcement"
+        android:textSize="36sp" />
+
+    <EditText
+        android:id="@+id/announcementTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:ems="10"
+        android:hint="@string/enter_title"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/announcementDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/announcementTitle"
+        android:ems="10"
+        android:hint="@string/enter_description"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:layout_above="@+id/okAddAnnouncement" />
+
+
+    <Button
+        android:id="@+id/okAddAnnouncement"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/okay"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/cancelAddAnnouncement"
+        android:layout_toStartOf="@+id/cancelAddAnnouncement" />
+
+    <Button
+        android:id="@+id/cancelAddAnnouncement"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
