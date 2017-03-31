@@ -231,15 +231,12 @@ public class ClassPageFragment extends Fragment {
                             String removeAnnouncement = removeAnnouncementSpinner.getSelectedItem().toString();
 
                             // Find the chosen announcement by searching through all the announcements.
-                            for(int announcementCount = 0; announcementCount < announcementList.size(); ++announcementCount) {
+                            for(AnnounServices.Announcement singleAnnouncement : announcementList) {
 
-                                // Store the reference to each announcement object
-                                AnnounServices.Announcement tempAnnouncement = announcementList.get(announcementCount);
-
-                                if (tempAnnouncement.getAnnouTitle().equals(removeAnnouncement)) {
+                                if (singleAnnouncement.getAnnouTitle().equals(removeAnnouncement)) {
 
                                     // Get the announcement id of the annoucement to revove
-                                    final String AnnouncementToRemoveId = tempAnnouncement.getAnnouID();
+                                    final String AnnouncementToRemoveId = singleAnnouncement.getAnnouID();
 
                                     Runnable runnable = new Runnable() {
                                         public void run() {
@@ -279,19 +276,16 @@ public class ClassPageFragment extends Fragment {
                 String author;      // Hold the author of the announcement
 
                 // Find the chosen announcement by searching through all the announcements.
-                for(int announcementCount = 0; announcementCount < announcementList.size(); ++announcementCount) {
-
-                    // Store the reference to each announcement object
-                    AnnounServices.Announcement tempAnnouncement = announcementList.get(announcementCount);
+                for(AnnounServices.Announcement eachAnnouncement : announcementList) {
 
                     // If we find the announcement object in the database display its values on
                     //  a new fragment.
-                    if(tempAnnouncement.getAnnouTitle().equals(((TextView)view).getText().toString())) {
+                    if(eachAnnouncement.getAnnouTitle().equals(((TextView)view).getText().toString())) {
 
-                        title       = tempAnnouncement.getAnnouTitle();   // Get the title of the announcement
-                        description = tempAnnouncement.getAnnouMainObj(); // Get the description of the announcement
-                        date        = tempAnnouncement.getAnnouDate();    // Get the date of the announcement
-                        author      = tempAnnouncement.getAnnouAuthor();  // Get the author of the announcement
+                        title       = eachAnnouncement.getAnnouTitle();   // Get the title of the announcement
+                        description = eachAnnouncement.getAnnouMainObj(); // Get the description of the announcement
+                        date        = eachAnnouncement.getAnnouDate();    // Get the date of the announcement
+                        author      = eachAnnouncement.getAnnouAuthor();  // Get the author of the announcement
 
                         // Fragment that will display the messages in the group
                         DisplayAnnouncementFragment tempFragment = new DisplayAnnouncementFragment();
