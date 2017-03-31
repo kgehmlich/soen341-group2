@@ -11,8 +11,11 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Kyle on 2017-03-19.
@@ -31,11 +34,23 @@ public class UploadDocument {
     }
 
 
-    public void upload(File file, String className) {
+    public void upload(File file, String documentTitle, String className) {
+        // Build metadata
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        Map<String, String> fileMetadata = new HashMap<>();
+        fileMetadata.put("title", documentTitle);
+
+        // Create transfer utility (performs actual upload asynchronously)
         final TransferUtility transferUtility = new TransferUtility(_s3, _context);
 
         // Upload selected file to Amazon S3 bucket
-        TransferObserver transferObserver = transferUtility.upload(BUCKET_NAME, className+"/"+file.getName(), file);
+        TransferObserver transferObserver = transferUtility.upload(
+                BUCKET_NAME,
+                className+"/"+file.getName(),
+                file,
+                objectMetadata
+        );
+
         transferObserver.setTransferListener(new UploadListener());
     }
 
