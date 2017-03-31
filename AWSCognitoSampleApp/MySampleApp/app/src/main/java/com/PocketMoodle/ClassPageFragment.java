@@ -319,8 +319,8 @@ public class ClassPageFragment extends Fragment {
         // Retrieve the list of announcement from the database by calling API
         Runnable runnable = new Runnable() {
             public void run() {
-                AnnounServices aS = new AnnounServices();
-                announcementList = aS.GetAllAnnouncementsForClass(className);
+                AnnounServices retriveAnnouncements = new AnnounServices();
+                announcementList = retriveAnnouncements.GetAllAnnouncementsForClass(className);
             }
         };
 
