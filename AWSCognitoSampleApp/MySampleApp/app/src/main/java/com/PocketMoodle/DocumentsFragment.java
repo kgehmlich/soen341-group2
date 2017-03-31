@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,7 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.content.ContentItem;
 import com.amazonaws.mobile.content.ContentProgressListener;
+import com.amazonaws.mobile.util.ImageSelectorUtils;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
@@ -168,12 +170,14 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 textView.setTextColor(Color.GREEN);
 
                 // Use this data variable to get the path or whatever detail of the chosen file details you need for the api
-              
+                final String path = ImageSelectorUtils.getFilePathFromUri(getActivity(), uri);
+                File selected = new File(path);
+
                 // TODO: confirm that chosen file is correct
-                // TODO: get class name and document title to pass to UploadDocument.upload()
+                // TODO: get document title to pass to UploadDocument.upload()
 
                 UploadDocument ud = new UploadDocument(getContext());
-                // ud.upload(selected, "TEMP_TITLE", "TEMP_DIR");
+                ud.upload(selected, "TEMP_TITLE", className);
             }
         }
 

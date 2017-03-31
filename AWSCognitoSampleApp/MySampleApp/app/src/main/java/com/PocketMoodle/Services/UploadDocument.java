@@ -40,6 +40,8 @@ public class UploadDocument {
         Map<String, String> fileMetadata = new HashMap<>();
         fileMetadata.put("title", documentTitle);
 
+        objectMetadata.setUserMetadata(fileMetadata);
+
         // Create transfer utility (performs actual upload asynchronously)
         final TransferUtility transferUtility = new TransferUtility(_s3, _context);
 
