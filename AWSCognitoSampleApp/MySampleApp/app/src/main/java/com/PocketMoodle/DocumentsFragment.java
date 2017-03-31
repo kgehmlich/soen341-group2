@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.PocketMoodle.Services.UploadDocument;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.AmazonWebServiceRequest;
@@ -197,7 +198,10 @@ public class DocumentsFragment extends Fragment {
                     backButton.setEnabled(false);
 
                     // TODO: confirm that chosen file is correct
-                    // TODO: get class name then call UploadDocument.upload()
+                    // TODO: get class name and document title to pass to UploadDocument.upload()
+
+                    UploadDocument ud = new UploadDocument(getContext());
+                    ud.upload(selected, "TEMP_TITLE", "TEMP_DIR");
                 }
 
             }});
