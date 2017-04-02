@@ -20,7 +20,10 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.*;
 
@@ -36,8 +39,24 @@ public class GetAllClassTest {
    public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
 
+
+
     @Test
     public void getListOfClass() throws Exception {
+
+        //Signing in as the fake user
+        ViewInteraction editText = onView(
+                allOf(withId(R.id.signIn_editText_email), isDisplayed()));
+        editText.perform(replaceText("reallyfakeuser"), closeSoftKeyboard());
+
+        ViewInteraction editText2 = onView(
+                allOf(withId(R.id.signIn_editText_password), isDisplayed()));
+        editText2.perform(replaceText("reallyfakeuser"), closeSoftKeyboard());
+
+        ViewInteraction imageButton = onView(
+                allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
+        imageButton.perform(click());
+
         //Create and populate actual list of classes
     List<String> expected = new ArrayList<String>();
         expected.add("COEN 341");
@@ -54,15 +73,13 @@ public class GetAllClassTest {
         List<String> output = new ArrayList<String>();
         output = listOfClass.GetListOfClass();
 
+        //Assertion (verifies the condition)
         assertEquals(expected,output);
 
     }
 
     @Test
     public void getAllClassRegisteredIn() throws Exception {
-        //the condition to be asserted
-        boolean testStatus = true;
-
         //Signing in as the fake user
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
@@ -75,6 +92,10 @@ public class GetAllClassTest {
         ViewInteraction imageButton = onView(
                 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
+
+        //the condition to be asserted
+        boolean testStatus = true;
+
 
         //Create and populate list of classes that the fake user will always be registered in
         List<String> expected = new ArrayList<String>();
@@ -99,6 +120,23 @@ public class GetAllClassTest {
             }
         }
         assertTrue(testStatus);
+
+        //Signing out
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open"),
+                        withParent(withId(R.id.nav_action)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction appCompatCheckedTextView = onView(
+                allOf(withId(R.id.design_menu_item_text), withText("Sign Out"), isDisplayed()));
+        appCompatCheckedTextView.perform(click());
     }
 
     //This method will not be tested because the expected list will have to constantly change
