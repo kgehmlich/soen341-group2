@@ -26,11 +26,19 @@
     <string name="discussion_board">Discussion Board</string>
     <string name="open_discussion_board">Open Discussion Board</string>
     <string name="announcement">Announcement</string>
+    <string name="grades">Grades</string>
+    <string name="add_grades">Add Grade</string>
+    <string name="add_button_grades">+</string>
+    <string name="remove_button_grades">-</string>
+
+
     <string name="add_announcement">Add Announcement</string>
     <string name="okay">Okay</string>
     <string name="cancel">Cancel</string>
     <string name="enter_title">Enter Title</string>
     <string name="enter_description">Enter Description</string>
+    <string name="ok">Okay</string>
+
 
     <!-- REQUIRED FOR GENERAL APP FUNCTIONALITY - YOU MAY WANT TO KEEP THESE -->
 
