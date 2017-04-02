@@ -43,6 +43,7 @@ public class ClassPageFragment extends Fragment {
     // ****************************************************************************************
 
     Button openUploadDutton;
+    Button openViewDocsDutton;
 
     // ****************************************************************************************
     // Discussion Group Variables
@@ -86,7 +87,7 @@ public class ClassPageFragment extends Fragment {
         classTitle.setText(className);
 
         // ****************************************************************************************
-        // Beginning of Document Code
+        // Beginning of Upload Document Code
         // ****************************************************************************************
 
         // Button to display file explorer beginning at root
@@ -117,7 +118,43 @@ public class ClassPageFragment extends Fragment {
                 }
             }
         });
-        // Ending of Document code
+        // Ending of Upload Document code
+
+
+        // ****************************************************************************************
+        // Beginning of View Documents Code
+        // ****************************************************************************************
+
+        // Button to display file explorer beginning at root
+        openViewDocsDutton = (Button)view.findViewById(R.id.openViewDocuments);
+        openViewDocsDutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+                    // Fragment that will display the messages in the group
+                    ViewDocumentsFragment viewDocumentsFragment = new ViewDocumentsFragment();
+
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", TAOrStudent);
+                    viewDocumentsFragment.setArguments(bundle);
+
+                    // Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, viewDocumentsFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                } catch (Exception ex) {
+                    // In case the open fails display error message in log
+                    Log.d(TAG, "Error accessing View Documents");
+                }
+            }
+        });
+        // Ending of View Documents code
+
 
         // ****************************************************************************************
         // Beginning of Discussion Board Code
