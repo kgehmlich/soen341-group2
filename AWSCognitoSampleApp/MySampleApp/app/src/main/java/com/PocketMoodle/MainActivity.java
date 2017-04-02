@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button   signOutButton;
 
-
     // for navigation bar
     private DrawerLayout drawerLayout;
 
@@ -82,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Uri imageUri;
     private ImageButton imgButton;
     private RadioButton btn;
-
-    private AlertDialog.Builder alert;
 
 
     /**
@@ -218,16 +215,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          });
 
         /** Setting a button click listener for the choose button */
-
          btn = (RadioButton) findViewById(R.id.radioButton);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
+        btn.setOnClickListener(this);
 
     }
 
@@ -286,7 +275,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+        if(view == btn){
 
+
+            AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
+            alert.setTitle("No Internet access");
+            alert.setMessage("You can't reach the discussion from the Offline mode");
+            alert.setButton("OK", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+            alert.show();
+
+        }
 
         // ... add any other button handling code here ...
 
