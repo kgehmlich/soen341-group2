@@ -224,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
          });
 
+        //load picture from internal memory
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         loadImageFromStorage(directory.getAbsolutePath());
@@ -253,6 +254,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
+    //************
+    //Save picture to internal memory
+    //************
     private String saveToInternalStorage(Bitmap bitmapImage){
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
@@ -276,8 +281,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return directory.getAbsolutePath();
     }
+    //************
+    //end of save picture to internal memory
+    //************
 
 
+    //************
+    //Load picture from internal memory
+    //************
     private void loadImageFromStorage(String path)
     {
 
@@ -293,6 +304,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+    //end of load picture from internal memory
+
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
