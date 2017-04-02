@@ -43,6 +43,11 @@ public class GetAllClassTest {
 
     @Test
     public void getListOfClass() throws Exception {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         //Signing in as the fake user
         ViewInteraction editText = onView(
@@ -80,7 +85,9 @@ public class GetAllClassTest {
 
     @Test
     public void getAllClassRegisteredIn() throws Exception {
-        //Signing in as the fake user
+
+
+      /*  //Signing in as the fake user
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText.perform(replaceText("reallyfakeuser"), closeSoftKeyboard());
@@ -91,7 +98,7 @@ public class GetAllClassTest {
 
         ViewInteraction imageButton = onView(
                 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
-        imageButton.perform(click());
+        imageButton.perform(click());*/
 
         //the condition to be asserted
         boolean testStatus = true;
@@ -122,13 +129,9 @@ public class GetAllClassTest {
         assertTrue(testStatus);
 
         //Signing out
-        try {
-            Thread.sleep(15000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        ViewInteraction appCompatImageButton = onView(
+
+       /* ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
                         isDisplayed()));
@@ -136,7 +139,7 @@ public class GetAllClassTest {
 
         ViewInteraction appCompatCheckedTextView = onView(
                 allOf(withId(R.id.design_menu_item_text), withText("Sign Out"), isDisplayed()));
-        appCompatCheckedTextView.perform(click());
+        appCompatCheckedTextView.perform(click());*/
     }
 
     //This method will not be tested because the expected list will have to constantly change
