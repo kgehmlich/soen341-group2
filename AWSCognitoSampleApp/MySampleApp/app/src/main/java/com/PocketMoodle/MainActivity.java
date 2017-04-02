@@ -8,11 +8,14 @@
 //
 package com.PocketMoodle;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -44,7 +47,10 @@ import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -84,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int IMAGE_UPLOAD_REQUEST=42;
     Uri imageUri;
     private ImageButton imgButton;
+    String path;
 
 
     /**
@@ -214,15 +221,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setType("image/*");
 
                 startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
-
-
                             }
          });
 
-
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        loadImageFromStorage(directory.getAbsolutePath());
 
     }
-
 
 
 
@@ -245,8 +251,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
 
 
+    private void loadImageFromStorage(String path)
+    {
+
+        try {
+            File f=new File(path, "profile.jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            ImageButton img=(ImageButton)findViewById(R.id.imageButton1);
+            img.setImageBitmap(b);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
 
     }
 
@@ -309,17 +353,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Get the image file location
                             bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
 
-                            //saves picture into sd card
-                            MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "Profile" , "");
-
-
-
-
 
                             // Make the image into a circle
                             RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
                             roundedBitmapDrawable.setCircular(true);
                             imgButton.setImageDrawable(roundedBitmapDrawable);
+
+                            //save to internal storage
+                            saveToInternalStorage(bmp);
 
 
                         }
