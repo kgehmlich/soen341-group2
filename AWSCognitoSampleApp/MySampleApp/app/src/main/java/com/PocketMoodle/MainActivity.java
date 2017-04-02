@@ -9,6 +9,7 @@
 package com.PocketMoodle;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +41,11 @@ import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.IdentityManager;
 import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /** Class name for log messages. */
@@ -74,9 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView imageView;
     Button button;
+    private Bitmap bmp;
     private static final int IMAGE_UPLOAD_REQUEST=42;
     Uri imageUri;
     private ImageButton imgButton;
+
 
     /**
      * Initializes the Toolbar for use with the activity.
@@ -206,8 +214,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent.setType("image/*");
 
                 startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
+
+
                             }
          });
+
+
 
     }
 
@@ -231,6 +243,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             return;
         }
+
+
+
+
 
     }
 
@@ -291,7 +307,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             // Get the image file location
-                            Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
+                            bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
+
+                            //saves picture into sd card
+                            MediaStore.Images.Media.insertImage(getContentResolver(), bmp, "Profile" , "");
+
+
+
+
 
                             // Make the image into a circle
                             RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
@@ -301,6 +324,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }
             }
+
+
 
 
     public void setActionBarTitle(String title) {
