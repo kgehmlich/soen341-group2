@@ -203,6 +203,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // *****************
+        // Profile picture code
+        // ******************
         imgButton = (ImageButton) navigationHeaderView.findViewById(R.id.imageButton1);
                 imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,7 +216,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
                             }
          });
-        
+         //****end of Profile Picture code
+
 
     }
 
@@ -286,6 +290,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
+
+                    // *****************
+                    // retrieve image from android gallery
+                    // ******************
                      if(resultCode == RESULT_CANCELED) return;
 
                         if (requestCode == IMAGE_UPLOAD_REQUEST) {
@@ -307,6 +315,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                         }
+                        //end of retrieving gallery code
             }
 
 
