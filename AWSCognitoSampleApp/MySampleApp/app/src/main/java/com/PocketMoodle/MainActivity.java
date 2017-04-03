@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView imageView;
     Button button;
-    private Bitmap bmp;
+
     private static final int IMAGE_UPLOAD_REQUEST=42;
     Uri imageUri;
     private ImageButton imgButton;
@@ -219,17 +220,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-
                 startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
-                            }
+
+            }
          });
 
-        //load picture from internal memory
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        loadImageFromStorage(directory.getAbsolutePath());
+
+        if(fileExistance("profile.jpg")) {
+            ContextWrapper cw = new ContextWrapper(getApplicationContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            loadImageFromStorage(directory.getAbsolutePath());
+        }
 
     }
+
+
 
 
 
@@ -279,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+
         return directory.getAbsolutePath();
     }
     //************
@@ -364,18 +371,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             // Get the image file location
-                            bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
+                            Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
+
+                            //save to internal storage
+                            saveToInternalStorage(bmp);
+
+
 
 
                             // Make the image into a circle
                             RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
                             roundedBitmapDrawable.setCircular(true);
                             imgButton.setImageDrawable(roundedBitmapDrawable);
-
-                            //save to internal storage
-                            saveToInternalStorage(bmp);
-
-
                         }
             }
 
@@ -393,6 +400,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+    }
+
+    public boolean fileExistance(String fname){
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
     }
 
 }
