@@ -51,7 +51,7 @@ public class ViewDocumentsFragment extends Fragment {
             // Get list of documents for this class
             // ****************************************
             DocumentServices documentServices = new DocumentServices(getContext());
-            classDocumentList = documentServices.listDcoumentsForClass(className);
+            classDocumentList = documentServices.listDocumentsForClass(className);
 
             return null;
         }

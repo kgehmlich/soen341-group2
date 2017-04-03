@@ -64,7 +64,7 @@ public class DocumentServices {
     }
 
 
-    public ArrayList<String> listDcoumentsForClass(String className) {
+    public ArrayList<String> listDocumentsForClass(String className) {
         ListObjectsRequest lor = new ListObjectsRequest().withBucketName(BUCKET_NAME).withPrefix(className+DELIMITER).withDelimiter(DELIMITER);
         ObjectListing objList = _s3.listObjects(lor);
 
