@@ -14,30 +14,78 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.UpdateItemRequest;
 import com.amazonaws.services.dynamodbv2.model.UpdateItemResult;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.*;
 
 public class GradesServices {
 
-    private final static String TAG = "From GetAllClass: ";
+    private final static String TAG = "From GradeService ";
     static AmazonDynamoDB client = AWSMobileClient.defaultMobileClient().getDynamoDBClient();
     final String ACTUAL_USER_ID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
     private final static String TABLE_NAME = "soengroup-mobilehub-1153046571-AllGrades";
-
+    List<Grade> allGradeInOneClassForOneUser;
     /**
-     * Insert a new Grade in AllGrade Table
-     * @param userID
-     * @param className
-     * @param gradeVal must be a double
+     * Grade abs data type for grade...
      */
-    public void InsertGrade(String userID, String className, double gradeVal){
+    public class Grade{
+        private String gradeID;
+        private String className;
+        private String titleForGrade;
+        private String userId;
+        private String userName;
+        private double gradeForUser;
+        public Grade(String gradeid, String classname, String title, String userid, String username, double gradeforuser){
+            this.gradeID = gradeid;
+            this.className = classname;
+            this.titleForGrade = title;
+            this.userId = userid;
+            this.userName = username;
+            this.gradeForUser = gradeforuser;
+        }
+        public String getGradeID(){return this.gradeID;}
+        public String getClassName(){return this.className;}
+        public String getTitleForGrade(){return this.titleForGrade;}
+        public String getUserId(){return this.userId;}
+        public String getUserName(){return this.userName;}
+        public double getGradeForUser(){return this.gradeForUser;}
+    }
+    /**
+     * Create an ID for each Grade
+     */
+    public final class GradesIdentifierGenerator {
+        private SecureRandom random = new SecureRandom();
+
+        /**
+         * Creating a  random Grade ID
+         *
+         * @return IDß
+         */
+        public String nextAnnouncementId() {
+            return new BigInteger(130, random).toString(32);
+        }
+    }
+
+    /***
+     * Insert a Grade for a user in a class...
+     * @param username
+     * @param userid
+     * @param className
+     * @param titleforgrade
+     * @param gradeVal
+     */
+    public void InsertGrade(String username, String userid, String className, String titleforgrade,  double gradeVal){
         // Fetch the default configured DynamoDB ObjectMapper
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
-        final AllGradesDO grade = new AllGradesDO(); // Initialize the Notes Object
-        final String USER_ID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
-        final String USERNAME = AWSMobileClient.defaultMobileClient().getIdentityManager().getUserName().toString();
+        final AllGradesDO grade = new AllGradesDO();
+        GradesIdentifierGenerator gradesIdentifierGenerator = new GradesIdentifierGenerator();
+        final String gradeID = gradesIdentifierGenerator.nextAnnouncementId();
 
-        grade.setUserId(userID);
+        grade.setUserID(userid);
+        grade.setGradeID(gradeID);
+        grade.setUsername(username);
         grade.setClassName(className);
+        grade.setTitle(titleforgrade);
         grade.setGrade(gradeVal);
 
         AmazonClientException lastException = null;
@@ -51,48 +99,53 @@ public class GradesServices {
     }
 
     /**
-     * Get the Grade for one user in one Class...
+     * Get all Grades for one user in one Class...
      * @param className
      * @param userID
      * @return (double) Grade of the userID
      */
-    public double GetGradeInClass(String className, String userID){
-        double gradeOfUser = 0;
+    public List<Grade> GetAllGradesInClassForOneUser(String className, String userID){
+        allGradeInOneClassForOneUser = new ArrayList<>();
         DynamoDBMapper mapper = new DynamoDBMapper(client);
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
         eav.put(":us", new AttributeValue().withS(userID));
         eav.put(":cl", new AttributeValue().withS(className));
 
         DynamoDBScanExpression scan = new DynamoDBScanExpression()
-                .withFilterExpression("userId = :us AND ClassName = :cl")
+                .withFilterExpression("UserID = :us AND ClassName = :cl")
                 .withExpressionAttributeValues(eav);
 
 
         try{
-            List<AllGradesDO> uniqueGrade = mapper.scan(AllGradesDO.class, scan);
-            if(!uniqueGrade.isEmpty() && uniqueGrade.size() == 1){
-                gradeOfUser = uniqueGrade.get(0).getGrade();
+            List<AllGradesDO> allGradeForOneUser = mapper.scan(AllGradesDO.class, scan);
+            if(!allGradeForOneUser.isEmpty() && allGradeForOneUser.size() != 0){
+                for(AllGradesDO grade: allGradeForOneUser){
+                    Grade aGrade = new Grade(grade.getGradeID(), grade.getClassName(), grade.getTitle(), grade.getUserID(), grade.getUsername(), grade.getGrade());
+                    allGradeInOneClassForOneUser.add(aGrade);
+
+
+                }
             }
         }
         catch (Exception exTA){
             Log.e(TAG, exTA.getMessage());
         }
 
-        return gradeOfUser;
+        return allGradeInOneClassForOneUser;
     }
 
-    /**
-     *
-     * @param userID
+    /***
+     * Update grade for one user with gradeID, className and the new grade...
+     * @param gradeid
      * @param className
      * @param newGrade
-     * @return status if the update was a sucess or not...
+     * @return
      */
-    public String UpdateAGrade(String userID, String className, double newGrade){
+    public String UpdateAGradeForUser(String gradeid, String className, double newGrade){
         String status = "";
         DynamoDBMapper mapper = new DynamoDBMapper(client);
         Map<String, AttributeValue> keySelect = new HashMap<String, AttributeValue>();
-        keySelect.put("userId", new AttributeValue().withS(userID));
+        keySelect.put("gradeID", new AttributeValue().withS(gradeid));
         keySelect.put("ClassName", new AttributeValue().withS(className));
 
         Map<String, AttributeValue> eav2 = new HashMap<String, AttributeValue>();
@@ -114,5 +167,24 @@ public class GradesServices {
         return status;
     }
 
+    /***
+     * Delete a grade for one user, with GradeID and classname
+     * @param gradeid
+     * @param classname
+     */
+    public void DeleteOneGradeForAUser(String gradeid, String classname){
+        final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
+        final AllGradesDO gradeDo = new AllGradesDO();
+        final String gradeID = gradeid;
+        gradeDo.setGradeID(gradeID);
+        gradeDo.setClassName(classname);
+        try{
+            DYNAMO_DB_MAPPER.delete(gradeDo);
+
+        }catch (Exception ex){
+            Log.e(TAG, ex.getMessage());
+        }
+
+    }
 
 }
