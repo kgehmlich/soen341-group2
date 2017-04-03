@@ -521,6 +521,7 @@ public class ClassPageFragment extends Fragment {
         announcementListAdapter.notifyDataSetChanged(); // update the adapter of the spinner and listView
     }
 
+    /*
     // Helper method that retrieves and updates our list with all the grades in the database
     private void updateGradesList()
     {
@@ -551,6 +552,6 @@ public class ClassPageFragment extends Fragment {
         listOfGradesFromDatabase.addAll(setOfGrades);
 
         GradesListAdapter.notifyDataSetChanged(); // update the adapter of the spinner and listView
-    }
+    }*/
 
 }
