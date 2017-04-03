@@ -126,6 +126,8 @@ allOf(withId(android.R.id.button1), withText("Add")));
         
         ViewInteraction appCompatTextView2 = onView(
 allOf(withId(android.R.id.text1), withText("DiscTest"),
+
+
 isDisplayed()));
         appCompatTextView2.perform(click());
         
