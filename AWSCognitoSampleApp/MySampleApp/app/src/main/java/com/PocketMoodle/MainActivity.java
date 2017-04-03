@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Uri imageUri;
     private ImageButton imgButton;
     String path;
+    public final static String APP_PATH_SD_CARD = "/DesiredSubfolderName/";
+    public final static String APP_THUMBNAIL_PATH_SD_CARD = "thumbnails";
+
 
 
     /**
@@ -225,13 +228,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
          });
 
-
-        if(fileExistance("profile.jpg")) {
-            ContextWrapper cw = new ContextWrapper(getApplicationContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-            loadImageFromStorage(directory.getAbsolutePath());
-        }
+        //******** load pic from internal memory
+        if(fileExistance("desiredFilename.png"))
+        imgButton.setImageBitmap(getThumbnail("desiredFilename.png"));
+        //*********
 
     }
 
@@ -264,29 +264,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //************
     //Save picture to internal memory
     //************
-    private String saveToInternalStorage(Bitmap bitmapImage){
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath=new File(directory,"profile.jpg");
+    public boolean saveImageToInternalStorage(Bitmap image) {
 
-        FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // Use the compress method on the Bitmap object to write image to
+        // the OutputStream
+            FileOutputStream fos = openFileOutput("desiredFilename.png", Context.MODE_PRIVATE);
 
-        return directory.getAbsolutePath();
+        // Writing the bitmap to the output stream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+            Log.e("saveToInternalStorage()", e.getMessage());
+            return false;
+        }
     }
     //************
     //end of save picture to internal memory
@@ -296,23 +289,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //************
     //Load picture from internal memory
     //************
-    private void loadImageFromStorage(String path)
-    {
+    public boolean isSdReadable() {
 
-        try {
-            File f=new File(path, "profile.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            ImageButton img=(ImageButton)findViewById(R.id.imageButton1);
-            img.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
+        boolean mExternalStorageAvailable = false;
+        String state = Environment.getExternalStorageState();
+
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+        // We can read and write the media
+            mExternalStorageAvailable = true;
+            Log.i("isSdReadable", "External storage card is readable.");
+        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+        // We can only read the media
+            Log.i("isSdReadable", "External storage card is readable.");
+            mExternalStorageAvailable = true;
+        } else {
+        // all we need to know is we can neither read nor write
+            mExternalStorageAvailable = false;
         }
 
+        return mExternalStorageAvailable;
     }
-    //end of load picture from internal memory
 
+    public Bitmap getThumbnail(String filename) {
+
+        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + APP_PATH_SD_CARD + APP_THUMBNAIL_PATH_SD_CARD;
+        Bitmap thumbnail = null;
+
+
+        // If no file on external storage, look in internal storage
+        if (thumbnail == null) {
+            try {
+                File filePath = getFileStreamPath(filename);
+                FileInputStream fi = new FileInputStream(filePath);
+                thumbnail = BitmapFactory.decodeStream(fi);
+            } catch (Exception ex) {
+                Log.e("getThumbnail() on internal storage", ex.getMessage());
+            }
+        }
+        return thumbnail;
+    }
+    //******
+    // end of load picture from internal memory
+    //******
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -373,8 +391,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Get the image file location
                             Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
 
+
                             //save to internal storage
-                            saveToInternalStorage(bmp);
+                            saveImageToInternalStorage(bmp);
 
 
 
@@ -402,9 +421,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    //******
+    //check if the picture exists in the internal memory before trying to load the picture to prevent crash
+    //******
     public boolean fileExistance(String fname){
         File file = getBaseContext().getFileStreamPath(fname);
         return file.exists();
     }
+    //end of file existance code
 
 }
