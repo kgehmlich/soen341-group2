@@ -3,16 +3,19 @@ package com.PocketMoodle;
 
 import android.app.AlertDialog;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -30,7 +33,8 @@ import android.widget.Toast;
 public class AddClassFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     Spinner addClassSpinner;
-    View view;
+    private String password = "moodle";
+    private String input1 = "";
     public static List<String> s = new ArrayList<String>();
     public static List<String> userClassList = new ArrayList<String>();
     private static final String TAG = "MyActivity";
@@ -81,6 +85,44 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
         final RadioButton TA = (RadioButton) v.findViewById(R.id.radioButton);
         final RadioButton STU = (RadioButton) v.findViewById(R.id.radioButton2);
 
+        //**********************
+        //Prompt password for TA
+        //**********************
+        TA.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Please enter password for TA authorization");
+            // Set up the input
+                final EditText input = new EditText(getActivity());
+            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                builder.setView(input);
+
+            // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        input1 = input.getText().toString();
+                    //cancel if incorrect password
+                        if(input1.equals(password))
+                            TA.setChecked(true);
+                        else
+                            TA.setChecked(false);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
+        //**********************
+        //end of password prompt
+        //**********************
+
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,18 +145,6 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                 if(TA.isChecked() ^ STU.isChecked() ){
                     if(TA.isChecked()) {
                         TAorSTU = "1.0";
-
-                       TA.setOnClickListener(new View.OnClickListener() {
-                            public void onClick(View view) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                builder.setTitle("Message")
-                                        .setMessage("hello")
-                                        .setNeutralButton("OK", null);
-
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-                            }
-                        });
                     }
                     else {
                         TAorSTU = "2.0";
