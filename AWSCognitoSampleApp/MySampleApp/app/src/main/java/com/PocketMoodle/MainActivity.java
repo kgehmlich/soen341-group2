@@ -213,10 +213,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
                             }
          });
-
-        /** Setting a button click listener for the choose button */
-         btn = (RadioButton) findViewById(R.id.radioButton);
-        btn.setOnClickListener(this);
+        
 
     }
 
@@ -275,22 +272,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        if(view == btn){
-
-
-            AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
-            alert.setTitle("No Internet access");
-            alert.setMessage("You can't reach the discussion from the Offline mode");
-            alert.setButton("OK", new DialogInterface.OnClickListener() {
-
-                public void onClick(DialogInterface dialog, int which) {
-                    // TODO Auto-generated method stub
-
-                }
-            });
-            alert.show();
-
-        }
 
         // ... add any other button handling code here ...
 
