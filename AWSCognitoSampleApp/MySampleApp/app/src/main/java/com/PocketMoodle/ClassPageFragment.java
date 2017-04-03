@@ -129,13 +129,21 @@ public class ClassPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
+
                     // Fragment that will display the Grades, depending if you are a TA or student
-                    GradesFragment tempFragment = new GradesFragment();
+                    Fragment tempFragment;
+
+                    if(TAOrStudent == "Student"){
+                        tempFragment = new StudentGradeFragment();
+                    }
+
+                    else{
+                        tempFragment = new TAGradeFragment();
+                    }
 
                     // Bundle to add arguments the fragment will need to function(like what a constructor does)
                     Bundle bundle = new Bundle();
                     bundle.putString("className", className);
-                    bundle.putString("TAOrStudent", TAOrStudent);
                     tempFragment.setArguments(bundle);
 
                     // Start the new fragment and replace the current fragment with the new one
