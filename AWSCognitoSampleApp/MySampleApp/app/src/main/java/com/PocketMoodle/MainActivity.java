@@ -8,12 +8,17 @@
 //
 package com.PocketMoodle;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
@@ -25,6 +30,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +45,14 @@ import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.IdentityManager;
 import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /** Class name for log messages. */
@@ -74,9 +87,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView imageView;
     Button button;
+
     private static final int IMAGE_UPLOAD_REQUEST=42;
     Uri imageUri;
     private ImageButton imgButton;
+    String path;
+
 
     /**
      * Initializes the Toolbar for use with the activity.
@@ -207,13 +223,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-
                 startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
-                            }
+
+            }
          });
         //end of Profile Picture code
 
+
+        if(fileExistance("profile.jpg")) {
+            ContextWrapper cw = new ContextWrapper(getApplicationContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            loadImageFromStorage(directory.getAbsolutePath());
+        }
+
     }
+
 
 
 
@@ -236,7 +261,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+
     }
+
+
+    //************
+    //Save picture to internal memory
+    //************
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,"profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return directory.getAbsolutePath();
+    }
+    //************
+    //end of save picture to internal memory
+    //************
+
+
+    //************
+    //Load picture from internal memory
+    //************
+    private void loadImageFromStorage(String path)
+    {
+
+        try {
+            File f=new File(path, "profile.jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            ImageButton img=(ImageButton)findViewById(R.id.imageButton1);
+            img.setImageBitmap(b);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+    //end of load picture from internal memory
+
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -301,15 +381,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Get the image file location
                             Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
 
+                            //save to internal storage
+                            saveToInternalStorage(bmp);
+
+
+
+
                             // Make the image into a circle
                             RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
                             roundedBitmapDrawable.setCircular(true);
                             imgButton.setImageDrawable(roundedBitmapDrawable);
-
-
                         }
                         //end of retrieving gallery code
             }
+
+
 
 
     public void setActionBarTitle(String title) {
@@ -323,6 +409,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+    }
+
+    public boolean fileExistance(String fname){
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
     }
 
 }
