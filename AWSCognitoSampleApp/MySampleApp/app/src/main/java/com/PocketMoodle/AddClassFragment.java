@@ -30,6 +30,7 @@ import android.widget.Toast;
 public class AddClassFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
     Spinner addClassSpinner;
+    View view;
     public static List<String> s = new ArrayList<String>();
     public static List<String> userClassList = new ArrayList<String>();
     private static final String TAG = "MyActivity";
@@ -56,8 +57,6 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
 
         ArrayList<String> option = new ArrayList<String>();
 
@@ -104,6 +103,18 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                 if(TA.isChecked() ^ STU.isChecked() ){
                     if(TA.isChecked()) {
                         TAorSTU = "1.0";
+
+                       TA.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View view) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("Message")
+                                        .setMessage("hello")
+                                        .setNeutralButton("OK", null);
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+                        });
                     }
                     else {
                         TAorSTU = "2.0";
