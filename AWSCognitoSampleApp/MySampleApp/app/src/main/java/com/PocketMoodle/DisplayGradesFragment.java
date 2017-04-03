@@ -11,7 +11,7 @@ package com.PocketMoodle;
         import android.view.ViewGroup;
         import android.widget.TextView;
 
-public class DisplayGradesFragment extends Fragment {
+/*public class DisplayGradesFragment extends Fragment {
 
     private TextView setGrade;       // Hold the location of the grade in the xml
 
@@ -39,4 +39,4 @@ public class DisplayGradesFragment extends Fragment {
 
         return view;
     }
-}
+}*/
