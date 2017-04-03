@@ -59,9 +59,9 @@ public class GradesServices {
         /**
          * Creating a  random Grade ID
          *
-         * @return IDß
+         * @return Random Grade ID
          */
-        public String nextAnnouncementId() {
+        public String nextGradeId() {
             return new BigInteger(130, random).toString(32);
         }
     }
@@ -79,7 +79,7 @@ public class GradesServices {
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final AllGradesDO grade = new AllGradesDO();
         GradesIdentifierGenerator gradesIdentifierGenerator = new GradesIdentifierGenerator();
-        final String gradeID = gradesIdentifierGenerator.nextAnnouncementId();
+        final String gradeID = gradesIdentifierGenerator.nextGradeId();
 
         grade.setUserID(userid);
         grade.setGradeID(gradeID);
