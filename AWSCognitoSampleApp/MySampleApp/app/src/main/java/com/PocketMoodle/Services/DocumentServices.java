@@ -71,7 +71,9 @@ public class DocumentServices {
         ArrayList<String> documents = new ArrayList<>();
 
         for (S3ObjectSummary obj : objList.getObjectSummaries()) {
-            documents.add(obj.getKey());
+            String key = obj.getKey();
+            key = key.substring(key.indexOf(DELIMITER)+1);
+            documents.add(key);
         }
 
         return documents;
