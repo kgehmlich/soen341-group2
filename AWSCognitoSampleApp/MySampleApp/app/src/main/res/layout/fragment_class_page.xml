@@ -30,13 +30,23 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/headerSection"
+        android:gravity="center_horizontal"
         android:layout_margin="10dp">
+
+        <Button
+            android:id="@+id/openViewDocuments"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentTop="true"
+            android:text="View Documents"/>
 
         <Button
             android:id="@+id/openUploadDocument"
             android:layout_width="200dp"
             android:layout_height="35dp"
             android:layout_margin="5dp"
+            android:layout_below="@id/openViewDocuments"
             android:text="@string/upload_document"/>
 
     </RelativeLayout>
@@ -48,6 +58,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/documentSection"
+        android:gravity="center_horizontal"
         android:layout_margin="10dp">
 
         <Button

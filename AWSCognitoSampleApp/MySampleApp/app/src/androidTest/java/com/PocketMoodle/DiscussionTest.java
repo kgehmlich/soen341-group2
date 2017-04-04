@@ -126,9 +126,8 @@ allOf(withId(android.R.id.button1), withText("Add")));
         
         ViewInteraction appCompatTextView2 = onView(
 allOf(withId(android.R.id.text1), withText("DiscTest"),
-childAtPosition(
-withId(R.id.discussion_group_list),
-0),
+
+
 isDisplayed()));
         appCompatTextView2.perform(click());
         

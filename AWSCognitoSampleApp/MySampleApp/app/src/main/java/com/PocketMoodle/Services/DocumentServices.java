@@ -1,80 +1,112 @@
 package com.PocketMoodle.Services;
 
-/**
- * Created by Winterhart on 2017-03-04.
- */
-import android.os.Bundle;
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.amazonaws.mobile.content.ContentItem;
-import com.amazonaws.mobile.content.ContentProgressListener;
-import com.amazonaws.mobile.content.UserFileManager;
-import com.amazonaws.regions.Regions;
+import com.amazonaws.mobile.AWSMobileClient;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 
-import  java.io.*;
+import java.io.File;
+import java.util.ArrayList;
+
 /**
- * This class will be used to store services on document manipulations with AWS S3 bucket
+ * Created by Kyle on 2017-03-19.
+ *
  */
+
 public class DocumentServices {
-    private UserFileManager UFileMana;
-    private boolean status = false;
-    protected String error = "";
-    /** The s3 bucket. */
-    private String bucket;
 
-    /** The S3 bucket region. */
-    private Regions region;
+    private AmazonS3 _s3;
+    private final static String BUCKET_NAME = "soengroup-userfiles-mobilehub-1153046571";
+    private final static String DELIMITER = "/";
 
-    /** The s3 Prefix at which the UserFileManager is rooted. */
-    private String prefix;
-    private final static String TAG = "FROM/SERVICE_DOC-Upload";
-    public static final String S3_PREFIX_PUBLIC = "public/";
-    public static final String S3_PREFIX_PRIVATE = "private/";
-    public static final String S3_PREFIX_PROTECTED = "protected/";
-    public static final String S3_PREFIX_UPLOADS = "uploads/";
+    private Context _context;
 
-    /** Bundle key for retrieving the name of the S3 Bucket. */
-    public static final String BUNDLE_ARGS_S3_BUCKET = "bucket";
-
-    /** Bundle key for retrieving the s3 prefix at which to root the content manager. */
-    public static final String BUNDLE_ARGS_S3_PREFIX = "prefix";
-
-    /** Bundle key for retrieving the name of the S3 Bucket region. */
-    public static final String BUNDLE_ARGS_S3_REGION = "region";
-
-    /** Permission Request Code (Must be < 256). */
-    private static final int EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 93;
-
-    public DocumentServices(){
-
+    public DocumentServices(Context context){
+        _context = context;
+        _s3 = new AmazonS3Client(AWSMobileClient.defaultMobileClient().getIdentityManager().getCredentialsProvider());
     }
+
+
+    public void upload(File file, String documentName, String className) {
+        // TODO: throw exception if documentName or className is empty
+
+        // Build metadata
+        //ObjectMetadata objectMetadata = new ObjectMetadata();
+        //Map<String, String> fileMetadata = new HashMap<>();
+        //fileMetadata.put("title", documentName);
+
+        //objectMetadata.setUserMetadata(fileMetadata);
+
+        // Create transfer utility (performs actual upload asynchronously)
+        final TransferUtility transferUtility = new TransferUtility(_s3, _context);
+
+
+        //String fileExtension = file.getName().substring(file.getName().lastIndexOf("."));
+
+        // Upload selected file to Amazon S3 bucket
+        TransferObserver transferObserver = transferUtility.upload(
+                BUCKET_NAME,
+                className+DELIMITER+documentName,
+                file
+        );
+
+        transferObserver.setTransferListener(new UploadListener());
+    }
+
+
+    public ArrayList<String> listDocumentsForClass(String className) {
+        ListObjectsRequest lor = new ListObjectsRequest().withBucketName(BUCKET_NAME).withPrefix(className+DELIMITER).withDelimiter(DELIMITER);
+        ObjectListing objList = _s3.listObjects(lor);
+
+        ArrayList<String> documents = new ArrayList<>();
+
+        for (S3ObjectSummary obj : objList.getObjectSummaries()) {
+            documents.add(obj.getKey());
+        }
+
+        return documents;
+    }
+
+
     /**
-     * Can upload document using this method...to continue
-     * @param PathToFile : pass the path to the file in String format
-     * @return
+     * Listener for file uploads
+     * Logs progress and state changes. Shows a Toast when upload is complete.
      */
-    public boolean UploadAFile(String PathToFile){
-            final File file = new File(PathToFile);
-            UFileMana.uploadContent(file, PathToFile, new ContentProgressListener() {
+    private class UploadListener implements TransferListener {
 
-            @Override
-            public void onSuccess(ContentItem contentItem) {
-                status = true;
+        private final static String TAG = "S3";
+
+        // Simply updates the UI list when notified.
+        @Override
+        public void onError(int id, Exception e) {
+            Log.e(TAG, "Error during upload: " + id, e);
+        }
+
+        @Override
+        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+            Log.d(TAG, String.format("onProgressChanged: %d, total: %d, current: %d",
+                    id, bytesTotal, bytesCurrent));
+        }
+
+        @Override
+        public void onStateChanged(int id, TransferState newState) {
+            Log.d(TAG, "onStateChanged: " + id + ", " + newState);
+
+            if (newState == TransferState.COMPLETED) {
+                Toast.makeText(_context, "Upload complete", Toast.LENGTH_LONG).show();
             }
-
-            @Override
-            public void onProgressUpdate(String filePath, boolean isWaiting, long bytesCurrent, long bytesTotal) {
-
-            }
-
-            @Override
-            public void onError(String filePath, Exception ex) {
-                status = false;
-                error = ex.getMessage();
-
-            }
-        });
-        Log.e(TAG, error);
-        return status;
+        }
     }
+
+
 }
