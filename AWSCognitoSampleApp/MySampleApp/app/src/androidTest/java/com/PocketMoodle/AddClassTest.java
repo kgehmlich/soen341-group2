@@ -35,17 +35,20 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class AddClassTest {
 
+    //Start at sign in activity (skip the splash activity)
     @Rule
     public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
     @Test
     public void addClassTest(){
+        //Add some wait time. Precaution for travis
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Signing in
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText.perform(replaceText("mewtrandell"), closeSoftKeyboard());
@@ -58,22 +61,26 @@ public class AddClassTest {
                 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
 
+        //Some more wait time so that the message that appears after sign in disappears
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Open the navigation bar
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
+        //Click on "Add Class" (to get to the add class fragment)
         ViewInteraction appCompatCheckedTextView = onView(
                 allOf(withId(R.id.design_menu_item_text), withText("Add Class"), isDisplayed()));
         appCompatCheckedTextView.perform(click());
 
+        //Add the default class (COEN 341) as a TA
         ViewInteraction appCompatRadioButton = onView(
                 allOf(withId(R.id.radioButton), withText("I am a TA"), isDisplayed()));
         appCompatRadioButton.perform(click());
@@ -82,6 +89,7 @@ public class AddClassTest {
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
 
+        //Go back to the home page
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
@@ -92,11 +100,9 @@ public class AddClassTest {
                 allOf(withId(R.id.design_menu_item_text), withText("Home Page"), isDisplayed()));
         appCompatCheckedTextView2.perform(click());
 
+        //Check that the class has been added
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
-                        childAtPosition(
-                                withId(R.id.TAclassList),
-                                0),
                         isDisplayed()));
         appCompatTextView2.check(matches(isDisplayed()));
         appCompatTextView2.check(matches(withText("COEN 341")));
@@ -107,6 +113,7 @@ public class AddClassTest {
                         isDisplayed()));
         appCompatImageButton3.perform(click());
 
+        //Remove the class
         ViewInteraction appCompatCheckedTextView3 = onView(
                 allOf(withId(R.id.design_menu_item_text), withText("Remove Class"), isDisplayed()));
         appCompatCheckedTextView3.perform(click());
