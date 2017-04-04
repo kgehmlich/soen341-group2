@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /** Data to be passed between fragments. */
     private Bundle fragmentBundle;
 
-    private Button   signOutButton;
+    private Button signOutButton;
 
     // for navigation bar
     private DrawerLayout drawerLayout;
@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Initializing a view for the header of the navigation bar
         View navigationHeaderView = navigationView.getHeaderView(0);
-
 
         // Initializing a text used to modify the textview created in navigation_header.xml with
         // Id navigation_username
