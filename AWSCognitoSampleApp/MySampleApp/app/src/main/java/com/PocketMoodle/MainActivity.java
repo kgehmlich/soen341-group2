@@ -231,11 +231,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //******** load pic from internal memory and format it into a circle
         if(fileExistance("desiredFilename.png")) {
             // Make the image into a circle
+            // In saveImageToInternalStorage() we named the picture desiredFilename
             RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), getThumbnail("desiredFilename.png"));
             roundedBitmapDrawable.setCircular(true);
             imgButton.setImageDrawable(roundedBitmapDrawable);
         }
-            //*********
+         //********* end of load pic
 
     }
 
@@ -273,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
         // Use the compress method on the Bitmap object to write image to
         // the OutputStream
+        //user may name the picture file in any way he wishes. Default is "desiredFilename"
             FileOutputStream fos = openFileOutput("desiredFilename.png", Context.MODE_PRIVATE);
 
         // Writing the bitmap to the output stream
