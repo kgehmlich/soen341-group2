@@ -228,10 +228,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
          });
 
-        //******** load pic from internal memory
-        if(fileExistance("desiredFilename.png"))
-        imgButton.setImageBitmap(getThumbnail("desiredFilename.png"));
-        //*********
+        //******** load pic from internal memory and format it into a circle
+        if(fileExistance("desiredFilename.png")) {
+            // Make the image into a circle
+            RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), getThumbnail("desiredFilename.png"));
+            roundedBitmapDrawable.setCircular(true);
+            imgButton.setImageDrawable(roundedBitmapDrawable);
+        }
+            //*********
 
     }
 
@@ -323,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 FileInputStream fi = new FileInputStream(filePath);
                 thumbnail = BitmapFactory.decodeStream(fi);
             } catch (Exception ex) {
-                Log.e("getThumbnail() on internal storage", ex.getMessage());
+                Log.e(LOG_TAG + "getThumbnail() failed", ex.getMessage());
             }
         }
         return thumbnail;
@@ -391,12 +395,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Get the image file location
                             Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
 
-
                             //save to internal storage
                             saveImageToInternalStorage(bmp);
-
-
-
 
                             // Make the image into a circle
                             RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
