@@ -98,8 +98,12 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
 
     public void onClick(View v) {
 
+        //if user clicks on Upload Document, ask for storage permission first
         if(v.getId() == R.id.uploadDocument) {
             try {
+                if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    Log.v(TAG,"Permission is granted");
+                }
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("*/*");
                 startActivityForResult(Intent.createChooser(intent, "Select a Document to Upload"), RESULT_DOCUMENT_SUCCESSFUL);
