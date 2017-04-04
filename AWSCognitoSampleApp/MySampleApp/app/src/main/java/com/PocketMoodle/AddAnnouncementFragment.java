@@ -7,8 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.PocketMoodle.Services.AnnounServices;
 import com.amazonaws.mobile.AWSMobileClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Laxman on 2017-03-24.
@@ -24,6 +29,8 @@ public class AddAnnouncementFragment extends Fragment {
     private EditText announcementDescription; // Description of the announcement the user is trying to add
     private String userName;                  // UserName of announcement creator
     private String className;                 // className that the announcement is for.
+    // Announcement object for each announcement that holds the author, date, title, and description for an announcement
+    private List<AnnounServices.Announcement> announcementList = new ArrayList<AnnounServices.Announcement>();
 
     public AddAnnouncementFragment() {
         // Required empty public constructor
@@ -54,17 +61,54 @@ public class AddAnnouncementFragment extends Fragment {
 
                 Runnable runnable = new Runnable() {
                     public void run() {
+
                         AnnounServices aS = new AnnounServices();
-                        aS.InsertAnnouncement(className, announcementTitle.getText().toString(), announcementDescription.getText().toString());
+                        announcementList = aS.GetAllAnnouncementsForClass(className);
                     }
                 };
-                Thread mythread = new Thread(runnable);
-                mythread.start();
 
-                // Wait so that announcement can be added to database
+                Thread getAnnouncementThread = new Thread(runnable);
+                getAnnouncementThread.start();
+
+                // Wait so that we can retrieve all the announcements
                 // TODO find another wait to do that wait time
-                while (mythread.isAlive()){
+                while (getAnnouncementThread.isAlive()){
 
+                }
+
+                Boolean announcementExists = false;
+
+                // Make sure the announcement with the same title does not already exist
+                for(AnnounServices.Announcement eachAnnouncement : announcementList) {
+
+                    if(eachAnnouncement.getAnnouTitle().equals(announcementTitle.getText().toString())) {
+                        announcementExists = true;
+                        Toast announcementAlreadyExists = Toast.makeText(getActivity(), "Announcement with the same title already exists", Toast.LENGTH_LONG);
+                        announcementAlreadyExists.show();
+                        break;
+                    }
+                }
+
+                // If announcement does not exist add the announcement
+                if(announcementExists == false) {
+                    Runnable runnable2 = new Runnable() {
+                        public void run() {
+
+                            AnnounServices aS = new AnnounServices();
+                            aS.InsertAnnouncement(className, announcementTitle.getText().toString(), announcementDescription.getText().toString());
+                        }
+                    };
+                    Thread addAnnouncementThread = new Thread(runnable2);
+                    addAnnouncementThread.start();
+
+                    // Wait so that announcement can be added to database
+                    // TODO find another wait to do that wait time
+                    while (addAnnouncementThread.isAlive()){
+
+                    }
+
+                    Toast announcementSuccess = Toast.makeText(getActivity(), "Announcement has been added", Toast.LENGTH_LONG);
+                    announcementSuccess.show();
                 }
 
                 getFragmentManager().popBackStack(); // Return to previous fragment
