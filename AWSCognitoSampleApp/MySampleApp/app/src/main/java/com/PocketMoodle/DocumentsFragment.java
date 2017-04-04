@@ -3,9 +3,11 @@ package com.PocketMoodle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,8 +103,16 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
         //if user clicks on Upload Document, ask for storage permission first
         if(v.getId() == R.id.uploadDocument) {
             try {
-                if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    Log.v(TAG,"Permission is granted");
+                if (ActivityCompat.checkSelfPermission(getContext(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(getContext(),
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            1);
+                } else {
+                    Log.e("DB", "PERMISSION GRANTED");
                 }
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("*/*");
@@ -114,6 +124,8 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+
+
 
 
 
