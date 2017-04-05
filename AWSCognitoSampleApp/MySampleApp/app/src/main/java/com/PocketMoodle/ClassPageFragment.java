@@ -80,7 +80,6 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
         };
         Thread mythread = new Thread(runnable);
         mythread.start();
-        // TODO find another wait to do that wait time
         while (mythread.isAlive()){
 
         }
