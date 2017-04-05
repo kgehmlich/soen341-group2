@@ -106,6 +106,8 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                     //cancel if incorrect password
                         if(input1.equals(password))
                             TA.setChecked(true);
+                        if(input1.equalsIgnoreCase(password))
+                            TA.setChecked(true);
                         else
                             TA.setChecked(false);
                     }
