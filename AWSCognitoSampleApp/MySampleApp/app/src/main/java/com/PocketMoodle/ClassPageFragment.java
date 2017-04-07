@@ -139,7 +139,7 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
         ArrayList<String> selectOption = new ArrayList<String>();
 
         if(registeredClasses.size() > 0){
-                selectOption.add("Change to");
+                selectOption.add("Change class");
             for(String r: registeredClasses){
                 selectOption.add(r);
             }
@@ -150,7 +150,36 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
         changeClassSpinner.setAdapter(adapter);
 
 
-//        changeClassSpinner.setOnItemClickListener(this);
+        changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                ClassPageFragment classPageFragment = new ClassPageFragment();
+
+                String className = parent.getItemAtPosition(position).toString();
+                if(className == "Change class"){
+
+                }else {
+                    System.out.println("className =" + className);
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", "Student");
+                    classPageFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    ((MainActivity) getActivity()).setActionBarTitle(className);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         // ****************************************************************************************
         // Beginning of View Documents Code
@@ -426,7 +455,7 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
                 ClassPageFragment classPageFragment = new ClassPageFragment();
 
                 String className = parent.getItemAtPosition(position).toString();
-
+                System.out.println("className =" + className);
                 // Bundle to add arguments the fragment will need to function(like what a constructor does)
                 Bundle bundle = new Bundle();
                 bundle.putString("className", className);
