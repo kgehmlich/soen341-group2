@@ -78,8 +78,7 @@ public class ClassPageFragment extends Fragment{
                 GetAllClass registered = new GetAllClass();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
-                GetAllClass TAlist = new GetAllClass();
-                taClasses = TAlist.GetAllClassYouAreTA();
+                taClasses = registered.GetAllClassYouAreTA();
             }
         };
         Thread mythread = new Thread(runnable);
@@ -159,7 +158,7 @@ public class ClassPageFragment extends Fragment{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ClassPageFragment classPageFragment = new ClassPageFragment();
                 String className = parent.getItemAtPosition(position).toString();
-                if (className == "Change class") {
+                if (className.equals("Change class")) {
 
                 } else {if (taClasses.contains(className)) {
                     Bundle bundle = new Bundle();

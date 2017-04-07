@@ -52,8 +52,7 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 GetAllClass registered = new GetAllClass();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
-                GetAllClass TAlist = new GetAllClass();
-                taClasses = TAlist.GetAllClassYouAreTA();
+                taClasses = registered.GetAllClassYouAreTA();
             }
         };
         Thread mythread = new Thread(runnable);
@@ -99,7 +98,7 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
                 DocumentsFragment documentFragment = new DocumentsFragment();
                 String className = parent.getItemAtPosition(position).toString();
 
-                if (className == "Change class") {
+                if (className.equals("Change class")) {
 
                 } else {
                     if (taClasses.contains(className)) {

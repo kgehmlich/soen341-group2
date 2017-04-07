@@ -65,8 +65,7 @@ public class DiscussionGroupsFragment extends Fragment {
                 GetAllClass registered = new GetAllClass();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
-                GetAllClass TAlist = new GetAllClass();
-                taClasses = TAlist.GetAllClassYouAreTA();
+                taClasses = registered.GetAllClassYouAreTA();
             }
         };
         Thread mythread = new Thread(runnable);
@@ -265,7 +264,7 @@ public class DiscussionGroupsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
                 DiscussionGroupsFragment discussionGroupsFragment = new DiscussionGroupsFragment();
                 String className = parent.getItemAtPosition(position).toString();
-                if(className == "Change class"){
+                if(className.equals("Change class")){
 
                 }else {
                     if (taClasses.contains(className)) {
