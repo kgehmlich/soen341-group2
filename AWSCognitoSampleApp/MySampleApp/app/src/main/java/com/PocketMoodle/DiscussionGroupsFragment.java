@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.PocketMoodle.DiscussionBoard.MyDatabaseChat;
+import com.PocketMoodle.Services.GetAllClass;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 
@@ -53,9 +55,25 @@ public class DiscussionGroupsFragment extends Fragment {
     private String className;  // className chosen from list
     private String TAOrStudent; // Will hold "TA" or "Student"
 
+    Spinner changeClassSpinner; // Spinner to display registered classes
+    public static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
+    public static List<String> taClasses = new ArrayList<String>();
+
     public DiscussionGroupsFragment() {
-        // Required empty public constructor
-    }
+        Runnable runnable = new Runnable() {
+            public void run(){
+                GetAllClass registered = new GetAllClass();
+                registeredClasses = registered.GetAllClassRegisteredIn();
+
+                GetAllClass TAlist = new GetAllClass();
+                taClasses = TAlist.GetAllClassYouAreTA();
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
+        while (mythread.isAlive()){
+        }
+}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -228,6 +246,64 @@ public class DiscussionGroupsFragment extends Fragment {
                 ((MainActivity) getActivity()).setActionBarTitle("Discussion Chat");
             }
         });
+
+        ArrayList<String> selectOption = new ArrayList<String>();
+
+        if(registeredClasses.size() > 0){
+            selectOption.add("Change class");
+            for(String r: registeredClasses){
+                selectOption.add(r);
+            }
+        }
+
+        changeClassSpinner = (Spinner) view.findViewById(R.id.change_class_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, selectOption);
+        changeClassSpinner.setAdapter(adapter);
+
+        changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                DiscussionGroupsFragment discussionGroupsFragment = new DiscussionGroupsFragment();
+                String className = parent.getItemAtPosition(position).toString();
+                if(className == "Change class"){
+
+                }else {
+                    if (taClasses.contains(className)) {
+                        // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                        Bundle bundle = new Bundle();
+                        bundle.putString("className", className);
+                        bundle.putString("TAOrStudent", "TA");
+                        discussionGroupsFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, discussionGroupsFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        ((MainActivity) getActivity()).setActionBarTitle(className);
+                    } else {
+                        // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                        Bundle bundle = new Bundle();
+                        bundle.putString("className", className);
+                        bundle.putString("TAOrStudent", "Student");
+                        discussionGroupsFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, discussionGroupsFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        ((MainActivity) getActivity()).setActionBarTitle(className);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         return view;
     }
 }

@@ -70,12 +70,17 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
 
     Spinner changeClassSpinner; // Spinner to display registered classes
     public static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
+    public static List<String> taClasses = new ArrayList<String>();
+    public static boolean taCheck;
 
     public ClassPageFragment() {
         Runnable runnable = new Runnable() {
             public void run(){
                 GetAllClass registered = new GetAllClass();
                 registeredClasses = registered.GetAllClassRegisteredIn();
+
+                GetAllClass TAlist = new GetAllClass();
+                taClasses = TAlist.GetAllClassYouAreTA();
             }
         };
         Thread mythread = new Thread(runnable);
@@ -139,7 +144,7 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
         ArrayList<String> selectOption = new ArrayList<String>();
 
         if(registeredClasses.size() > 0){
-                selectOption.add("Change class");
+            selectOption.add("Change class");
             for(String r: registeredClasses){
                 selectOption.add(r);
             }
@@ -152,28 +157,40 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
 
         changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ClassPageFragment classPageFragment = new ClassPageFragment();
-
                 String className = parent.getItemAtPosition(position).toString();
-                if(className == "Change class"){
+                if (className == "Change class") {
 
-                }else {
-                    System.out.println("className =" + className);
-                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
-                    Bundle bundle = new Bundle();
-                    bundle.putString("className", className);
-                    bundle.putString("TAOrStudent", "Student");
-                    classPageFragment.setArguments(bundle);
+                } else {
+                        if (taClasses.contains(className)) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("className", className);
+                            bundle.putString("TAOrStudent", "TA");
+                            classPageFragment.setArguments(bundle);
 
 //                 Start the new fragment and replace the current fragment with the new one
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    ((MainActivity) getActivity()).setActionBarTitle(className);
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                            ((MainActivity) getActivity()).setActionBarTitle(className);
+                        } else {
+                            // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                            Bundle bundle = new Bundle();
+                            bundle.putString("className", className);
+                            bundle.putString("TAOrStudent", "Student");
+                            classPageFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                            ((MainActivity) getActivity()).setActionBarTitle(className);
+                        }
+                    }
                 }
-            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -414,6 +431,11 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
         // Ending of Announcement Code
 
         return view;
+    }
+
+    public void onStart(){
+        super.onStart();
+
     }
 
     // Helper method that retrieves and updates our list with all the announcements in the database
