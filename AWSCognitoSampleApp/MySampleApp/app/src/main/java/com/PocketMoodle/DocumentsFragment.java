@@ -7,18 +7,25 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.PocketMoodle.Services.DocumentServices;
+import com.PocketMoodle.Services.GetAllClass;
 import com.amazonaws.mobile.util.ImageSelectorUtils;
 
 /**
@@ -29,16 +36,29 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
     View v;
 
     Button uploadButton;
-
+    Spinner changeClassSpinner;
     TextView textView;
     private static final String TAG = "DocumentsFragment";
     private int RESULT_DOCUMENT_SUCCESSFUL = 20;
 
     private String className;
     private String TAOrStudent;
+    public static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
+
 
     public DocumentsFragment() {
-        // Required empty public constructor
+        Runnable runnable = new Runnable() {
+            public void run(){
+                GetAllClass registered = new GetAllClass();
+                registeredClasses = registered.GetAllClassRegisteredIn();
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
+        while (mythread.isAlive()){
+
+        }
+
     }
 
     @Override
@@ -55,7 +75,51 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
         // Button to display file explorer begining at root
         uploadButton = (Button)v.findViewById(R.id.uploadDocument);
         uploadButton.setOnClickListener(this);
+        // Beginning of drop down menu to change class
+        ArrayList<String> selectOption = new ArrayList<String>();
 
+        if(registeredClasses.size() > 0){
+            selectOption.add("Change class");
+            for(String r: registeredClasses){
+                selectOption.add(r);
+            }
+        }
+
+        changeClassSpinner = (Spinner) v.findViewById(R.id.change_class_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, selectOption);
+        changeClassSpinner.setAdapter(adapter);
+
+
+        changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+                DocumentsFragment documentFragment = new DocumentsFragment();
+
+                String className = parent.getItemAtPosition(position).toString();
+                if(className == "Change class"){
+
+                }else {
+                    System.out.println("className =" + className);
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", "Student");
+                    documentFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, documentFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    ((MainActivity) getActivity()).setActionBarTitle(className);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         return v;
     }
 
@@ -110,6 +174,8 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
             }
         }
     }
+
+
 
 
 
