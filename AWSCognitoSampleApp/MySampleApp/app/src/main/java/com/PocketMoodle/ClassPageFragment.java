@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassPageFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class ClassPageFragment extends Fragment{
 
     private final AWSMobileClient awsMobileClient = AWSMobileClient.defaultMobileClient(); // To get user name of user
 
@@ -468,36 +468,4 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
         announcementListAdapter.notifyDataSetChanged(); // update the adapter of the spinner and listView
     }
 
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                ClassPageFragment classPageFragment = new ClassPageFragment();
-
-                String className = parent.getItemAtPosition(position).toString();
-                System.out.println("className =" + className);
-                // Bundle to add arguments the fragment will need to function(like what a constructor does)
-                Bundle bundle = new Bundle();
-                bundle.putString("className", className);
-                bundle.putString("TAOrStudent", "Student");
-                classPageFragment.setArguments(bundle);
-
-//                 Start the new fragment and replace the current fragment with the new one
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_container, classPageFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                ((MainActivity) getActivity()).setActionBarTitle(className);
-
-//        FragmentManager manager = getFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//        transaction.replace(R.id.container_current, classPageFragment); // newInstance() is a static factory method.
-//        transaction.commit();
-//        Fragment currentFragment = getFragmentManager().findFragmentByTag("YourFragmentTag");
-//        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//        fragmentTransaction.detach(currentFragment);
-//        fragmentTransaction.attach(currentFragment);
-//        fragmentTransaction.commit();
-//        ((MainActivity) getActivity()).setActionBarTitle(className);
-            }
 }
