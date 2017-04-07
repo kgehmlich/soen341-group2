@@ -71,7 +71,6 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
     Spinner changeClassSpinner; // Spinner to display registered classes
     public static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
     public static List<String> taClasses = new ArrayList<String>();
-    public static boolean taCheck;
 
     public ClassPageFragment() {
         Runnable runnable = new Runnable() {
@@ -162,35 +161,34 @@ public class ClassPageFragment extends Fragment implements AdapterView.OnItemCli
                 String className = parent.getItemAtPosition(position).toString();
                 if (className == "Change class") {
 
+                } else {if (taClasses.contains(className)) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", "TA");
+                    classPageFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    ((MainActivity) getActivity()).setActionBarTitle(className);
                 } else {
-                        if (taClasses.contains(className)) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("className", className);
-                            bundle.putString("TAOrStudent", "TA");
-                            classPageFragment.setArguments(bundle);
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", "Student");
+                    classPageFragment.setArguments(bundle);
 
 //                 Start the new fragment and replace the current fragment with the new one
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.main_container, classPageFragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                            ((MainActivity) getActivity()).setActionBarTitle(className);
-                        } else {
-                            // Bundle to add arguments the fragment will need to function(like what a constructor does)
-                            Bundle bundle = new Bundle();
-                            bundle.putString("className", className);
-                            bundle.putString("TAOrStudent", "Student");
-                            classPageFragment.setArguments(bundle);
-
-//                 Start the new fragment and replace the current fragment with the new one
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.main_container, classPageFragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                            ((MainActivity) getActivity()).setActionBarTitle(className);
-                        }
-                    }
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    ((MainActivity) getActivity()).setActionBarTitle(className);
                 }
+            }
+        }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
