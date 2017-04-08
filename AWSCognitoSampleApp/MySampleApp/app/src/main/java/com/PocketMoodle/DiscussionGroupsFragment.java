@@ -55,9 +55,9 @@ public class DiscussionGroupsFragment extends Fragment {
     private String className;  // className chosen from list
     private String TAOrStudent; // Will hold "TA" or "Student"
 
-    Spinner changeClassSpinner; // Spinner to display registered classes
-    public static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
-    public static List<String> taClasses = new ArrayList<String>();
+    private Spinner changeClassSpinner; // Spinner to display registered classes
+    private static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
+    private static List<String> taClasses = new ArrayList<String>();
 
     public DiscussionGroupsFragment() {
         Runnable runnable = new Runnable() {
@@ -255,10 +255,12 @@ public class DiscussionGroupsFragment extends Fragment {
             }
         }
 
+        //Spinner declaration
         changeClassSpinner = (Spinner) view.findViewById(R.id.change_class_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, selectOption);
         changeClassSpinner.setAdapter(adapter);
 
+        //Behaviour of the changeClassSpinners' upon item selection
         changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
@@ -267,11 +269,11 @@ public class DiscussionGroupsFragment extends Fragment {
                 if(className.equals("Change class")){
 
                 }else {
-                    if (taClasses.contains(className)) {
+                    if (taClasses.contains(className)) {//Checks list of TA classes of users and compares to bundle className to determine if TA class selected
                         // Bundle to add arguments the fragment will need to function(like what a constructor does)
                         Bundle bundle = new Bundle();
                         bundle.putString("className", className);
-                        bundle.putString("TAOrStudent", "TA");
+                        bundle.putString("TAOrStudent", "TA"); // Sets TA user true, and gives TA priviledge to page
                         discussionGroupsFragment.setArguments(bundle);
 
 //                 Start the new fragment and replace the current fragment with the new one
@@ -284,7 +286,7 @@ public class DiscussionGroupsFragment extends Fragment {
                         // Bundle to add arguments the fragment will need to function(like what a constructor does)
                         Bundle bundle = new Bundle();
                         bundle.putString("className", className);
-                        bundle.putString("TAOrStudent", "Student");
+                        bundle.putString("TAOrStudent", "Student"); // Gives studen priviledge
                         discussionGroupsFragment.setArguments(bundle);
 
 //                 Start the new fragment and replace the current fragment with the new one

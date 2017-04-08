@@ -68,9 +68,9 @@ public class ClassPageFragment extends Fragment{
     private ArrayAdapter<String> announcementListAdapter; // Adapter to display list of announcements on ListView
     private Spinner removeAnnouncementSpinner; // Spinner to display all the announcement for that class
 
-    Spinner changeClassSpinner; // Spinner to display registered classes
-    public static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
-    public static List<String> taClasses = new ArrayList<String>();
+    private Spinner changeClassSpinner; // Spinner to display registered classes
+    private static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
+    private static List<String> taClasses = new ArrayList<String>();
 
     public ClassPageFragment() {
         Runnable runnable = new Runnable() {
@@ -139,8 +139,9 @@ public class ClassPageFragment extends Fragment{
         // Ending of Upload Document code
 
         // Beginning of drop down menu to change class
+        //Creating selectOption array to store the available options from dropdown
         ArrayList<String> selectOption = new ArrayList<String>();
-
+        //Adds classes to array list
         if(registeredClasses.size() > 0){
             selectOption.add("Change class");
             for(String r: registeredClasses){
@@ -148,11 +149,12 @@ public class ClassPageFragment extends Fragment{
             }
         }
 
+        //Spinner declaration
         changeClassSpinner = (Spinner) view.findViewById(R.id.change_class_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, selectOption);
         changeClassSpinner.setAdapter(adapter);
 
-
+        //Behaviour of the changeClassSpinners' upon item selection
         changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -160,10 +162,11 @@ public class ClassPageFragment extends Fragment{
                 String className = parent.getItemAtPosition(position).toString();
                 if (className.equals("Change class")) {
 
-                } else {if (taClasses.contains(className)) {
+                } else {if (taClasses.contains(className)) { //Checks list of TA classes of users and compares to bundle className to determine if TA class selected
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
                     Bundle bundle = new Bundle();
                     bundle.putString("className", className);
-                    bundle.putString("TAOrStudent", "TA");
+                    bundle.putString("TAOrStudent", "TA"); // Sets TA user true, and gives TA priviledge to page
                     classPageFragment.setArguments(bundle);
 
 //                 Start the new fragment and replace the current fragment with the new one
@@ -176,7 +179,7 @@ public class ClassPageFragment extends Fragment{
                     // Bundle to add arguments the fragment will need to function(like what a constructor does)
                     Bundle bundle = new Bundle();
                     bundle.putString("className", className);
-                    bundle.putString("TAOrStudent", "Student");
+                    bundle.putString("TAOrStudent", "Student"); // Gives studen priviledge
                     classPageFragment.setArguments(bundle);
 
 //                 Start the new fragment and replace the current fragment with the new one
