@@ -86,7 +86,7 @@ public class RemoveClassTest {
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
 
-        //Remove class that was just added
+        //Drop class that was just added
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
