@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /** Data to be passed between fragments. */
     private Bundle fragmentBundle;
 
-    private Button   signOutButton;
+    private Button signOutButton;
 
     // for navigation bar
     private DrawerLayout drawerLayout;
@@ -89,13 +89,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button button;
 
     private static final int IMAGE_UPLOAD_REQUEST=42;
-    Uri imageUri;
+    private Uri imageUri;
     private ImageButton imgButton;
-    String path;
+    private String path;
     public final static String APP_PATH_SD_CARD = "/DesiredSubfolderName/";
     public final static String APP_THUMBNAIL_PATH_SD_CARD = "thumbnails";
-
-
 
     /**
      * Initializes the Toolbar for use with the activity.
@@ -153,21 +151,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle("Home");
         navigationView = (NavigationView) findViewById(R.id.navigation_menu);
 
-        //Initializing a view for the header of the navigation bar
+        // Initializing a view for the header of the navigation bar
         View navigationHeaderView = navigationView.getHeaderView(0);
 
-
-        //Initializing a text used to modify the textview created in navigation_header.xml with
-        //id navigation_username
+        // Initializing a text used to modify the textview created in navigation_header.xml with
+        // Id navigation_username
         TextView username = (TextView) navigationHeaderView.findViewById(R.id.navigation_username);
 
-        //Setting the textview to display the user's username
+        // Setting the textview to display the user's username
         username.setText(awsMobileClient.getIdentityManager().getUserName());
 
-        //Textview for user email
+        // Textview for user email
         TextView email = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navigation_email);
+
         try {
-            //Displaying the user's email
+            // Displaying the user's email
             email.setText(JWTUtils.getUserEmail(JWTUtils.decode(awsMobileClient.getIdentityManager().getCurrentIdentityProvider().getToken())));
         } catch (Exception e) {
             e.printStackTrace();
@@ -206,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         drawerLayout.closeDrawers();
                         break;
 
-
                     case R.id.sign_out:
 
                         getIdentityManager().signOut();
@@ -217,6 +214,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // ****************************************************************************************
+        // Upload Profile Picture
+        // ****************************************************************************************
         imgButton = (ImageButton) navigationHeaderView.findViewById(R.id.imageButton1);
                 imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
          });
 
-        //******** load pic from internal memory and format it into a circle
+        //load pic from internal memory and format it into a circle
         if(fileExistance("desiredFilename.png")) {
             // Make the image into a circle
             // In saveImageToInternalStorage() we named the picture desiredFilename
@@ -236,13 +236,77 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             roundedBitmapDrawable.setCircular(true);
             imgButton.setImageDrawable(roundedBitmapDrawable);
         }
-         //********* end of load pic
-
+        // End of load pic
     }
 
+    // Save picture to internal memory
+    private boolean saveImageToInternalStorage(Bitmap image) {
 
+        try {
+        // Use the compress method on the Bitmap object to write image to
+        // the OutputStream
+        // User may name the picture file in any way he wishes. Default is "desiredFilename"
+            FileOutputStream fos = openFileOutput("desiredFilename.png", Context.MODE_PRIVATE);
 
+        // Writing the bitmap to the output stream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
 
+            return true;
+        } catch (Exception e) {
+            Log.e("saveToInternalStorage()", e.getMessage());
+            return false;
+        }
+    }
+
+    // Check if we are allowed to read from Sd card
+    private boolean isSdReadable() {
+
+        boolean mExternalStorageAvailable = false;
+        String state = Environment.getExternalStorageState();
+
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            // We can read and write the media
+            mExternalStorageAvailable = true;
+            Log.i("isSdReadable", "External storage card is readable.");
+        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            // We can only read the media
+            Log.i("isSdReadable", "External storage card is readable.");
+            mExternalStorageAvailable = true;
+        } else {
+            // All we need to know is we can neither read nor write
+            mExternalStorageAvailable = false;
+        }
+
+        return mExternalStorageAvailable;
+    }
+
+    // Method to retrieve profile picture from internal storage
+    private Bitmap getThumbnail(String filename) {
+
+        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + APP_PATH_SD_CARD + APP_THUMBNAIL_PATH_SD_CARD;
+        Bitmap thumbnail = null;
+
+        // If no file on external storage, look in internal storage
+        if (thumbnail == null) {
+
+            try {
+                File filePath = getFileStreamPath(filename);
+                FileInputStream fi = new FileInputStream(filePath);
+                thumbnail = BitmapFactory.decodeStream(fi);
+            } catch (Exception ex) {
+
+                Log.e(LOG_TAG + "getThumbnail() failed", ex.getMessage());
+            }
+        }
+        return thumbnail;
+    }
+
+    // Check if the picture exists in the internal memory before trying to load the picture to prevent crash
+    private boolean fileExistance(String fname){
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
+    }
 
     public IdentityManager getIdentityManager()
     {
@@ -261,89 +325,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             return;
         }
-
-
     }
 
-
-    //************
-    //Save picture to internal memory
-    //************
-    public boolean saveImageToInternalStorage(Bitmap image) {
-
-        try {
-        // Use the compress method on the Bitmap object to write image to
-        // the OutputStream
-        //user may name the picture file in any way he wishes. Default is "desiredFilename"
-            FileOutputStream fos = openFileOutput("desiredFilename.png", Context.MODE_PRIVATE);
-
-        // Writing the bitmap to the output stream
-            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-
-            return true;
-        } catch (Exception e) {
-            Log.e("saveToInternalStorage()", e.getMessage());
-            return false;
-        }
-    }
-    //************
-    //end of save picture to internal memory
-    //************
-
-
-    //************
-    //Load picture from internal memory
-    //************
-    public boolean isSdReadable() {
-
-        boolean mExternalStorageAvailable = false;
-        String state = Environment.getExternalStorageState();
-
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-        // We can read and write the media
-            mExternalStorageAvailable = true;
-            Log.i("isSdReadable", "External storage card is readable.");
-        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-        // We can only read the media
-            Log.i("isSdReadable", "External storage card is readable.");
-            mExternalStorageAvailable = true;
-        } else {
-        // all we need to know is we can neither read nor write
-            mExternalStorageAvailable = false;
-        }
-
-        return mExternalStorageAvailable;
-    }
-
-    public Bitmap getThumbnail(String filename) {
-
-        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + APP_PATH_SD_CARD + APP_THUMBNAIL_PATH_SD_CARD;
-        Bitmap thumbnail = null;
-
-
-        // If no file on external storage, look in internal storage
-        if (thumbnail == null) {
-            try {
-                File filePath = getFileStreamPath(filename);
-                FileInputStream fi = new FileInputStream(filePath);
-                thumbnail = BitmapFactory.decodeStream(fi);
-            } catch (Exception ex) {
-                Log.e(LOG_TAG + "getThumbnail() failed", ex.getMessage());
-            }
-        }
-        return thumbnail;
-    }
-    //******
-    // end of load picture from internal memory
-    //******
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle action bar item clicks here excluding the home button.
 
-        if(toggle.onOptionsItemSelected(item))
-        {
+        if(toggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -352,7 +341,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onSaveInstanceState(final Bundle bundle) {
+
         super.onSaveInstanceState(bundle);
+
         // Save the title so it will be restored properly to match the view loaded when rotation
         // was changed or in case the activity was destroyed.
         if (toolbar != null) {
@@ -362,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(final View view) {
+
         if (view == signOutButton) {
             // The user is currently signed in with a provider. Sign out of that provider.
             identityManager.signOut();
@@ -371,11 +363,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         // ... add any other button handling code here ...
-
     }
 
     @Override
     protected void onPause() {
+
         super.onPause();
     }
 
@@ -383,53 +375,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-                     if(resultCode == RESULT_CANCELED) return;
+        if(resultCode == RESULT_CANCELED){
+            return;
+        }
 
-                        if (requestCode == IMAGE_UPLOAD_REQUEST) {
-                        ParcelFileDescriptor fd;
-                        try {
-                                fd = getContentResolver().openFileDescriptor(data.getData(), "r");
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                                return;
-                            }
+        if (requestCode == IMAGE_UPLOAD_REQUEST) {
 
-                            // Get the image file location
-                            Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
+            ParcelFileDescriptor fd;
 
-                            //save to internal storage
-                            saveImageToInternalStorage(bmp);
-
-                            // Make the image into a circle
-                            RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
-                            roundedBitmapDrawable.setCircular(true);
-                            imgButton.setImageDrawable(roundedBitmapDrawable);
-                        }
+            try {
+                fd = getContentResolver().openFileDescriptor(data.getData(), "r");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return;
             }
 
+            // Get the image file location
+            Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
 
+            //save to internal storage
+            saveImageToInternalStorage(bmp);
 
+            // Make the image into a circle
+            RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
+            roundedBitmapDrawable.setCircular(true);
+            imgButton.setImageDrawable(roundedBitmapDrawable);
+        }
+    }
 
+    // Method to set action bar title when laoding new fragments
     public void setActionBarTitle(String title) {
 
         try {
             getSupportActionBar().setTitle(title);
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             Log.d("MainActivity","Error changing title of action bar");
-
         }
-
     }
-
-    //******
-    //check if the picture exists in the internal memory before trying to load the picture to prevent crash
-    //******
-    public boolean fileExistance(String fname){
-        File file = getBaseContext().getFileStreamPath(fname);
-        return file.exists();
-    }
-    //end of file existance code
-
 }
