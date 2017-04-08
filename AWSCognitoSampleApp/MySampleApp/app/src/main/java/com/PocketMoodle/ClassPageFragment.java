@@ -3,6 +3,7 @@ package com.PocketMoodle;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.PocketMoodle.Services.AnnounServices;
+import com.PocketMoodle.Services.GetAllClass;
 import com.amazonaws.mobile.AWSMobileClient;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.Set;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassPageFragment extends Fragment {
+public class ClassPageFragment extends Fragment{
 
     private final AWSMobileClient awsMobileClient = AWSMobileClient.defaultMobileClient(); // To get user name of user
 
@@ -66,9 +68,25 @@ public class ClassPageFragment extends Fragment {
     private ArrayAdapter<String> announcementListAdapter; // Adapter to display list of announcements on ListView
     private Spinner removeAnnouncementSpinner; // Spinner to display all the announcement for that class
 
+    private Spinner changeClassSpinner; // Spinner to display registered classes
+    private static List<String> registeredClasses = new ArrayList<String>(); // Array of classes that will contain the registered classes
+    private static List<String> taClasses = new ArrayList<String>();
 
     public ClassPageFragment() {
-        // Required empty public constructor
+        Runnable runnable = new Runnable() {
+            public void run(){
+                GetAllClass registered = new GetAllClass();
+                registeredClasses = registered.GetAllClassRegisteredIn();
+
+                taClasses = registered.GetAllClassYouAreTA();
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
+        while (mythread.isAlive()){
+
+        }
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,6 +138,65 @@ public class ClassPageFragment extends Fragment {
         });
         // Ending of Upload Document code
 
+        // Beginning of drop down menu to change class
+        //Creating selectOption array to store the available options from dropdown
+        ArrayList<String> selectOption = new ArrayList<String>();
+        //Adds classes to array list
+        if(registeredClasses.size() > 0){
+            selectOption.add("Change class");
+            for(String r: registeredClasses){
+                selectOption.add(r);
+            }
+        }
+
+        //Spinner declaration
+        changeClassSpinner = (Spinner) view.findViewById(R.id.change_class_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_dropdown_item, selectOption);
+        changeClassSpinner.setAdapter(adapter);
+
+        //Behaviour of the changeClassSpinners' upon item selection
+        changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ClassPageFragment classPageFragment = new ClassPageFragment();
+                String className = parent.getItemAtPosition(position).toString();
+                if (className.equals("Change class")) {
+
+                } else {if (taClasses.contains(className)) { //Checks list of TA classes of users and compares to bundle className to determine if TA class selected
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", "TA"); // Sets TA user true, and gives TA priviledge to page
+                    classPageFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    ((MainActivity) getActivity()).setActionBarTitle(className);
+                } else {
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    bundle.putString("TAOrStudent", "Student"); // Gives studen priviledge
+                    classPageFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    ((MainActivity) getActivity()).setActionBarTitle(className);
+                }
+            }
+        }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         // ****************************************************************************************
         // Beginning of View Documents Code
@@ -356,6 +433,11 @@ public class ClassPageFragment extends Fragment {
         return view;
     }
 
+    public void onStart(){
+        super.onStart();
+
+    }
+
     // Helper method that retrieves and updates our list with all the announcements in the database
     private void updateAnnouncementList()
     {
@@ -387,4 +469,5 @@ public class ClassPageFragment extends Fragment {
 
         announcementListAdapter.notifyDataSetChanged(); // update the adapter of the spinner and listView
     }
+
 }
