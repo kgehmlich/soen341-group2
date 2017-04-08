@@ -113,7 +113,7 @@ public class AddClassTest {
                         isDisplayed()));
         appCompatImageButton3.perform(click());
 
-        //Remove the class
+        //Drop the class
         ViewInteraction appCompatCheckedTextView3 = onView(
                 allOf(withId(R.id.design_menu_item_text), withText("Remove Class"), isDisplayed()));
         appCompatCheckedTextView3.perform(click());
