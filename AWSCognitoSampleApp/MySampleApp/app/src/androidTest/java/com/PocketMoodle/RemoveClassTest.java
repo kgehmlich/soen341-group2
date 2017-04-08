@@ -33,17 +33,20 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class RemoveClassTest {
 
+    //Start at sign in activity (skip the splash activity)
     @Rule
     public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
     @Test
     public void removeClassTest() {
+        //Add some wait time. Precaution for travis
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Signing in
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText.perform(replaceText("mewtrandell"), closeSoftKeyboard());
@@ -56,6 +59,7 @@ public class RemoveClassTest {
                 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
 
+        //Some more wait time so that the message that appears after sign in disappears
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
@@ -63,6 +67,7 @@ public class RemoveClassTest {
         }
 
 
+        //Add a class
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
@@ -81,6 +86,7 @@ public class RemoveClassTest {
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
 
+        //Drop class that was just added
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
@@ -105,21 +111,9 @@ public class RemoveClassTest {
                 allOf(withId(R.id.design_menu_item_text), withText("Home Page"), isDisplayed()));
         appCompatCheckedTextView3.perform(click());
 
-        ViewInteraction listView = onView(
-                allOf(withId(R.id.TAclassList),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.main_container),
-                                        0),
-                                4),
-                        isDisplayed()));
-        listView.check(doesNotExist());
-
+        //Verify that the class isn't there
         ViewInteraction appCompatTextView4 = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
-                        childAtPosition(
-                                withId(R.id.TAclassList),
-                                0),
                         isDisplayed()));
         appCompatTextView4.check(doesNotExist());
 
