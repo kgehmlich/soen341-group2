@@ -29,7 +29,7 @@ public class GetAllClass {
      * The object user is use to return a List of all User in Class
      *
      */
-    class User{
+    public class User{
         private String username;
         private Double taOrStu;
         private String userId;

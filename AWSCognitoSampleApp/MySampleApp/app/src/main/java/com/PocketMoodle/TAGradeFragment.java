@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.ListView;
+import android.widget.ArrayAdapter;
 
 import java.util.*;
 
 
 import com.PocketMoodle.Services.GradesServices;
+
 
 /**
  * Created by John on 2017-04-03.
@@ -20,9 +23,10 @@ import com.PocketMoodle.Services.GradesServices;
 
 public class TAGradeFragment extends Fragment {
 
+    private String className;
     private static final String TAG = "TAGradeFragment";
     Button openAddGrade;
-    
+
     public TAGradeFragment() {
         // Required empty public constructor
     }
@@ -39,8 +43,14 @@ public class TAGradeFragment extends Fragment {
             public void onClick(View view) {
 
                 try {
+
                     // Fragment that will display the messages in the group
                     AddGradeFragment tempFragment = new AddGradeFragment();
+
+                    // Pass on arguments that the add grade fragment will need
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    tempFragment.setArguments(bundle);
 
                     // Start the new fragment and replace the current fragment with the new one
                     FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -54,6 +64,8 @@ public class TAGradeFragment extends Fragment {
                 }
             }
         });
+
+
         return view;
     }
 }
