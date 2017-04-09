@@ -109,11 +109,6 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
                         isDisplayed()));
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         appCompatTextView.perform(click());
 
 
@@ -148,7 +143,7 @@ public class AnnouncementTest {
                 allOf(withId(android.R.id.text1), withText("a test"),
                         isDisplayed()));
         try {
-            Thread.sleep(1);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -176,11 +171,7 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView3 = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
                         isDisplayed()));
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         appCompatTextView3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
@@ -193,11 +184,6 @@ public class AnnouncementTest {
         //Click on the spinner
         ViewInteraction appCompatTextView4 = onView(
                 allOf(withId(android.R.id.text1), isDisplayed()));
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         appCompatTextView4.perform(click());
 
         //This next line is to select the announcement from the spinner
