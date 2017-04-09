@@ -146,7 +146,7 @@ public class GetAllClass {
                         //Log.d(TAG, users.getUsername());
                         //Log.d(TAG, users.getTA().toString());
                         User u = new User(users.getUsername(), users.getTA(), users.getUserId());
-                        allClassRegisteredIn.add(u);
+                        allUserInThisClass.add(u);
                     }
                 }
             }
