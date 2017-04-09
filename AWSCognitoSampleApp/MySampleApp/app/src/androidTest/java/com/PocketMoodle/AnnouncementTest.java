@@ -142,12 +142,8 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(android.R.id.text1), withText("a test"),
                         isDisplayed()));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        appCompatTextView2.perform(click());
+        
+        appCompatTextView2.perform(closeSoftKeyboard(), click());
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.setAnnouncementDescription), withText("testing"),
