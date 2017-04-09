@@ -85,6 +85,7 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
         final RadioButton TA = (RadioButton) v.findViewById(R.id.radioButton);
         final RadioButton STU = (RadioButton) v.findViewById(R.id.radioButton2);
 
+
         //**********************
         //Prompt password for TA
         //**********************
