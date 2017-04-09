@@ -228,7 +228,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
          });
 
+        //******** load pic from internal memory and format it into a circle
 
+        if(fileExistance("desiredFilename.png")) {
+            // Make the image into a circle
+            // In saveImageToInternalStorage() we named the picture desiredFilename
+            RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), getThumbnail("desiredFilename.png"));
+            roundedBitmapDrawable.setCircular(true);
+            imgButton.setImageDrawable(roundedBitmapDrawable);
+        }
+         //********* end of load pic
 
     }
 
