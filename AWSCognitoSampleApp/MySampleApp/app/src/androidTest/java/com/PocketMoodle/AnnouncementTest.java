@@ -109,6 +109,11 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
                         isDisplayed()));
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         appCompatTextView.perform(click());
 
 
