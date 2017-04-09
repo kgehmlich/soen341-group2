@@ -29,7 +29,7 @@ public class GetAllClass {
      * The object user is use to return a List of all User in Class
      *
      */
-    class User{
+    public class User{
         private String username;
         private Double taOrStu;
         private String userId;
@@ -146,7 +146,7 @@ public class GetAllClass {
                         //Log.d(TAG, users.getUsername());
                         //Log.d(TAG, users.getTA().toString());
                         User u = new User(users.getUsername(), users.getTA(), users.getUserId());
-                        allClassRegisteredIn.add(u);
+                        allUserInThisClass.add(u);
                     }
                 }
             }
