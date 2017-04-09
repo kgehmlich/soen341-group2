@@ -23,6 +23,7 @@ import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -36,20 +37,21 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class AddDiscussionTest {
 
+    //Start at sign in activity (skip the splash activity)
     @Rule
     public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
     @Test
     public void addDiscussionTest() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+
+        //Add some wait time. Precaution for travis
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Signing in
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText.perform(replaceText("mewtrandell"), closeSoftKeyboard());
@@ -62,15 +64,14 @@ public class AddDiscussionTest {
                 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        //Some more wait time so that the message that appears after sign in disappears
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Adding a class to access discussion board
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
@@ -101,12 +102,10 @@ public class AddDiscussionTest {
 
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
-                        childAtPosition(
-                                withId(R.id.TAclassList),
-                                0),
                         isDisplayed()));
         appCompatTextView.perform(click());
 
+        //Adding a new discussion group
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.openDiscussionBoard), withText("Open Discussion Board"), isDisplayed()));
         appCompatButton2.perform(click());
@@ -126,20 +125,23 @@ public class AddDiscussionTest {
                 allOf(withId(android.R.id.button1), withText("Add")));
         appCompatButton4.perform(scrollTo(), click());
 
+        //Check that the discussion group has been added
         ViewInteraction textView = onView(
                 allOf(withId(android.R.id.text1), withText("Discussion"),
-                        childAtPosition(
-                                allOf(withId(R.id.discussion_group_list),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class),
-                                                2)),
-                                0),
                         isDisplayed()));
         textView.check(matches(withText("Discussion")));
 
+        //Remove the discussion group
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.remove_discussion_group), withText("-"), isDisplayed()));
         appCompatButton5.perform(click());
+
+        ViewInteraction appCompatTextView4 = onView(
+                allOf(withId(android.R.id.text1), isDisplayed()));
+                appCompatTextView4.perform(click());
+
+        //This next line is to select the discussion group from the spinner
+        onView(withText("Discussion")).inRoot(isPlatformPopup()).perform(click());
 
         ViewInteraction appCompatButton6 = onView(
                 allOf(withId(android.R.id.button1), withText("Remove")));

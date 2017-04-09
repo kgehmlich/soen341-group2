@@ -12,14 +12,27 @@
         android:id="@+id/headerSection"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <TextView
-            android:text=""
-            android:layout_width="match_parent"
+            android:id="@+id/setclassTitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:text=""
             android:textSize="30sp"
-            android:id="@+id/setclassTitle" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Spinner
+            android:id="@+id/change_class_spinner"
+            android:layout_width="166dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
 
@@ -30,13 +43,23 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/headerSection"
+        android:gravity="center_horizontal"
         android:layout_margin="10dp">
+
+        <Button
+            android:id="@+id/openViewDocuments"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentTop="true"
+            android:text="View Documents"/>
 
         <Button
             android:id="@+id/openUploadDocument"
             android:layout_width="200dp"
             android:layout_height="35dp"
             android:layout_margin="5dp"
+            android:layout_below="@id/openViewDocuments"
             android:text="@string/upload_document"/>
 
     </RelativeLayout>
@@ -48,6 +71,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/documentSection"
+        android:gravity="center_horizontal"
         android:layout_margin="10dp">
 
         <Button

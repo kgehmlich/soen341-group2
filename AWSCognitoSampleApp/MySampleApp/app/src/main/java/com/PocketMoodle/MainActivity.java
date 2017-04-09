@@ -8,14 +8,17 @@
 //
 package com.PocketMoodle;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
@@ -27,13 +30,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.PocketMoodle.util.JWTUtils;
@@ -42,7 +45,14 @@ import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobile.user.IdentityManager;
 import com.amazonaws.mobile.user.signin.CognitoUserPoolsSignInProvider;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /** Class name for log messages. */
@@ -77,10 +87,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView imageView;
     Button button;
+
     private static final int IMAGE_UPLOAD_REQUEST=42;
     Uri imageUri;
     private ImageButton imgButton;
-    private RadioButton btn;
+    String path;
+    public final static String APP_PATH_SD_CARD = "/DesiredSubfolderName/";
+    public final static String APP_THUMBNAIL_PATH_SD_CARD = "thumbnails";
+
 
 
     /**
@@ -209,13 +223,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-
                 startActivityForResult(intent, IMAGE_UPLOAD_REQUEST);
-                            }
+
+            }
          });
 
 
+
     }
+
 
 
 
@@ -238,7 +254,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
+
     }
+
+
+    //************
+    //Save picture to internal memory
+    //************
+    public boolean saveImageToInternalStorage(Bitmap image) {
+
+        try {
+        // Use the compress method on the Bitmap object to write image to
+        // the OutputStream
+        //user may name the picture file in any way he wishes. Default is "desiredFilename"
+            FileOutputStream fos = openFileOutput("desiredFilename.png", Context.MODE_PRIVATE);
+
+        // Writing the bitmap to the output stream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+            Log.e("saveToInternalStorage()", e.getMessage());
+            return false;
+        }
+    }
+    //************
+    //end of save picture to internal memory
+    //************
+
+
+    //************
+    //Load picture from internal memory
+    //************
+    public boolean isSdReadable() {
+
+        boolean mExternalStorageAvailable = false;
+        String state = Environment.getExternalStorageState();
+
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+        // We can read and write the media
+            mExternalStorageAvailable = true;
+            Log.i("isSdReadable", "External storage card is readable.");
+        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+        // We can only read the media
+            Log.i("isSdReadable", "External storage card is readable.");
+            mExternalStorageAvailable = true;
+        } else {
+        // all we need to know is we can neither read nor write
+            mExternalStorageAvailable = false;
+        }
+
+        return mExternalStorageAvailable;
+    }
+
+    public Bitmap getThumbnail(String filename) {
+
+        String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + APP_PATH_SD_CARD + APP_THUMBNAIL_PATH_SD_CARD;
+        Bitmap thumbnail = null;
+
+
+        // If no file on external storage, look in internal storage
+        if (thumbnail == null) {
+            try {
+                File filePath = getFileStreamPath(filename);
+                FileInputStream fi = new FileInputStream(filePath);
+                thumbnail = BitmapFactory.decodeStream(fi);
+            } catch (Exception ex) {
+                Log.e(LOG_TAG + "getThumbnail() failed", ex.getMessage());
+            }
+        }
+        return thumbnail;
+    }
+    //******
+    // end of load picture from internal memory
+    //******
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
@@ -299,14 +389,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Get the image file location
                             Bitmap bmp = BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor());
 
+                            //save to internal storage
+                            saveImageToInternalStorage(bmp);
+
                             // Make the image into a circle
                             RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(), bmp);
                             roundedBitmapDrawable.setCircular(true);
                             imgButton.setImageDrawable(roundedBitmapDrawable);
-
-
                         }
             }
+
+
 
 
     public void setActionBarTitle(String title) {
@@ -321,5 +414,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    //******
+    //check if the picture exists in the internal memory before trying to load the picture to prevent crash
+    //******
+    public boolean fileExistance(String fname){
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
+    }
+    //end of file existance code
 
 }
