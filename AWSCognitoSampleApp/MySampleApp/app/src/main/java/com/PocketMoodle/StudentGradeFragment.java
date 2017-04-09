@@ -79,7 +79,7 @@ public class StudentGradeFragment extends Fragment {
 
         threadGetGrades.start();
         while (threadGetGrades.isAlive()){
-            // Give the method some time to get all the announcements for class
+            // Give the method some time to get all the grades for the class
         }
 
         // Sets used to store temporal data
