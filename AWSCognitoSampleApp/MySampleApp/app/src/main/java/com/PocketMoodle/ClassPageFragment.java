@@ -3,7 +3,6 @@ package com.PocketMoodle;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.PocketMoodle.Services.AnnounServices;
-import com.PocketMoodle.Services.GetAllClass;
+import com.PocketMoodle.Services.ClassServices;
 import com.amazonaws.mobile.AWSMobileClient;
 
 import java.util.ArrayList;
@@ -81,7 +80,7 @@ public class ClassPageFragment extends Fragment{
     public ClassPageFragment() {
         Runnable runnable = new Runnable() {
             public void run(){
-                GetAllClass registered = new GetAllClass();
+                ClassServices registered = new ClassServices();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
                 taClasses = registered.GetAllClassYouAreTA();

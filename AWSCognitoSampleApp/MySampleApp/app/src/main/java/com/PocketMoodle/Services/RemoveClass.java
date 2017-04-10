@@ -16,22 +16,5 @@ public class RemoveClass {
     private final static String TAG = "FromRemoveClass";
 
 
-    public void removeClass(String ClassName) {
 
-        final DynamoDBMapper dynamoDBMapper = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
-        final UserDetailsDO note = new UserDetailsDO(); // Initialize the Notes Object
-        final String UserID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
-        note.setUserId(UserID);
-        note.setClassName(ClassName);
-
-
-        AmazonClientException lastException = null;
-
-        try {
-            dynamoDBMapper.delete(note);
-        } catch (final AmazonClientException ex) {
-            Log.e(TAG, ex.getMessage());
-        }
-
-    }
 }

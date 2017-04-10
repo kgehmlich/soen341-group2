@@ -16,7 +16,7 @@ import android.util.Log;
 import java.util.*;
 
 import com.PocketMoodle.Services.GradesServices;
-import com.PocketMoodle.Services.GetAllClass;
+import com.PocketMoodle.Services.ClassServices;
 import com.amazonaws.AmazonClientException;
 
 
@@ -25,7 +25,7 @@ import com.amazonaws.AmazonClientException;
  */
 public class AddGradeFragment extends Fragment {
 
-    private List<GetAllClass.User> studentList = new ArrayList<>(); // List of all students in the class
+    private List<ClassServices.User> studentList = new ArrayList<>(); // List of all students in the class
     private ArrayList<String> studentNameList = new ArrayList<>(); // Array containing just the names of the students
     private ArrayList<String> studentIdList = new ArrayList<>();
     public ArrayAdapter<String> studentListAdapter; // ArrayAdapter to link list of students to spinner
@@ -105,7 +105,7 @@ public class AddGradeFragment extends Fragment {
 
         Runnable runnable = new Runnable() {
             public void run() {
-                GetAllClass GetClassList = new GetAllClass();
+                ClassServices GetClassList = new ClassServices();
                 studentList = GetClassList.GetAllUsersInAClass(className);
             }
         };

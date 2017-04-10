@@ -1,7 +1,6 @@
 package com.PocketMoodle;
 
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,8 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.PocketMoodle.Services.GetAllClass;
-import com.PocketMoodle.Services.InsertUserDetails;
+import com.PocketMoodle.Services.ClassServices;
 import com.PocketMoodle.Services.RemoveClass;
 
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ public class RemoveClassFragment extends Fragment {
 
         Runnable runnable = new Runnable() {
             public void run() {
-                GetAllClass getAllClass = new GetAllClass();
+                ClassServices getAllClass = new ClassServices();
                 //classList = getAllClass.GetListOfClass();
                 classList = getAllClass.GetAllClassRegisteredIn();
 
@@ -103,8 +101,8 @@ public class RemoveClassFragment extends Fragment {
                         //String SpinnerChoice holds the class name the user chose
 
 
-                        RemoveClass remclass = new RemoveClass();
-                        remclass.removeClass(SpinnerChoice);
+                        ClassServices classServices = new ClassServices();
+                        classServices.removeClass(SpinnerChoice);
 
                     }
                 };

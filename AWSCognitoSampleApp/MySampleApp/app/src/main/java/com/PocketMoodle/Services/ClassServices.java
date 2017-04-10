@@ -5,6 +5,8 @@ package com.PocketMoodle.Services;
  */
 
 import android.util.Log;
+
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
@@ -15,12 +17,12 @@ import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import java.util.*;
 
-public class GetAllClass {
+public class ClassServices {
     static List allClass;
     static List allClassRegisteredIn;
     List allClassYouAreTA;
     List allClassYouAreStu;
-    private final static String TAG = "From GetAllClass: ";
+    private final static String TAG = "From ClassServices: ";
     static AmazonDynamoDB client = AWSMobileClient.defaultMobileClient().getDynamoDBClient();
     final String ACTUAL_USER_ID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
     List<User> allUserInThisClass;
@@ -218,5 +220,25 @@ public class GetAllClass {
             Log.e(TAG, exTA.getMessage());
         }
         return allClassYouAreStu;
+    }
+
+
+    public void removeClass(String ClassName) {
+
+        final DynamoDBMapper dynamoDBMapper = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
+        final UserDetailsDO note = new UserDetailsDO(); // Initialize the Notes Object
+        final String UserID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
+        note.setUserId(UserID);
+        note.setClassName(ClassName);
+
+
+        AmazonClientException lastException = null;
+
+        try {
+            dynamoDBMapper.delete(note);
+        } catch (final AmazonClientException ex) {
+            Log.e(TAG, ex.getMessage());
+        }
+
     }
 }

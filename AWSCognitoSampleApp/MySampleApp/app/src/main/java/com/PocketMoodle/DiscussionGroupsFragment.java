@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.PocketMoodle.DiscussionBoard.MyDatabaseChat;
-import com.PocketMoodle.Services.GetAllClass;
+import com.PocketMoodle.Services.ClassServices;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,7 +62,7 @@ public class DiscussionGroupsFragment extends Fragment {
     public DiscussionGroupsFragment() {
         Runnable runnable = new Runnable() {
             public void run(){
-                GetAllClass registered = new GetAllClass();
+                ClassServices registered = new ClassServices();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
                 taClasses = registered.GetAllClassYouAreTA();

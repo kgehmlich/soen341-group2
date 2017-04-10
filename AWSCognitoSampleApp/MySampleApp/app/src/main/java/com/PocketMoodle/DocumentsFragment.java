@@ -22,10 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.PocketMoodle.Services.ClassServices;
 import com.PocketMoodle.Services.DocumentServices;
-import com.PocketMoodle.Services.GetAllClass;
 import com.amazonaws.mobile.util.ImageSelectorUtils;
 
 /**
@@ -49,7 +48,7 @@ public class DocumentsFragment extends Fragment implements View.OnClickListener 
     public DocumentsFragment() {
         Runnable runnable = new Runnable() {
             public void run(){
-                GetAllClass registered = new GetAllClass();
+                ClassServices registered = new ClassServices();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
                 taClasses = registered.GetAllClassYouAreTA();

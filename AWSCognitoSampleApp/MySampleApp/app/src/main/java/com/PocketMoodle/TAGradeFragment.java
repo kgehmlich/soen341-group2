@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ListView;
-import android.widget.TextView;
-import com.PocketMoodle.Services.GradesServices;
-import com.PocketMoodle.Services.GetAllClass;
+
+import com.PocketMoodle.Services.ClassServices;
+
 import java.util.*;
 
 
@@ -35,7 +35,7 @@ public class TAGradeFragment extends Fragment {
     private ArrayList<String> studentNamesListFromDatabase; // List of student names items for the class
     private ArrayList<String> userIdsListFromDatabase; // List of user id for the class
     private String className; // Holds the class name retrieved from the ClassPageFragment
-    private List<GetAllClass.User> studentList = new ArrayList<GetAllClass.User>(); // List of User Object which holds several information
+    private List<ClassServices.User> studentList = new ArrayList<ClassServices.User>(); // List of User Object which holds several information
     // Data that would be pass to another fragment
     private String userID;
     private String studentName;
@@ -119,7 +119,7 @@ public class TAGradeFragment extends Fragment {
         // Retrieve the list of Grade objects from the database by calling the specific API method
         Runnable runnable = new Runnable() {
             public void run() {
-                GetAllClass classService = new GetAllClass();
+                ClassServices classService = new ClassServices();
                 studentList = classService.GetAllUsersInAClass(className);
             }
         };

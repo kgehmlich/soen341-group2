@@ -20,7 +20,8 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import java.util.*;
-import com.PocketMoodle.Services.GetAllClass;
+
+import com.PocketMoodle.Services.ClassServices;
 import com.PocketMoodle.Services.InsertUserDetails;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -43,7 +44,7 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
         // Required empty public constructor
         Runnable runnable = new Runnable() {
             public void run() {
-                GetAllClass d = new GetAllClass();
+                ClassServices d = new ClassServices();
                 s = d.GetListOfClass();
 
             }
@@ -170,7 +171,7 @@ public class AddClassFragment extends Fragment implements AdapterView.OnItemSele
                     Runnable runnable = new Runnable() {
                         public void run() {
 
-                            GetAllClass ClassList = new GetAllClass();
+                            ClassServices ClassList = new ClassServices();
                             userClassList = ClassList.GetAllClassRegisteredIn();
 
                         }

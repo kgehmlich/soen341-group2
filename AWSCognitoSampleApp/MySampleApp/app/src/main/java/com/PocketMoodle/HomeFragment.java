@@ -13,9 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.PocketMoodle.Services.AnnounServices;
-import com.PocketMoodle.Services.GetAllClass;
-import com.PocketMoodle.Services.GradesServices;
+import com.PocketMoodle.Services.ClassServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +100,7 @@ public class HomeFragment extends Fragment {
 
         Runnable runnable = new Runnable() {
             public void run() {
-                GetAllClass GetClassForUser = new GetAllClass();
+                ClassServices GetClassForUser = new ClassServices();
                 ListOfSTUClassUserIsIn = GetClassForUser.GetAllClassYouAreStudent();
                 ListOfTAClassUserIsIn = GetClassForUser.GetAllClassYouAreTA();
             }
