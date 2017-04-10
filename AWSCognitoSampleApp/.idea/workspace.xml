@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+
     <list default="true" id="01c61415-76a5-4c7c-ae77-fcf7087d9630" name="Default" comment="">
       <change type="DELETED" beforePath="$PROJECT_DIR$/MySampleApp/.idea/libraries/animated_vector_drawable_25_1_1.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/MySampleApp/.idea/libraries/appcompat_v7_25_1_1.xml" afterPath="" />
@@ -24,6 +25,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MySampleApp/.idea/compiler.xml" afterPath="$PROJECT_DIR$/MySampleApp/.idea/compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MySampleApp/.idea/misc.xml" afterPath="$PROJECT_DIR$/MySampleApp/.idea/misc.xml" />
     </list>
+
     <ignored path="AWSCognitoSampleApp.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,7 +35,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
@@ -41,6 +45,8 @@
   <component name="FavoritesManager">
     <favorites_list name="AWSCognitoSampleApp" />
   </component>
+
+
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -52,7 +58,9 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
+
     <option name="width" value="1936" />
+
     <option name="height" value="1066" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -80,6 +88,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+
       <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="AndroidView">
@@ -91,6 +100,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/MySampleApp/build.gradle" />
+
   </component>
   <component name="RunManager">
     <configuration default="true" type="Application" factoryName="Application">
@@ -108,6 +118,7 @@
       <envs />
       <method />
     </configuration>
+
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -129,6 +140,7 @@
       <patterns />
       <method />
     </configuration>
+    
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -192,6 +204,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="false" />
     <layout>
@@ -222,6 +235,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
+
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -229,4 +243,6 @@
     <breakpoint-manager />
     <watches-manager />
   </component>
+
+
 </project>

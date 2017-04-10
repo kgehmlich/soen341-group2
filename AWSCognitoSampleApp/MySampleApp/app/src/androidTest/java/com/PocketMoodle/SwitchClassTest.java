@@ -85,7 +85,26 @@ public class SwitchClassTest {
                 allOf(withId(R.id.radioButton), withText("I am a TA"), isDisplayed()));
         appCompatRadioButton.perform(click());
 
+
+        //to add later
+       ///Enter password (moodle)
+        ViewInteraction editText4 = onView(
+                allOf(withClassName(is("android.widget.EditText")),
+                        withParent(allOf(withId(android.R.id.custom),
+                                withParent(withClassName(is("android.widget.FrameLayout"))))),
+                        isDisplayed()));
+        editText4.perform(replaceText("moodle"), closeSoftKeyboard());
+
+        //Click OK
         ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        withParent(allOf(withClassName(is("android.widget.LinearLayout")),
+                                withParent(withClassName(is("android.widget.LinearLayout"))))),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        appCompatButton = onView(
+
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
 
@@ -98,6 +117,7 @@ public class SwitchClassTest {
                 allOf(withId(android.R.id.text1), withText("COMP 346"),
                         isDisplayed()));
         appCompatCheckedTextView2.perform(click());
+
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
