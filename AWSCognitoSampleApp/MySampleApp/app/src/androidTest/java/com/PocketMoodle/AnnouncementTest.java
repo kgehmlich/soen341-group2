@@ -93,7 +93,23 @@ public class AnnouncementTest {
                 allOf(withId(R.id.radioButton), withText("I am a TA"), isDisplayed()));
         appCompatRadioButton.perform(click());
 
+        ///Enter password (moodle)
+        ViewInteraction editText4 = onView(
+                allOf(withClassName(is("android.widget.EditText")),
+                        withParent(allOf(withId(android.R.id.custom),
+                                withParent(withClassName(is("android.widget.FrameLayout"))))),
+                        isDisplayed()));
+        editText4.perform(replaceText("moodle"), closeSoftKeyboard());
+
+        //Click OK
         ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        withParent(allOf(withClassName(is("android.widget.LinearLayout")),
+                                withParent(withClassName(is("android.widget.LinearLayout"))))),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        appCompatButton = onView(
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
 
@@ -132,6 +148,13 @@ public class AnnouncementTest {
                 allOf(withId(R.id.okAddAnnouncement), withText("Okay"), isDisplayed()));
         appCompatButton3.perform(click());
 
+        //Wait for toast message to dissapear
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction textView = onView(
                 allOf(withId(android.R.id.text1), withText("a test"),
                         isDisplayed()));
@@ -145,10 +168,9 @@ public class AnnouncementTest {
                         isDisplayed()));
 
 
-        appCompatTextView2.perform(closeSoftKeyboard());
-        appCompatTextView2.perform(scrollTo());
-        appCompatCheckedTextView2.perform(click());
-        
+
+        appCompatTextView2.perform(click());
+
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.setAnnouncementDescription), withText("testing"),
                         isDisplayed()));
