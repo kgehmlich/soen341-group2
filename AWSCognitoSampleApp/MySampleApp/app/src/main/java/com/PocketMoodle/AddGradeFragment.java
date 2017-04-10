@@ -111,8 +111,8 @@ public class AddGradeFragment extends Fragment {
         }
 
         // Set to get and store usernames of students
-        Set<String> setOfStudentNames = new HashSet<>();
-        Set<String> setOfStudentIds = new HashSet<>();
+        ArrayList<String> setOfStudentNames = new ArrayList<>();
+        ArrayList<String> setOfStudentIds = new ArrayList<>();
 
         // Loop through and add students' usernames into the sets
         for(int usersCount=0; usersCount<studentList.size(); usersCount++){
