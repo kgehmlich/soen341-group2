@@ -27,6 +27,7 @@ public class AddGradeFragment extends Fragment {
 
     private List<GetAllClass.User> studentList = new ArrayList<>(); // List of all students in the class
     private ArrayList<String> studentNameList = new ArrayList<>(); // Array containing just the names of the students
+    private ArrayList<String> studentIdList = new ArrayList<>();
     public ArrayAdapter<String> studentListAdapter; // ArrayAdapter to link list of students to spinner
     private String studentChoice; // Student being graded
     private EditText titleChoiceField; // Field storing value of the grade item title
@@ -58,6 +59,7 @@ public class AddGradeFragment extends Fragment {
         Bundle bundle = getArguments();
         className =  bundle.getString("className");
 
+
         // Link variables to XML fields
         titleChoiceField = (EditText) view.findViewById(R.id.gradeItemTitle);
         gradeValueField = (EditText) view.findViewById(R.id.gradeValue);
@@ -77,8 +79,8 @@ public class AddGradeFragment extends Fragment {
 
                 // Scan through student list to find student whose username was selected, then get their userid
                 for(int usersCount=0; usersCount<studentNameList.size(); usersCount++){
-                    if(studentList.get(usersCount).getUsername() == studentChoice){
-                        userID = studentList.get(usersCount).getUserId();
+                    if(studentNameList.get(usersCount) == studentChoice){
+                        userID = studentIdList.get(usersCount);
                     }
                 }
                 submitGrade(); // Call helper method to submit the grade
@@ -110,6 +112,7 @@ public class AddGradeFragment extends Fragment {
 
         // Set to get and store usernames and userids of students
         Set<String> setOfStudentNames = new HashSet<>();
+        Set<String> setOfStudentIds = new HashSet<>();
 
         // Loop through and add students' usernames and IDs into the sets
         for(int usersCount=0; usersCount<studentList.size(); usersCount++){
@@ -117,6 +120,7 @@ public class AddGradeFragment extends Fragment {
             // Check that only students, and not TAs, are added
             if(studentList.get(usersCount).getTaOrStu() != 1.0){
                 setOfStudentNames.add(studentList.get(usersCount).getUsername());
+                setOfStudentIds.add(studentList.get(usersCount).getUserId());
             }
         }
 
@@ -124,9 +128,11 @@ public class AddGradeFragment extends Fragment {
         studentNameList.clear();
         studentNameList.addAll(setOfStudentNames);
         studentListAdapter.notifyDataSetChanged();
+        studentIdList.clear();
+        studentIdList.addAll(setOfStudentIds);
     }
 
-    // Helper method that creates thread to submit the grade
+    // Helper method that creates thread to submit grade
     private void submitGrade(){
 
         Runnable runnable2 = new Runnable() {
@@ -141,7 +147,7 @@ public class AddGradeFragment extends Fragment {
             submitGradeThread.start();
 
             while(submitGradeThread.isAlive()){
-                // Give the thread some time to run
+
             }
         } catch(AmazonClientException e){
             Toast failToast = Toast.makeText(getActivity(), "Error submitting grade", Toast.LENGTH_LONG);
