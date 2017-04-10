@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:id="@+id/gradesContent"
+        android:layout_width="150pt"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Grades"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/gradesItemsText"
+            android:layout_width="75pt"
+            android:layout_height="12pt"
+            android:text="Grades Items"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/title"
+            android:layout_alignBottom="@+id/gradesText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/gradesText"
+            android:layout_width="75pt"
+            android:layout_height="10pt"
+            android:text="Grades"
+            android:paddingLeft="12dp"
+            android:layout_below="@+id/title"
+            android:layout_toRightOf="@+id/gradesItemsText"
+            android:layout_toEndOf="@+id/gradesItemsText" />
+
+        <RelativeLayout
+            android:id="@+id/listBlock"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignEnd="@+id/gradesText"
+            android:layout_alignRight="@+id/gradesText"
+            android:layout_below="@+id/gradesItemsText">
+
+            <ListView
+                android:id="@+id/listOfGrades"
+                android:layout_width="75pt"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+
+            <ListView
+                android:id="@+id/listOfGradesItems"
+                android:layout_width="75pt"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>/
+
+    </RelativeLayout>
+
+</RelativeLayout>

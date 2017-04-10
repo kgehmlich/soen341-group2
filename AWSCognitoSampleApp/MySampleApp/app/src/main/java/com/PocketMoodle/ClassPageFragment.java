@@ -48,6 +48,12 @@ public class ClassPageFragment extends Fragment{
     Button openViewDocsDutton;
 
     // ****************************************************************************************
+    // Grades Variables
+    // ****************************************************************************************
+
+    Button openGrade;
+
+    // ****************************************************************************************
     // Discussion Group Variables
     // ****************************************************************************************
 
@@ -232,6 +238,47 @@ public class ClassPageFragment extends Fragment{
         });
         // Ending of View Documents code
 
+
+        // ****************************************************************************************
+        // Beginning of Grades Code
+        // ****************************************************************************************
+
+        // Button to open the Grade fragment
+        openGrade = (Button)view.findViewById(R.id.grades);
+        openGrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+
+                    // Fragment that will display the Grades, depending if you are a TA or student
+                    Fragment tempFragment;
+
+                    if(TAOrStudent == "Student"){
+                        tempFragment = new StudentGradeFragment();
+                    }
+
+                    else{
+                        tempFragment = new TAGradeFragment();
+                    }
+
+                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className", className);
+                    tempFragment.setArguments(bundle);
+
+                    // Start the new fragment and replace the current fragment with the new one
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, tempFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                } catch (Exception ex) {
+                    // In case the open fails display error message in log
+                    Log.d(TAG, "Error accessing Grades");
+                }
+            }
+        });
+        // Ending of Grades Code
 
         // ****************************************************************************************
         // Beginning of Discussion Board Code

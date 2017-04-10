@@ -64,15 +64,41 @@
 
     </RelativeLayout>
 
+    <!-- Grades Section layout -->
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:id="@+id/gradesSection"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/documentSection"
+        android:layout_alignStart="@+id/documentSection"
+        android:layout_below="@+id/documentSection"
+        android:gravity="center_horizontal"
+        android:layout_alignRight="@+id/documentSection"
+        android:layout_alignEnd="@+id/documentSection">
+
+        <Button
+            android:id="@+id/grades"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:text="@string/grades"/>
+
+    </RelativeLayout>
+
     <!-- Discussion Board Section layout -->
     <RelativeLayout
         android:orientation="horizontal"
         android:id="@+id/discussionSection"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/documentSection"
         android:gravity="center_horizontal"
-        android:layout_margin="10dp">
+        android:layout_below="@+id/gradesSection"
+        android:layout_alignLeft="@+id/gradesSection"
+        android:layout_alignStart="@+id/gradesSection"
+        android:layout_marginTop="12dp"
+        android:layout_alignRight="@+id/gradesSection"
+        android:layout_alignEnd="@+id/gradesSection">
 
         <Button
             android:id="@+id/openDiscussionBoard"
@@ -87,8 +113,12 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:id="@+id/announcementSection"
+        android:background="@drawable/custom_solid_border"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/discussionSection"
-        android:background="@drawable/custom_solid_border">
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/textView"

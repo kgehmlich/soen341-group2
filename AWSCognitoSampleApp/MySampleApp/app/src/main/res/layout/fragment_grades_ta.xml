@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grades"
+        android:gravity="center"
+        android:textSize="32dp"
+        android:layout_marginTop="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/studentNames"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Student Names"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true" />
+
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/studentNames"
+        android:layout_alignStart="@+id/studentNames"
+        android:layout_below="@+id/studentNames"
+        android:layout_above="@+id/addGrades">
+        <ListView
+            android:id="@+id/listOfStudents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/addGrades"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Grades"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
+
+
+
+
+</RelativeLayout>
