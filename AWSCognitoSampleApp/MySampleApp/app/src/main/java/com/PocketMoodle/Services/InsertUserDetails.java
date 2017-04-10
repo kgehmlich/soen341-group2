@@ -35,13 +35,7 @@ public class InsertUserDetails  {
         NOTE.setUserId(USER_ID);
         NOTE.setClassName(ClassName);
         NOTE.setUsername(USERNAME);
-
-
         NOTE.setTA(TA);
-
-
-
-        AmazonClientException lastException = null;
 
         try {
             DYNAMO_DB_MAPPER.save(NOTE);

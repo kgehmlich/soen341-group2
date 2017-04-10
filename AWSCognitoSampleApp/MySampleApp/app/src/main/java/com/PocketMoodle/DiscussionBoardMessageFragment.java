@@ -55,17 +55,17 @@ public class DiscussionBoardMessageFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_discussion_board_message, container, false);
 
         // Find the widgets in the fragment
-        buttonSendMessage             = (Button) v.findViewById(R.id.send_message);
-        messageToSend                 = (EditText) v.findViewById(R.id.message_to_send);
-        discussionTopicTitle          = (TextView) v.findViewById(R.id.discussion_title);
+        buttonSendMessage = (Button) v.findViewById(R.id.send_message);
+        messageToSend = (EditText) v.findViewById(R.id.message_to_send);
+        discussionTopicTitle = (TextView) v.findViewById(R.id.discussion_title);
         fragmentDiscussionMessageList = (ListView) v.findViewById(R.id.message_list);
 
         // Retrieve the arguments passed by the calling class that is needed to display correct messages
         Bundle bundle = getArguments();
 
-        userName        = bundle.getString("userName");
+        userName = bundle.getString("userName");
         discussionTopic = bundle.getString("discussionTopic");
-        className       = bundle.getString("className");
+        className = bundle.getString("className");
 
         listOfMessagesFromDatabase = new ArrayList<>(); // Arraylist to hold the messages for a group
 
@@ -138,11 +138,11 @@ public class DiscussionBoardMessageFragment extends Fragment {
         // Create an iterator and go through all the chilren and add all the messages to the set
         Iterator i = dataSnapshot.getChildren().iterator();
 
-        while (i.hasNext()){
-            String chatDateAndTime = (String) ((DataSnapshot)i.next()).getValue();
-            String chatMessage = (String) ((DataSnapshot)i.next()).getValue();
-            String chatUserName = (String) ((DataSnapshot)i.next()).getValue();
-            chatMessageSet.add(chatUserName +" Posted by "+ chatDateAndTime + "\n\n"+ chatMessage);
+        while (i.hasNext()) {
+            String chatDateAndTime = (String) ((DataSnapshot) i.next()).getValue();
+            String chatMessage = (String) ((DataSnapshot) i.next()).getValue();
+            String chatUserName = (String) ((DataSnapshot) i.next()).getValue();
+            chatMessageSet.add(chatUserName + " Posted by " + chatDateAndTime + "\n\n" + chatMessage);
         }
 
         return chatMessageSet;

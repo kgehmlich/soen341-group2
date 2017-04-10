@@ -35,17 +35,13 @@ public class RemoveClassFragment extends Fragment {
         Runnable runnable = new Runnable() {
             public void run() {
                 ClassServices getAllClass = new ClassServices();
-                //classList = getAllClass.GetListOfClass();
                 classList = getAllClass.GetAllClassRegisteredIn();
 
             }
         };
         Thread mythread = new Thread(runnable);
         mythread.start();
-        // TODO find another wait to do that wait time
-        while (mythread.isAlive()){
-
-        }
+        while (mythread.isAlive()) { }
 
     }
 
@@ -56,14 +52,13 @@ public class RemoveClassFragment extends Fragment {
         // Inflate the layout for this fragment
         ArrayList<String> option = new ArrayList<String>();
 
-        if(classList.size() > 0){
+        if (classList.size() > 0) {
             Log.d(TAG, "SIZE more 0");
-            for(String s2: classList){
+            for (String s2 : classList) {
                 option.add(s2);
             }
-        }
-        else
-            Log.d(TAG,"Size less than 0" );
+        } else
+            Log.d(TAG, "Size less than 0");
 
 
         View v = inflater.inflate(R.layout.fragment_remove_class, container, false);
@@ -81,15 +76,11 @@ public class RemoveClassFragment extends Fragment {
                 FragmentActivity tmpActi = getActivity();
                 final String SpinnerChoice;
 
-                if(spinnerIsChecked){
+                if (spinnerIsChecked) {
                     SpinnerChoice = removeClassSpinner.getSelectedItem().toString();
-                }
-                else{
+                } else {
                     Toast savetoast = Toast.makeText(getActivity(), "Please choose the course you wish to remove", Toast.LENGTH_LONG);
                     savetoast.show();
-                    /*final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
-                    errorDialogBuilder.setTitle("Please choose a course you wish to remove");
-                    errorDialogBuilder.show();*/
                     return;
                 }
 
@@ -98,7 +89,6 @@ public class RemoveClassFragment extends Fragment {
 
                         //Call API or something here to do something with the class the user chose to remove
                         //String SpinnerChoice holds the class name the user chose
-
 
                         ClassServices classServices = new ClassServices();
                         classServices.removeClass(SpinnerChoice);
@@ -110,10 +100,6 @@ public class RemoveClassFragment extends Fragment {
                 mythread2.start();
                 Toast savetoast = Toast.makeText(getActivity(), "Request to remove has been sent", Toast.LENGTH_LONG);
                 savetoast.show();
-                /*
-                final AlertDialog.Builder errorDialogBuilder = new AlertDialog.Builder(tmpActi);
-                errorDialogBuilder.setTitle("Request has been sent...");
-                errorDialogBuilder.show();*/
 
             }
         });

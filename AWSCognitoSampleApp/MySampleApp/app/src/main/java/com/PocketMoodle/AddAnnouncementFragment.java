@@ -47,9 +47,9 @@ public class AddAnnouncementFragment extends Fragment {
         className = bundle.getString("className");
 
         // Initialize the buttons and edit text's that the user will edit.
-        addAnnouncementTopic    = (Button) view.findViewById(R.id.okAddAnnouncement);
+        addAnnouncementTopic = (Button) view.findViewById(R.id.okAddAnnouncement);
         cancelAnnouncementTopic = (Button) view.findViewById(R.id.cancelAddAnnouncement);
-        announcementTitle       = (EditText) view.findViewById(R.id.announcementTitle);
+        announcementTitle = (EditText) view.findViewById(R.id.announcementTitle);
         announcementDescription = (EditText) view.findViewById(R.id.announcementDescription);
 
         userName = awsMobileClient.getIdentityManager().getUserName();
@@ -72,16 +72,16 @@ public class AddAnnouncementFragment extends Fragment {
 
                 // Wait so that we can retrieve all the announcements
                 // TODO find another wait to do that wait time
-                while (getAnnouncementThread.isAlive()){
+                while (getAnnouncementThread.isAlive()) {
 
                 }
 
                 Boolean announcementExists = false;
 
                 // Make sure the announcement with the same title does not already exist
-                for(AnnounServices.Announcement eachAnnouncement : announcementList) {
+                for (AnnounServices.Announcement eachAnnouncement : announcementList) {
 
-                    if(eachAnnouncement.getAnnouTitle().equals(announcementTitle.getText().toString())) {
+                    if (eachAnnouncement.getAnnouTitle().equals(announcementTitle.getText().toString())) {
                         announcementExists = true;
                         Toast announcementAlreadyExists = Toast.makeText(getActivity(), "Announcement with the same title already exists", Toast.LENGTH_LONG);
                         announcementAlreadyExists.show();
@@ -90,7 +90,7 @@ public class AddAnnouncementFragment extends Fragment {
                 }
 
                 // If announcement does not exist add the announcement
-                if(announcementExists == false) {
+                if (!announcementExists) {
                     Runnable runnable2 = new Runnable() {
                         public void run() {
 
@@ -103,7 +103,7 @@ public class AddAnnouncementFragment extends Fragment {
 
                     // Wait so that announcement can be added to database
                     // TODO find another wait to do that wait time
-                    while (addAnnouncementThread.isAlive()){
+                    while (addAnnouncementThread.isAlive()) {
 
                     }
 

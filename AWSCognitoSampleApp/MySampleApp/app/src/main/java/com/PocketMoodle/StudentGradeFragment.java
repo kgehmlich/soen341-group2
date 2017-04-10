@@ -1,7 +1,7 @@
 package com.PocketMoodle;
 
-import java.lang.reflect.Array;
 import java.util.*;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import com.PocketMoodle.Services.GradesServices;
 import com.amazonaws.mobile.AWSMobileClient;
+
 import java.util.ArrayList;
 
 /**
@@ -43,20 +45,20 @@ public class StudentGradeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_grades_student, container, false);
 
-        gradesListFromDatabase = new ArrayList<Double>(); // Initialize the list of grades to hold data from database
-        gradesItemsListFromDatabase = new ArrayList<String>(); // Initialize the list of grades items to hold data from database
+        gradesListFromDatabase = new ArrayList<>(); // Initialize the list of grades to hold data from database
+        gradesItemsListFromDatabase = new ArrayList<>(); // Initialize the list of grades items to hold data from database
 
         // Find the ListView on xml file to display data
         gradesStudents = (ListView) view.findViewById(R.id.listOfGrades);
         gradesItemsStudents = (ListView) view.findViewById(R.id.listOfGradesItems);
         // Retrieve the class name from the ClassPageFragment
         Bundle bundle = getArguments();
-        className =  bundle.getString("className");
+        className = bundle.getString("className");
 
         // Set adapter with our list and layout
-        gradesAdapter = new ArrayAdapter<Double>(getActivity(), android.R.layout.simple_list_item_1, gradesListFromDatabase);
+        gradesAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, gradesListFromDatabase);
         gradesStudents.setAdapter(gradesAdapter);
-        gradesItemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, gradesItemsListFromDatabase);
+        gradesItemsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, gradesItemsListFromDatabase);
         gradesItemsStudents.setAdapter(gradesItemsAdapter);
         // Get the newest data using the helper method
         updateGradesInfo();
@@ -66,20 +68,20 @@ public class StudentGradeFragment extends Fragment {
     }
 
     // Helper method that retrieves and updates our lists with all the grades and grades titles in the database
-    private void updateGradesInfo(){
+    private void updateGradesInfo() {
 
         // Retrieve the list of Grade objects from the database by calling the specific API method
         Runnable runnable = new Runnable() {
             public void run() {
                 GradesServices gS = new GradesServices();
-                gradesList = gS.GetAllGradesInClassForOneUser(className,userId);
+                gradesList = gS.GetAllGradesInClassForOneUser(className, userId);
             }
         };
 
         Thread threadGetGrades = new Thread(runnable);
 
         threadGetGrades.start();
-        while (threadGetGrades.isAlive()){
+        while (threadGetGrades.isAlive()) {
             // Give the method some time to get all the grades for the class
         }
 
@@ -88,7 +90,7 @@ public class StudentGradeFragment extends Fragment {
         ArrayList<String> setOfGradesItems = new ArrayList<>();
 
         // Loop which will put all grades and titles into the sets created above
-        for(int gradesCount = 0; gradesCount < gradesList.size(); gradesCount++ ) {
+        for (int gradesCount = 0; gradesCount < gradesList.size(); gradesCount++) {
             setOfGrades.add(gradesList.get(gradesCount).getGradeForUser());
             setOfGradesItems.add(gradesList.get(gradesCount).getTitleForGrade());
         }

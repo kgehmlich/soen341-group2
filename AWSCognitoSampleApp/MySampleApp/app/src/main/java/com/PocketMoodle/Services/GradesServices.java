@@ -3,7 +3,9 @@ package com.PocketMoodle.Services;
 /**
  * Created by Winterhart on 2017-03-25.
  */
+
 import android.util.Log;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -25,17 +27,19 @@ public class GradesServices {
     final String ACTUAL_USER_ID = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
     private final static String TABLE_NAME = "soengroup-mobilehub-1153046571-AllGrades";
     List<Grade> allGradeInOneClassForOneUser;
+
     /**
      * Grade abs data type for grade...
      */
-    public class Grade{
+    public class Grade {
         private String gradeID;
         private String className;
         private String titleForGrade;
         private String userId;
         private String userName;
         private double gradeForUser;
-        public Grade(String gradeid, String classname, String title, String userid, String username, double gradeforuser){
+
+        public Grade(String gradeid, String classname, String title, String userid, String username, double gradeforuser) {
             this.gradeID = gradeid;
             this.className = classname;
             this.titleForGrade = title;
@@ -43,13 +47,32 @@ public class GradesServices {
             this.userName = username;
             this.gradeForUser = gradeforuser;
         }
-        public String getGradeID(){return this.gradeID;}
-        public String getClassName(){return this.className;}
-        public String getTitleForGrade(){return this.titleForGrade;}
-        public String getUserId(){return this.userId;}
-        public String getUserName(){return this.userName;}
-        public double getGradeForUser(){return this.gradeForUser;}
+
+        public String getGradeID() {
+            return this.gradeID;
+        }
+
+        public String getClassName() {
+            return this.className;
+        }
+
+        public String getTitleForGrade() {
+            return this.titleForGrade;
+        }
+
+        public String getUserId() {
+            return this.userId;
+        }
+
+        public String getUserName() {
+            return this.userName;
+        }
+
+        public double getGradeForUser() {
+            return this.gradeForUser;
+        }
     }
+
     /**
      * Create an ID for each Grade
      */
@@ -74,7 +97,7 @@ public class GradesServices {
      * @param titleforgrade
      * @param gradeVal
      */
-    public void InsertGrade(String username, String userid, String className, String titleforgrade,  double gradeVal){
+    public void InsertGrade(String username, String userid, String className, String titleforgrade, double gradeVal) {
         // Fetch the default configured DynamoDB ObjectMapper
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final AllGradesDO grade = new AllGradesDO();
@@ -100,11 +123,12 @@ public class GradesServices {
 
     /**
      * Get all Grades for one user in one Class...
+     *
      * @param className
      * @param userID
      * @return (double) Grade of the userID
      */
-    public List<Grade> GetAllGradesInClassForOneUser(String className, String userID){
+    public List<Grade> GetAllGradesInClassForOneUser(String className, String userID) {
         allGradeInOneClassForOneUser = new ArrayList<>();
         DynamoDBMapper mapper = new DynamoDBMapper(client);
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
@@ -116,18 +140,17 @@ public class GradesServices {
                 .withExpressionAttributeValues(eav);
 
 
-        try{
+        try {
             List<AllGradesDO> allGradeForOneUser = mapper.scan(AllGradesDO.class, scan);
-            if(!allGradeForOneUser.isEmpty() && allGradeForOneUser.size() != 0){
-                for(AllGradesDO grade: allGradeForOneUser){
+            if (!allGradeForOneUser.isEmpty() && allGradeForOneUser.size() != 0) {
+                for (AllGradesDO grade : allGradeForOneUser) {
                     Grade aGrade = new Grade(grade.getGradeID(), grade.getClassName(), grade.getTitle(), grade.getUserID(), grade.getUsername(), grade.getGrade());
                     allGradeInOneClassForOneUser.add(aGrade);
 
 
                 }
             }
-        }
-        catch (Exception exTA){
+        } catch (Exception exTA) {
             Log.e(TAG, exTA.getMessage());
         }
 
@@ -141,7 +164,7 @@ public class GradesServices {
      * @param newGrade
      * @return
      */
-    public String UpdateAGradeForUser(String gradeid, String className, double newGrade){
+    public String UpdateAGradeForUser(String gradeid, String className, double newGrade) {
         String status = "";
         DynamoDBMapper mapper = new DynamoDBMapper(client);
         Map<String, AttributeValue> keySelect = new HashMap<String, AttributeValue>();
@@ -160,8 +183,7 @@ public class GradesServices {
         try {
             UpdateItemResult resultOfUpdate = client.updateItem(updateRequest);
             status = "OK";
-        }
-        catch (Exception ee){
+        } catch (Exception ee) {
             Log.e(TAG, ee.getMessage());
         }
         return status;
@@ -172,16 +194,16 @@ public class GradesServices {
      * @param gradeid
      * @param classname
      */
-    public void DeleteOneGradeForAUser(String gradeid, String classname){
+    public void DeleteOneGradeForAUser(String gradeid, String classname) {
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final AllGradesDO gradeDo = new AllGradesDO();
         final String gradeID = gradeid;
         gradeDo.setGradeID(gradeID);
         gradeDo.setClassName(classname);
-        try{
+        try {
             DYNAMO_DB_MAPPER.delete(gradeDo);
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
 

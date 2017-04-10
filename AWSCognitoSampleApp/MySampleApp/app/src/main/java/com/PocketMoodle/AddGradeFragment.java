@@ -57,7 +57,7 @@ public class AddGradeFragment extends Fragment {
 
         // Retrieve class name from TAGradeFragment
         Bundle bundle = getArguments();
-        className =  bundle.getString("className");
+        className = bundle.getString("className");
 
 
         // Link variables to XML fields
@@ -77,16 +77,14 @@ public class AddGradeFragment extends Fragment {
                     titleChoice = titleChoiceField.getText().toString(); // Retrieve title of assignment from UI
                     studentChoice = studentNameSpinner.getSelectedItem().toString(); // Retrieve name of student being graded from UI
                     gradeValue = Double.parseDouble(gradeValueField.getText().toString()); // Retrieve value of grade being assigned from UI
-                }
-                catch(Exception e)
-                {
+                } catch (Exception e) {
                     Toast emptyValues = Toast.makeText(getActivity(), "Fill in all the inputs", Toast.LENGTH_LONG);
                     emptyValues.show();
                     return;
                 }
                 // Scan through student list to find student whose username was selected, then get their userid
-                for(int usersCount=0; usersCount<studentNameList.size(); usersCount++){
-                    if(studentNameList.get(usersCount).equals(studentChoice)){
+                for (int usersCount = 0; usersCount < studentNameList.size(); usersCount++) {
+                    if (studentNameList.get(usersCount).equals(studentChoice)) {
                         userID = studentIdList.get(usersCount);
                     }
                 }
@@ -101,7 +99,7 @@ public class AddGradeFragment extends Fragment {
     }
 
     // Helper method to retrieve list of students from database
-    private void updateStudentList(){
+    private void updateStudentList() {
 
         Runnable runnable = new Runnable() {
             public void run() {
@@ -114,7 +112,7 @@ public class AddGradeFragment extends Fragment {
         getStudentsThread.start();
 
 
-        while(getStudentsThread.isAlive()){
+        while (getStudentsThread.isAlive()) {
             // Wait for thread to get all student User objects in the class
         }
 
@@ -123,10 +121,10 @@ public class AddGradeFragment extends Fragment {
         ArrayList<String> setOfStudentIds = new ArrayList<>();
 
         // Loop through and add students' usernames into the sets
-        for(int usersCount=0; usersCount<studentList.size(); usersCount++){
+        for (int usersCount = 0; usersCount < studentList.size(); usersCount++) {
 
             // Check that only students, and not TAs, are added
-            if(studentList.get(usersCount).getTaOrStu() != 1.0){
+            if (studentList.get(usersCount).getTaOrStu() != 1.0) {
                 setOfStudentNames.add(studentList.get(usersCount).getUsername());
                 setOfStudentIds.add(studentList.get(usersCount).getUserId());
             }
@@ -141,23 +139,24 @@ public class AddGradeFragment extends Fragment {
     }
 
     // Helper method that creates thread to submit grade
-    private void submitGrade(){
+    private void submitGrade() {
 
         Runnable runnable2 = new Runnable() {
 
             public void run() {
                 GradesServices tempGrade = new GradesServices();
                 tempGrade.InsertGrade(studentChoice, userID, className, titleChoice, gradeValue);
-            }};
+            }
+        };
 
-        try{
+        try {
             Thread submitGradeThread = new Thread(runnable2);
             submitGradeThread.start();
 
-            while(submitGradeThread.isAlive()){
+            while (submitGradeThread.isAlive()) {
 
             }
-        } catch(AmazonClientException e){
+        } catch (AmazonClientException e) {
             Toast failToast = Toast.makeText(getActivity(), "Error submitting grade", Toast.LENGTH_LONG);
             failToast.show();
             Log.e(TAG, e.getMessage());
