@@ -85,6 +85,7 @@ public class SwitchClassTest {
                 allOf(withId(R.id.radioButton), withText("I am a TA"), isDisplayed()));
         appCompatRadioButton.perform(click());
 
+
         //to add later
        ///Enter password (moodle)
         ViewInteraction editText4 = onView(
@@ -103,6 +104,7 @@ public class SwitchClassTest {
         appCompatButton.perform(click());
 
         appCompatButton = onView(
+
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
 

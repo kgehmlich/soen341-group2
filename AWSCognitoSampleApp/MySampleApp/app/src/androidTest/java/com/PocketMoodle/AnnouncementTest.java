@@ -159,7 +159,8 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(android.R.id.text1), withText("a test"),
                         isDisplayed()));
-        appCompatTextView2.perform(click());
+        
+        appCompatTextView2.perform(closeSoftKeyboard(), click());
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.setAnnouncementDescription), withText("testing"),
@@ -183,6 +184,7 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView3 = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
                         isDisplayed()));
+
         appCompatTextView3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
