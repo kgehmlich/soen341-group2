@@ -1,9 +1,16 @@
 package com.PocketMoodle.Services;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.PocketMoodle.R;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -20,7 +27,6 @@ import java.util.ArrayList;
 
 /**
  * Created by Kyle on 2017-03-19.
- *
  */
 
 public class DocumentServices {
@@ -31,7 +37,9 @@ public class DocumentServices {
 
     private Context _context;
 
-    public DocumentServices(Context context){
+    private File downloadCompleteFile;
+
+    public DocumentServices(Context context) {
         _context = context;
         _s3 = new AmazonS3Client(AWSMobileClient.defaultMobileClient().getIdentityManager().getCredentialsProvider());
     }
@@ -56,7 +64,7 @@ public class DocumentServices {
         // Upload selected file to Amazon S3 bucket
         TransferObserver transferObserver = transferUtility.upload(
                 BUCKET_NAME,
-                className+DELIMITER+documentName,
+                className + DELIMITER + documentName,
                 file
         );
 
@@ -65,14 +73,14 @@ public class DocumentServices {
 
 
     public ArrayList<String> listDocumentsForClass(String className) {
-        ListObjectsRequest lor = new ListObjectsRequest().withBucketName(BUCKET_NAME).withPrefix(className+DELIMITER).withDelimiter(DELIMITER);
+        ListObjectsRequest lor = new ListObjectsRequest().withBucketName(BUCKET_NAME).withPrefix(className + DELIMITER).withDelimiter(DELIMITER);
         ObjectListing objList = _s3.listObjects(lor);
 
         ArrayList<String> documents = new ArrayList<>();
 
         for (S3ObjectSummary obj : objList.getObjectSummaries()) {
             String key = obj.getKey();
-            key = key.substring(key.indexOf(DELIMITER)+1);
+            key = key.substring(key.indexOf(DELIMITER) + 1);
             documents.add(key);
         }
 
@@ -113,11 +121,14 @@ public class DocumentServices {
 
     /**
      * Downloads the specified document from AWS.
-     * @param documentName The document's filename
-     * @param className The class under which the document is stored
+     *
+     * @param documentName   The document's filename
+     * @param className      The class under which the document is stored
      * @param downloadedFile The location where the downloaded file will be stored
      */
     public void download(String documentName, String className, File downloadedFile) {
+
+        downloadCompleteFile = downloadedFile;
 
         // Create transfer utility (performs actual upload asynchronously)
         final TransferUtility transferUtility = new TransferUtility(_s3, _context);
@@ -125,7 +136,7 @@ public class DocumentServices {
         // Upload selected file to Amazon S3 bucket
         TransferObserver transferObserver = transferUtility.download(
                 BUCKET_NAME,
-                className+DELIMITER+documentName,
+                className + DELIMITER + documentName,
                 downloadedFile
         );
 
@@ -158,6 +169,19 @@ public class DocumentServices {
 
             if (newState == TransferState.COMPLETED) {
                 Toast.makeText(_context, "Download complete", Toast.LENGTH_LONG).show();
+
+                // Show notification to allow file to be opened (heavily borrowed from stack overflow)
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.fromFile(downloadCompleteFile));
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(_context, 0, intent, 0);
+
+                Notification notification = new NotificationCompat.Builder(_context).setContentTitle("Download Complete").setContentText(downloadCompleteFile.getName()).setSmallIcon(R.drawable.concordia).setContentIntent(pendingIntent).build();
+                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+                NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(0, notification);
             }
         }
     }
