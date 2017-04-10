@@ -167,8 +167,7 @@ public class AnnouncementTest {
                 allOf(withId(android.R.id.text1), withText("a test"),
                         isDisplayed()));
 
-
-
+        appCompatTextView2.perform(closeSoftKeyboard());
         appCompatTextView2.perform(click());
 
         ViewInteraction textView2 = onView(
