@@ -84,6 +84,7 @@ public class AddGradeFragment extends Fragment {
                     }
                 }
                 submitGrade(); // Call helper method to submit the grade
+                getFragmentManager().popBackStack(); // Return to previous fragment
             }
 
         });

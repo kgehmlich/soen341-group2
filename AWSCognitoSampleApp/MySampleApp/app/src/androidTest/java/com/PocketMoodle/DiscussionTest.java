@@ -35,14 +35,13 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class DiscussionTest {
 
+    //Start at sign in activity (skip the splash activity)
     @Rule
     public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
     @Test
     public void discussionTest() {
-         // Added a sleep statement to match the app's execution delay.
- // The recommended way to handle such scenarios is to use Espresso idling resources:
-  // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+         //Add some wait time. Precaution for travis
 try {
  Thread.sleep(15000);
  } catch (InterruptedException e) {
@@ -50,7 +49,7 @@ try {
  }
         
 
-        
+        //Signing in
         ViewInteraction editText2 = onView(
 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText2.perform(replaceText("mewtrandell"), closeSoftKeyboard());
@@ -63,12 +62,14 @@ allOf(withId(R.id.signIn_editText_password), isDisplayed()));
 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
 
+        //Some more wait time so that the message that appears after sign in disappears
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
+        //Adding a class to access discussion board
         ViewInteraction appCompatImageButton = onView(
 allOf(withContentDescription("Open"),
 withParent(withId(R.id.nav_action)),
@@ -99,16 +100,14 @@ allOf(withId(R.id.design_menu_item_text), withText("Home Page"), isDisplayed()))
         
         ViewInteraction appCompatTextView = onView(
 allOf(withId(android.R.id.text1), withText("COEN 341"),
-childAtPosition(
-withId(R.id.TAclassList),
-0),
 isDisplayed()));
         appCompatTextView.perform(click());
         
         ViewInteraction appCompatButton2 = onView(
 allOf(withId(R.id.openDiscussionBoard), withText("Open Discussion Board"), isDisplayed()));
         appCompatButton2.perform(click());
-        
+
+        //Adding a new discussion group
         ViewInteraction appCompatButton3 = onView(
 allOf(withId(R.id.add_discussion_group), withText("+"), isDisplayed()));
         appCompatButton3.perform(click());
@@ -126,12 +125,12 @@ allOf(withId(android.R.id.button1), withText("Add")));
         
         ViewInteraction appCompatTextView2 = onView(
 allOf(withId(android.R.id.text1), withText("DiscTest"),
-childAtPosition(
-withId(R.id.discussion_group_list),
-0),
+
+
 isDisplayed()));
         appCompatTextView2.perform(click());
-        
+
+        //Send a message in newly created discussion group
         ViewInteraction appCompatEditText = onView(
 allOf(withId(R.id.message_to_send), isDisplayed()));
         appCompatEditText.perform(replaceText("hello"), closeSoftKeyboard());
@@ -149,10 +148,12 @@ IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class),
 0)),
 0),
 isDisplayed()));
+        //Check that message has been sent
         textView.check(matches(withText(endsWith("hello"))));
         
         pressBack();
-        
+
+        //Remove discussion group
         ViewInteraction appCompatButton6 = onView(
 allOf(withId(R.id.remove_discussion_group), withText("-"), isDisplayed()));
         appCompatButton6.perform(click());
