@@ -48,7 +48,7 @@ public class ViewDocumentsFragment extends Fragment {
 
 
     public void onDocumentClick(String documentName) {
-        Toast.makeText(getContext(), documentName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Downloading " + documentName, Toast.LENGTH_SHORT).show();
 
         // Download file using DocumentServices.download()
         if (isExternalStorageWritable()) {
