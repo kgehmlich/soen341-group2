@@ -110,11 +110,11 @@ public class AddGradeFragment extends Fragment {
             // Wait for thread to get all student User objects in the class
         }
 
-        // Set to get and store usernames and userids of students
+        // Set to get and store usernames of students
         Set<String> setOfStudentNames = new HashSet<>();
         Set<String> setOfStudentIds = new HashSet<>();
 
-        // Loop through and add students' usernames and IDs into the sets
+        // Loop through and add students' usernames into the sets
         for(int usersCount=0; usersCount<studentList.size(); usersCount++){
 
             // Check that only students, and not TAs, are added
