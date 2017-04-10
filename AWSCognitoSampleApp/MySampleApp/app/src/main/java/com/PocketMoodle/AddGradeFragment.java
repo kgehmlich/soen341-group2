@@ -39,8 +39,8 @@ public class AddGradeFragment extends Fragment {
     private static final String TAG = "AddGradeFragment";
 
     // UI elements
-    Spinner studentNameSpinner;
-    Button submitGrade;
+    private Spinner studentNameSpinner;
+    private Button submitGrade;
 
     public AddGradeFragment() {
         // Required empty public constructor
@@ -73,10 +73,17 @@ public class AddGradeFragment extends Fragment {
         submitGrade.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-                titleChoice = titleChoiceField.getText().toString(); // Retrieve title of assignment from UI
-                studentChoice = studentNameSpinner.getSelectedItem().toString(); // Retrieve name of student being graded from UI
-                gradeValue = Double.parseDouble(gradeValueField.getText().toString()); // Retrieve value of grade being assigned from UI
-
+                try {
+                    titleChoice = titleChoiceField.getText().toString(); // Retrieve title of assignment from UI
+                    studentChoice = studentNameSpinner.getSelectedItem().toString(); // Retrieve name of student being graded from UI
+                    gradeValue = Double.parseDouble(gradeValueField.getText().toString()); // Retrieve value of grade being assigned from UI
+                }
+                catch(Exception e)
+                {
+                    Toast emptyValues = Toast.makeText(getActivity(), "Fill in all the inputs", Toast.LENGTH_LONG);
+                    emptyValues.show();
+                    return;
+                }
                 // Scan through student list to find student whose username was selected, then get their userid
                 for(int usersCount=0; usersCount<studentNameList.size(); usersCount++){
                     if(studentNameList.get(usersCount).equals(studentChoice)){

@@ -73,6 +73,7 @@
         android:layout_alignLeft="@+id/documentSection"
         android:layout_alignStart="@+id/documentSection"
         android:layout_below="@+id/documentSection"
+        android:gravity="center_horizontal"
         android:layout_alignRight="@+id/documentSection"
         android:layout_alignEnd="@+id/documentSection">
 
@@ -91,7 +92,7 @@
         android:id="@+id/discussionSection"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-
+        android:gravity="center_horizontal"
         android:layout_below="@+id/gradesSection"
         android:layout_alignLeft="@+id/gradesSection"
         android:layout_alignStart="@+id/gradesSection"

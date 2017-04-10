@@ -33,7 +33,7 @@ public class StudentGradeFragment extends Fragment {
     private ArrayList<String> gradesItemsListFromDatabase; // List of grades items for the class
     private List<GradesServices.Grade> gradesList = new ArrayList<GradesServices.Grade>(); // List of Grades Object which holds several information
     // User ID for the current user, needed for the GetAllGradesInClassForOneUser() method
-    final String userId = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
+    private final String userId = AWSMobileClient.defaultMobileClient().getIdentityManager().getCachedUserID().toString();
     // Holds the class name retrieved from the ClassPageFragment
     private String className;
 
