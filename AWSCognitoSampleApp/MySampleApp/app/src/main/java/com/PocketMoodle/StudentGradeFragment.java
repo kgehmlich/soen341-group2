@@ -1,5 +1,6 @@
 package com.PocketMoodle;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -83,8 +84,8 @@ public class StudentGradeFragment extends Fragment {
         }
 
         // Sets used to store temporal data
-        Set<Double> setOfGrades = new HashSet<>();
-        Set<String> setOfGradesItems = new HashSet<>();
+        ArrayList<Double> setOfGrades = new ArrayList<>();
+        ArrayList<String> setOfGradesItems = new ArrayList<>();
 
         // Loop which will put all grades and titles into the sets created above
         for(int gradesCount = 0; gradesCount < gradesList.size(); gradesCount++ ) {
