@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.PocketMoodle.Services.GradesServices;
 import com.PocketMoodle.Services.GetAllClass;
 import java.util.*;
@@ -33,6 +35,8 @@ public class TAGradeFragment extends Fragment {
     private ArrayList<String> studentNamesListFromDatabase; // List of student names items for the class
     private String className; // Holds the class name retrieved from the ClassPageFragment
     private List<GetAllClass.User> studentList = new ArrayList<GetAllClass.User>(); // List of User Object which holds several information
+    private String userID;
+    private String studentName;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,6 +51,30 @@ public class TAGradeFragment extends Fragment {
         Bundle bundle = getArguments();
         className =  bundle.getString("className");
         updateStudentsInfo();
+
+        studentNames.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            // When a student from the list is clicked jump to the selected student grades fragment
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                SelectedStudentGradesFragment selectedStudentGradesFragment = new SelectedStudentGradesFragment();
+                userID = studentList.get(position).getUserId();
+                studentName = studentList.get(position).getUsername();
+                // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                Bundle bundle = new Bundle();
+                bundle.putString("className", className);
+                bundle.putString("userID", userID);
+                bundle.putString("studentName", studentName);
+                selectedStudentGradesFragment.setArguments(bundle);
+
+                // Start the new fragment and replace the current fragment with the new one
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, selectedStudentGradesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         // Button to open the AddGrade fragment
         openAddGrade = (Button) view.findViewById(R.id.addGrades);
@@ -104,7 +132,11 @@ public class TAGradeFragment extends Fragment {
 
         // Loop which will put all student names into the sets created above
         for(int usersCount = 0; usersCount < studentList.size(); usersCount++ ) {
-            setOfStudentNames.add(studentList.get(usersCount).getUsername());
+
+            // Make sure TAs are not in the list
+            if(studentList.get(usersCount).getTaOrStu() != 1.0){
+                setOfStudentNames.add(studentList.get(usersCount).getUsername());
+            }
         }
 
         // Clear the old list and update with new data

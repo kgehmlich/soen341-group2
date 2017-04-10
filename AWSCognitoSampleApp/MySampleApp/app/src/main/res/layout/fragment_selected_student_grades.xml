@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    tools:context="com.PocketMoodle.SelectedStudentGradesFragment">
+
+    <RelativeLayout
+        android:id="@+id/selectedStudentGradesContent"
+        android:layout_width="150pt"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/selectedStudentGradesTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/selectedStudentGradesItemsText"
+            android:layout_width="75pt"
+            android:layout_height="12pt"
+            android:text="Grades Items"
+            android:paddingLeft="10dp"
+            android:layout_below="@+id/selectedStudentGradesTitle"
+            android:layout_alignBottom="@+id/selectedStudentGradesText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/selectedStudentGradesText"
+            android:layout_width="75pt"
+            android:layout_height="10pt"
+            android:text="Grades"
+            android:paddingLeft="12dp"
+            android:layout_below="@+id/selectedStudentGradesTitle"
+            android:layout_toRightOf="@+id/selectedStudentGradesItemsText"
+            android:layout_toEndOf="@+id/selectedStudentGradesItemsText" />
+
+        <RelativeLayout
+            android:id="@+id/listBlock"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignEnd="@+id/selectedStudentGradesText"
+            android:layout_alignRight="@+id/selectedStudentGradesText"
+            android:layout_below="@+id/selectedStudentGradesItemsText">
+
+            <ListView
+                android:id="@+id/listOfSelectedStudentGrades"
+                android:layout_width="75pt"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+
+            <ListView
+                android:id="@+id/listOfSelectedStudentGradesItems"
+                android:layout_width="75pt"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
