@@ -71,7 +71,9 @@ public class DocumentServices {
         ArrayList<String> documents = new ArrayList<>();
 
         for (S3ObjectSummary obj : objList.getObjectSummaries()) {
-            documents.add(obj.getKey());
+            String key = obj.getKey();
+            key = key.substring(key.indexOf(DELIMITER)+1);
+            documents.add(key);
         }
 
         return documents;
@@ -84,7 +86,7 @@ public class DocumentServices {
      */
     private class UploadListener implements TransferListener {
 
-        private final static String TAG = "S3";
+        private final static String TAG = "S3 Upload";
 
         // Simply updates the UI list when notified.
         @Override
@@ -109,4 +111,54 @@ public class DocumentServices {
     }
 
 
+    /**
+     * Downloads the specified document from AWS.
+     * @param documentName The document's filename
+     * @param className The class under which the document is stored
+     * @param downloadedFile The location where the downloaded file will be stored
+     */
+    public void download(String documentName, String className, File downloadedFile) {
+
+        // Create transfer utility (performs actual upload asynchronously)
+        final TransferUtility transferUtility = new TransferUtility(_s3, _context);
+
+        // Upload selected file to Amazon S3 bucket
+        TransferObserver transferObserver = transferUtility.download(
+                BUCKET_NAME,
+                className+DELIMITER+documentName,
+                downloadedFile
+        );
+
+        transferObserver.setTransferListener(new DownloadListener());
+    }
+
+    /**
+     * Listener for file uploads
+     * Logs progress and state changes. Shows a Toast when upload is complete.
+     */
+    private class DownloadListener implements TransferListener {
+
+        private final static String TAG = "S3 Download";
+
+        // Simply updates the UI list when notified.
+        @Override
+        public void onError(int id, Exception e) {
+            Log.e(TAG, "Error during upload: " + id, e);
+        }
+
+        @Override
+        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+            Log.d(TAG, String.format("onProgressChanged: %d, total: %d, current: %d",
+                    id, bytesTotal, bytesCurrent));
+        }
+
+        @Override
+        public void onStateChanged(int id, TransferState newState) {
+            Log.d(TAG, "onStateChanged: " + id + ", " + newState);
+
+            if (newState == TransferState.COMPLETED) {
+                Toast.makeText(_context, "Download complete", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 }
