@@ -13,9 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.PocketMoodle.Services.AnnounServices;
-import com.PocketMoodle.Services.GetAllClass;
-import com.PocketMoodle.Services.GradesServices;
+import com.PocketMoodle.Services.ClassServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +50,7 @@ public class HomeFragment extends Fragment {
                                     int position, long id) {
                 ClassPageFragment classPageFragment = new ClassPageFragment();
 
-                String className = ((TextView)view).getText().toString();
+                String className = ((TextView) view).getText().toString();
 
                 // Bundle to add arguments the fragment will need to function(like what a constructor does)
                 Bundle bundle = new Bundle();
@@ -72,28 +70,28 @@ public class HomeFragment extends Fragment {
         });
         TAclassListXmlLink.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                    // When a class from the TA class list is clicked do something
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        ClassPageFragment classPageFragment = new ClassPageFragment();
+            // When a class from the TA class list is clicked do something
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                ClassPageFragment classPageFragment = new ClassPageFragment();
 
-                        String className = ((TextView)view).getText().toString(); // Get chosen class name from list
+                String className = ((TextView) view).getText().toString(); // Get chosen class name from list
 
-                        // Bundle to add arguments the fragment will need to function(like what a constructor does)
-                        Bundle bundle = new Bundle();
-                        bundle.putString("className", className);
-                        bundle.putString("TAOrStudent", "TA");
-                        classPageFragment.setArguments(bundle);
+                // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                Bundle bundle = new Bundle();
+                bundle.putString("className", className);
+                bundle.putString("TAOrStudent", "TA");
+                classPageFragment.setArguments(bundle);
 
-                        // Start the new fragment and replace the current fragment with the new one
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.main_container, classPageFragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                        ((MainActivity) getActivity()).setActionBarTitle(className);
-                    }
-                });
+                // Start the new fragment and replace the current fragment with the new one
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                ((MainActivity) getActivity()).setActionBarTitle(className);
+            }
+        });
 
         /**
          * ListOfClassIsIn is a list of all class the user is registered in...
@@ -102,7 +100,7 @@ public class HomeFragment extends Fragment {
 
         Runnable runnable = new Runnable() {
             public void run() {
-                GetAllClass GetClassForUser = new GetAllClass();
+                ClassServices GetClassForUser = new ClassServices();
                 ListOfSTUClassUserIsIn = GetClassForUser.GetAllClassYouAreStudent();
                 ListOfTAClassUserIsIn = GetClassForUser.GetAllClassYouAreTA();
             }
@@ -136,9 +134,4 @@ public class HomeFragment extends Fragment {
 
 
     }
-
-    /*void goToDocumentFragment(){
-        Intent intent = new Intent (getActivity(), DocumentsFragment.class);                        // Connects profile activity with mainactivity for the transition
-        startActivity(intent);
-    }*/
 }

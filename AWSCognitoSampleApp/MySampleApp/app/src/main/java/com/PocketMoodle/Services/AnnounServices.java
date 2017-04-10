@@ -3,8 +3,10 @@ package com.PocketMoodle.Services;
 /**
  * Created by Winterhart on 2017-03-26.
  */
+
 import android.nfc.Tag;
 import android.util.Log;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -19,6 +21,7 @@ import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 public class AnnounServices {
     private final static String TAG = "From AnnounService: ";
     static AmazonDynamoDB client = AWSMobileClient.defaultMobileClient().getDynamoDBClient();
@@ -34,49 +37,58 @@ public class AnnounServices {
 
         /**
          * Creating a  random Announcement ID
+         *
          * @return
          */
         public String nextAnnouncementId() {
             return new BigInteger(130, random).toString(32);
         }
     }
+
     public class Announcement {
         private String annouID;
         private String annouMainObj;
         private String annouDate;
         private String annouAuthor;
         private String annouTitle;
-         Announcement(String id, String mainobj, String annoudate, String annouauthor, String title){
+
+        Announcement(String id, String mainobj, String annoudate, String annouauthor, String title) {
             this.annouID = id;
-             this.annouMainObj = mainobj;
+            this.annouMainObj = mainobj;
             this.annouDate = annoudate;
             this.annouAuthor = annouauthor;
-             this.annouTitle = title;
+            this.annouTitle = title;
         }
-        public String getAnnouMainObj(){
+
+        public String getAnnouMainObj() {
             return this.annouMainObj;
         }
-        public String getAnnouDate(){
+
+        public String getAnnouDate() {
             return this.annouDate;
         }
-        public String getAnnouAuthor(){
-            return  this.annouAuthor;
+
+        public String getAnnouAuthor() {
+            return this.annouAuthor;
         }
-        public String getAnnouTitle(){
-            return  this.annouTitle;
+
+        public String getAnnouTitle() {
+            return this.annouTitle;
         }
-        public String getAnnouID(){
+
+        public String getAnnouID() {
             return this.annouID;
         }
 
     }
+
     /**
      * This function will insert an announcement
+     *
      * @param classname
-     * @param announcement
-     * The parameter username, userId and Date are added automatically
+     * @param announcement The parameter username, userId and Date are added automatically
      */
-    public void InsertAnnouncement(String classname, String title, String announcement){
+    public void InsertAnnouncement(String classname, String title, String announcement) {
         // Fetch the default configured DynamoDB ObjectMapper
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final AnnouncementDO anAnnoucement = new AnnouncementDO();
@@ -98,8 +110,6 @@ public class AnnounServices {
         anAnnoucement.setTitle(title);
 
 
-
-
         AmazonClientException lastException = null;
 
         try {
@@ -114,10 +124,11 @@ public class AnnounServices {
      * This function return a List of all announcement for one class
      * The List is made of obj. Announcement which have an Author, date and
      * main message
+     *
      * @param classname
      * @return List of type Announcement
      */
-    public List<Announcement> GetAllAnnouncementsForClass(String classname){
+    public List<Announcement> GetAllAnnouncementsForClass(String classname) {
         allAnnouncementForOneClases = null;
         allAnnouncementForOneClases = new ArrayList<Announcement>();
 
@@ -129,19 +140,18 @@ public class AnnounServices {
                 .withFilterExpression("ClassName = :cn")
                 .withExpressionAttributeValues(eav);
 
-        try{
+        try {
             List<AnnouncementDO> announForOneClass = mapper.scan(AnnouncementDO.class, scanExpression);
-            if(!announForOneClass.isEmpty()){
-                for(AnnouncementDO announcementDO: announForOneClass){
+            if (!announForOneClass.isEmpty()) {
+                for (AnnouncementDO announcementDO : announForOneClass) {
                     Log.d(TAG, announcementDO.getMessage());
-                    Announcement announcement =  new Announcement(announcementDO.getID(), announcementDO.getMessage(), announcementDO.getDate(), announcementDO.getUsername(), announcementDO.getTitle());
+                    Announcement announcement = new Announcement(announcementDO.getID(), announcementDO.getMessage(), announcementDO.getDate(), announcementDO.getUsername(), announcementDO.getTitle());
                     allAnnouncementForOneClases.add(announcement);
 
                 }
             }
 
-        }
-        catch (Exception ee){
+        } catch (Exception ee) {
             Log.e(TAG, ee.getMessage());
         }
         return allAnnouncementForOneClases;
@@ -149,9 +159,10 @@ public class AnnounServices {
 
     /**
      * Function to remove an announcement, the ID is inside the object Announcement
+     *
      * @param announcementid unique string linked to an announcement
      */
-    public void RemoveAnAnnouncement(String announcementid, String classname){
+    public void RemoveAnAnnouncement(String announcementid, String classname) {
         final DynamoDBMapper DYNAMO_DB_MAPPER = AWSMobileClient.defaultMobileClient().getDynamoDBMapper();
         final AnnouncementDO anAnnoucement = new AnnouncementDO();
         final String announcementID = announcementid;

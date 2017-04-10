@@ -3,7 +3,6 @@ package com.PocketMoodle;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.PocketMoodle.Services.AnnounServices;
-import com.PocketMoodle.Services.GetAllClass;
+import com.PocketMoodle.Services.ClassServices;
 import com.amazonaws.mobile.AWSMobileClient;
 
 import java.util.ArrayList;
@@ -30,13 +29,12 @@ import java.util.Set;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ClassPageFragment extends Fragment{
+public class ClassPageFragment extends Fragment {
 
     private final AWSMobileClient awsMobileClient = AWSMobileClient.defaultMobileClient(); // To get user name of user
 
     private String className;
     private String TAOrStudent; // Will hold "TA" or "Student"
-    private String userName;
     private TextView classTitle;
     private static final String TAG = "ClassPageFragment";
 
@@ -80,8 +78,8 @@ public class ClassPageFragment extends Fragment{
 
     public ClassPageFragment() {
         Runnable runnable = new Runnable() {
-            public void run(){
-                GetAllClass registered = new GetAllClass();
+            public void run() {
+                ClassServices registered = new ClassServices();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
                 taClasses = registered.GetAllClassYouAreTA();
@@ -89,11 +87,12 @@ public class ClassPageFragment extends Fragment{
         };
         Thread mythread = new Thread(runnable);
         mythread.start();
-        while (mythread.isAlive()){
+        while (mythread.isAlive()) {
 
         }
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,9 +103,6 @@ public class ClassPageFragment extends Fragment{
         className = tempBundle.getString("className");
         TAOrStudent = tempBundle.getString("TAOrStudent");
 
-        // Getting the user's username
-        userName = awsMobileClient.getIdentityManager().getUserName();
-
         classTitle = (TextView) view.findViewById(R.id.setclassTitle);
         classTitle.setText(className);
 
@@ -115,7 +111,7 @@ public class ClassPageFragment extends Fragment{
         // ****************************************************************************************
 
         // Button to display file explorer beginning at root
-        openUploadDutton = (Button)view.findViewById(R.id.openUploadDocument);
+        openUploadDutton = (Button) view.findViewById(R.id.openUploadDocument);
         openUploadDutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,9 +144,9 @@ public class ClassPageFragment extends Fragment{
         //Creating selectOption array to store the available options from dropdown
         ArrayList<String> selectOption = new ArrayList<String>();
         //Adds classes to array list
-        if(registeredClasses.size() > 0){
+        if (registeredClasses.size() > 0) {
             selectOption.add("Change class");
-            for(String r: registeredClasses){
+            for (String r : registeredClasses) {
                 selectOption.add(r);
             }
         }
@@ -168,35 +164,36 @@ public class ClassPageFragment extends Fragment{
                 String className = parent.getItemAtPosition(position).toString();
                 if (className.equals("Change class")) {
 
-                } else {if (taClasses.contains(className)) { //Checks list of TA classes of users and compares to bundle className to determine if TA class selected
-                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
-                    Bundle bundle = new Bundle();
-                    bundle.putString("className", className);
-                    bundle.putString("TAOrStudent", "TA"); // Sets TA user true, and gives TA priviledge to page
-                    classPageFragment.setArguments(bundle);
-
-//                 Start the new fragment and replace the current fragment with the new one
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    ((MainActivity) getActivity()).setActionBarTitle(className);
                 } else {
-                    // Bundle to add arguments the fragment will need to function(like what a constructor does)
-                    Bundle bundle = new Bundle();
-                    bundle.putString("className", className);
-                    bundle.putString("TAOrStudent", "Student"); // Gives studen priviledge
-                    classPageFragment.setArguments(bundle);
+                    if (taClasses.contains(className)) { //Checks list of TA classes of users and compares to bundle className to determine if TA class selected
+                        // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                        Bundle bundle = new Bundle();
+                        bundle.putString("className", className);
+                        bundle.putString("TAOrStudent", "TA"); // Sets TA user true, and gives TA privilege to page
+                        classPageFragment.setArguments(bundle);
 
 //                 Start the new fragment and replace the current fragment with the new one
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_container, classPageFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    ((MainActivity) getActivity()).setActionBarTitle(className);
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        ((MainActivity) getActivity()).setActionBarTitle(className);
+                    } else {
+                        // Bundle to add arguments the fragment will need to function(like what a constructor does)
+                        Bundle bundle = new Bundle();
+                        bundle.putString("className", className);
+                        bundle.putString("TAOrStudent", "Student"); // Gives student privilege
+                        classPageFragment.setArguments(bundle);
+
+//                 Start the new fragment and replace the current fragment with the new one
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.main_container, classPageFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                        ((MainActivity) getActivity()).setActionBarTitle(className);
+                    }
                 }
             }
-        }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -209,7 +206,7 @@ public class ClassPageFragment extends Fragment{
         // ****************************************************************************************
 
         // Button to display file explorer beginning at root
-        openViewDocsDutton = (Button)view.findViewById(R.id.openViewDocuments);
+        openViewDocsDutton = (Button) view.findViewById(R.id.openViewDocuments);
         openViewDocsDutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -244,7 +241,7 @@ public class ClassPageFragment extends Fragment{
         // ****************************************************************************************
 
         // Button to open the Grade fragment
-        openGrade = (Button)view.findViewById(R.id.grades);
+        openGrade = (Button) view.findViewById(R.id.grades);
         openGrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -253,11 +250,9 @@ public class ClassPageFragment extends Fragment{
                     // Fragment that will display the Grades, depending if you are a TA or student
                     Fragment tempFragment;
 
-                    if(TAOrStudent == "Student"){
+                    if (TAOrStudent == "Student") {
                         tempFragment = new StudentGradeFragment();
-                    }
-
-                    else{
+                    } else {
                         tempFragment = new TAGradeFragment();
                     }
 
@@ -285,7 +280,7 @@ public class ClassPageFragment extends Fragment{
         // ****************************************************************************************
 
         // Button to display discussion board
-        openDiscussionGroup = (Button)view.findViewById(R.id.openDiscussionBoard);
+        openDiscussionGroup = (Button) view.findViewById(R.id.openDiscussionBoard);
         openDiscussionGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -320,10 +315,10 @@ public class ClassPageFragment extends Fragment{
         listOfAnnouncementsFromDatabase = new ArrayList<String>(); // Create a new ArrayList to hold announcements
 
         // Find the buttons to add and remove an announcement
-        addAnnouncementTopic    = (Button) view.findViewById(R.id.add_discussion_group);
+        addAnnouncementTopic = (Button) view.findViewById(R.id.add_discussion_group);
         removeAnnouncementTopic = (Button) view.findViewById(R.id.remove_discussion_group);
 
-        if(TAOrStudent.equals("Student")) {
+        if (TAOrStudent.equals("Student")) {
             addAnnouncementTopic.setVisibility(View.INVISIBLE);
             removeAnnouncementTopic.setVisibility(View.INVISIBLE);
         }
@@ -393,12 +388,12 @@ public class ClassPageFragment extends Fragment{
                     public void onClick(DialogInterface dialog, int which) {
 
                         // Make sure the announcement is in the spinner list.
-                        if(removeAnnouncementSpinner.getSelectedItem()!= null) {
+                        if (removeAnnouncementSpinner.getSelectedItem() != null) {
 
                             String removeAnnouncement = removeAnnouncementSpinner.getSelectedItem().toString();
 
                             // Find the chosen announcement by searching through all the announcements.
-                            for(AnnounServices.Announcement singleAnnouncement : announcementList) {
+                            for (AnnounServices.Announcement singleAnnouncement : announcementList) {
 
                                 if (singleAnnouncement.getAnnouTitle().equals(removeAnnouncement)) {
 
@@ -416,7 +411,7 @@ public class ClassPageFragment extends Fragment{
 
                                     Thread removeAnnouncementThread = new Thread(runnable);
                                     removeAnnouncementThread.start();
-                                    while (removeAnnouncementThread.isAlive()){
+                                    while (removeAnnouncementThread.isAlive()) {
 
                                     }
                                     updateAnnouncementList();
@@ -443,16 +438,16 @@ public class ClassPageFragment extends Fragment{
                 String author;      // Hold the author of the announcement
 
                 // Find the chosen announcement by searching through all the announcements.
-                for(AnnounServices.Announcement eachAnnouncement : announcementList) {
+                for (AnnounServices.Announcement eachAnnouncement : announcementList) {
 
                     // If we find the announcement object in the database display its values on
                     //  a new fragment.
-                    if(eachAnnouncement.getAnnouTitle().equals(((TextView)view).getText().toString())) {
+                    if (eachAnnouncement.getAnnouTitle().equals(((TextView) view).getText().toString())) {
 
-                        title       = eachAnnouncement.getAnnouTitle();   // Get the title of the announcement
+                        title = eachAnnouncement.getAnnouTitle();   // Get the title of the announcement
                         description = eachAnnouncement.getAnnouMainObj(); // Get the description of the announcement
-                        date        = eachAnnouncement.getAnnouDate();    // Get the date of the announcement
-                        author      = eachAnnouncement.getAnnouAuthor();  // Get the author of the announcement
+                        date = eachAnnouncement.getAnnouDate();    // Get the date of the announcement
+                        author = eachAnnouncement.getAnnouAuthor();  // Get the author of the announcement
 
                         // Fragment that will display the messages in the group
                         DisplayAnnouncementFragment tempFragment = new DisplayAnnouncementFragment();
@@ -480,14 +475,13 @@ public class ClassPageFragment extends Fragment{
         return view;
     }
 
-    public void onStart(){
+    public void onStart() {
         super.onStart();
 
     }
 
     // Helper method that retrieves and updates our list with all the announcements in the database
-    private void updateAnnouncementList()
-    {
+    private void updateAnnouncementList() {
         // Retrieve the list of announcement from the database by calling API
         Runnable runnable = new Runnable() {
             public void run() {
@@ -499,14 +493,14 @@ public class ClassPageFragment extends Fragment{
         Thread threadGetAnnouncement = new Thread(runnable);
 
         threadGetAnnouncement.start();
-        while (threadGetAnnouncement.isAlive()){
+        while (threadGetAnnouncement.isAlive()) {
             // Give the method some time to get all the announcements for class
         }
 
         Set<String> setOfAnnoucements = new HashSet<>(); // Store the list of announcements
 
         // Get the title of eah of the announcements for that class
-        for(int announcementCount = 0; announcementCount < announcementList.size();++announcementCount ) {
+        for (int announcementCount = 0; announcementCount < announcementList.size(); ++announcementCount) {
             setOfAnnoucements.add(announcementList.get(announcementCount).getAnnouTitle());
         }
 

@@ -46,20 +46,8 @@ public class DocumentServices {
 
 
     public void upload(File file, String documentName, String className) {
-        // TODO: throw exception if documentName or className is empty
-
-        // Build metadata
-        //ObjectMetadata objectMetadata = new ObjectMetadata();
-        //Map<String, String> fileMetadata = new HashMap<>();
-        //fileMetadata.put("title", documentName);
-
-        //objectMetadata.setUserMetadata(fileMetadata);
-
         // Create transfer utility (performs actual upload asynchronously)
         final TransferUtility transferUtility = new TransferUtility(_s3, _context);
-
-
-        //String fileExtension = file.getName().substring(file.getName().lastIndexOf("."));
 
         // Upload selected file to Amazon S3 bucket
         TransferObserver transferObserver = transferUtility.upload(

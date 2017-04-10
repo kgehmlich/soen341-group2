@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.PocketMoodle.DiscussionBoard.MyDatabaseChat;
-import com.PocketMoodle.Services.GetAllClass;
+import com.PocketMoodle.Services.ClassServices;
 import com.amazonaws.mobile.AWSMobileClient;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,8 +61,8 @@ public class DiscussionGroupsFragment extends Fragment {
 
     public DiscussionGroupsFragment() {
         Runnable runnable = new Runnable() {
-            public void run(){
-                GetAllClass registered = new GetAllClass();
+            public void run() {
+                ClassServices registered = new ClassServices();
                 registeredClasses = registered.GetAllClassRegisteredIn();
 
                 taClasses = registered.GetAllClassYouAreTA();
@@ -70,9 +70,9 @@ public class DiscussionGroupsFragment extends Fragment {
         };
         Thread mythread = new Thread(runnable);
         mythread.start();
-        while (mythread.isAlive()){
+        while (mythread.isAlive()) {
         }
-}
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -91,11 +91,11 @@ public class DiscussionGroupsFragment extends Fragment {
         myDatabaseChat = new MyDatabaseChat(getActivity(), className);
 
         // Find the buttons
-        addDiscusionTopic    = (Button) view.findViewById(R.id.add_discussion_group);
+        addDiscusionTopic = (Button) view.findViewById(R.id.add_discussion_group);
         removeDiscusionTopic = (Button) view.findViewById(R.id.remove_discussion_group);
 
         // If student is using this fragment, prevent them from adding remove discussion groups.
-        if(TAOrStudent.equals("Student")) {
+        if (TAOrStudent.equals("Student")) {
             addDiscusionTopic.setVisibility(View.INVISIBLE);
             removeDiscusionTopic.setVisibility(View.INVISIBLE);
         }
@@ -107,7 +107,7 @@ public class DiscussionGroupsFragment extends Fragment {
         userName = awsMobileClient.getIdentityManager().getUserName();
 
         // Initialize adapter and pass the layout style to add the list of discussion groups
-        adapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,listOfDiscussionsFromDatabase);
+        adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listOfDiscussionsFromDatabase);
         fragmentDiscussionTopicList.setAdapter(adapter1);
 
         // Create listener for add discussion button
@@ -181,7 +181,7 @@ public class DiscussionGroupsFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         // Make sure there is a group in the list
-                        if(removeGroupSpinner.getSelectedItem()!= null) {
+                        if (removeGroupSpinner.getSelectedItem() != null) {
                             String removeDiscussionGroup = removeGroupSpinner.getSelectedItem().toString();
                             myDatabaseChat.deleteDiscussionGroup(removeDiscussionGroup);
                         }
@@ -203,8 +203,8 @@ public class DiscussionGroupsFragment extends Fragment {
                 Set<String> set = new HashSet<String>();
                 Iterator i = dataSnapshot.getChildren().iterator();
 
-                while (i.hasNext()){
-                    set.add(((DataSnapshot)i.next()).getKey());
+                while (i.hasNext()) {
+                    set.add(((DataSnapshot) i.next()).getKey());
                 }
 
                 // Clear the old list and update with new values
@@ -232,9 +232,9 @@ public class DiscussionGroupsFragment extends Fragment {
 
                 // Bundle to add arguments the fragment will need to function(like what a constructor does)
                 Bundle bundle = new Bundle();
-                bundle.putString("discussionTopic",((TextView)view).getText().toString());
-                bundle.putString("userName",userName);
-                bundle.putString("className",className);
+                bundle.putString("discussionTopic", ((TextView) view).getText().toString());
+                bundle.putString("userName", userName);
+                bundle.putString("className", className);
                 tempFragment.setArguments(bundle);
 
                 // Start the new fragment and replace the current fragment with the new one
@@ -248,9 +248,9 @@ public class DiscussionGroupsFragment extends Fragment {
 
         ArrayList<String> selectOption = new ArrayList<String>();
 
-        if(registeredClasses.size() > 0){
+        if (registeredClasses.size() > 0) {
             selectOption.add("Change class");
-            for(String r: registeredClasses){
+            for (String r : registeredClasses) {
                 selectOption.add(r);
             }
         }
@@ -263,12 +263,12 @@ public class DiscussionGroupsFragment extends Fragment {
         //Behaviour of the changeClassSpinners' upon item selection
         changeClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id){
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 DiscussionGroupsFragment discussionGroupsFragment = new DiscussionGroupsFragment();
                 String className = parent.getItemAtPosition(position).toString();
-                if(className.equals("Change class")){
+                if (className.equals("Change class")) {
 
-                }else {
+                } else {
                     if (taClasses.contains(className)) {//Checks list of TA classes of users and compares to bundle className to determine if TA class selected
                         // Bundle to add arguments the fragment will need to function(like what a constructor does)
                         Bundle bundle = new Bundle();

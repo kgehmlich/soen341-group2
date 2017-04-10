@@ -53,7 +53,7 @@ public class ViewDocumentsFragment extends Fragment {
         // Download file using DocumentServices.download()
         if (isExternalStorageWritable()) {
             // Create file to be saved (stores each class's documents in a separate folder)
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), className+"/"+documentName);
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), className + "/" + documentName);
 
             DocumentServices documentServices = new DocumentServices(getContext());
             documentServices.download(documentName, className, file);
@@ -79,7 +79,7 @@ public class ViewDocumentsFragment extends Fragment {
             // ********************************************************
             // Set listView adapter to display list of documents
             // ********************************************************
-            ArrayAdapter<String> docAdapter = new ArrayAdapter<String>(
+            ArrayAdapter<String> docAdapter = new ArrayAdapter<>(
                     getContext(),
                     android.R.layout.simple_list_item_1,
                     classDocumentList);
@@ -94,7 +94,7 @@ public class ViewDocumentsFragment extends Fragment {
             docListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    onDocumentClick(((TextView)view).getText().toString());
+                    onDocumentClick(((TextView) view).getText().toString());
                 }
             });
         }
@@ -104,6 +104,7 @@ public class ViewDocumentsFragment extends Fragment {
     /**
      * From developer.android.com
      * Checks whether or not external storage is available for writing.
+     *
      * @return
      */
     public boolean isExternalStorageWritable() {

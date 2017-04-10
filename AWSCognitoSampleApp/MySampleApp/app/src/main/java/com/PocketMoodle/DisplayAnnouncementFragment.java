@@ -32,16 +32,16 @@ public class DisplayAnnouncementFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_display_announcement, container, false);
 
         // Initialize the locations of the announcement details
-        setTitle       = (TextView) view.findViewById(R.id.setAnnouncementTitle);
+        setTitle = (TextView) view.findViewById(R.id.setAnnouncementTitle);
         setDescription = (TextView) view.findViewById(R.id.setAnnouncementDescription);
-        setAuthorDate  = (TextView) view.findViewById(R.id.setAnnouncementAuthorDate);
+        setAuthorDate = (TextView) view.findViewById(R.id.setAnnouncementAuthorDate);
 
         // Retrieve the title, description, author and date of the announcement chosen from classPageFragment
         Bundle bundle = getArguments();
-        title       = bundle.getString("AnnouncementTitle");
+        title = bundle.getString("AnnouncementTitle");
         description = bundle.getString("AnnouncementDescription");
-        author      = bundle.getString("AnnouncementAuthor");
-        date        = bundle.getString("AnnouncementDate");
+        author = bundle.getString("AnnouncementAuthor");
+        date = bundle.getString("AnnouncementDate");
 
         // Set the details of the announcement on a fragment.
         setTitle.setText(title);
