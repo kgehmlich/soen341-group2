@@ -29,17 +29,20 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class SignInActivityTest {
 
+    //Start at sign in activity (skip the splash activity)
     @Rule
     public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
     @Test
     public void signInActivityTest() {
+        //Add some wait time. Precaution for travis
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Signing in
         ViewInteraction editText = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText.perform(replaceText("mewtrandell"), closeSoftKeyboard());
@@ -52,12 +55,14 @@ public class SignInActivityTest {
                 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
 
+        //Some more wait time so that the message that appears after sign in disappears
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Simply check that you are not on the sign in page anymore
         ViewInteraction view = onView(
                 allOf(withId(R.id.nav_action),
                         childAtPosition(

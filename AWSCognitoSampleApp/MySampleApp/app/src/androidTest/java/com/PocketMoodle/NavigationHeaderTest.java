@@ -32,19 +32,21 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class NavigationHeaderTest {
 
+    //Start at sign in activity (skip the splash activity)
     @Rule
     public ActivityTestRule<SignInActivity> mActivityTestRule = new ActivityTestRule<>(SignInActivity.class);
 
     @Test
     public void navigationHeaderTest() {
 
+        //Add some wait time. Precaution for travis
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-
+        //Signing in
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.signIn_editText_email), isDisplayed()));
         editText2.perform(replaceText("mewtrandell"), closeSoftKeyboard());
@@ -57,34 +59,35 @@ public class NavigationHeaderTest {
                 allOf(withId(R.id.signIn_imageButton_login), isDisplayed()));
         imageButton.perform(click());
 
-
+        //Some more wait time so that the message that appears after sign in disappears
         try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        //Open navigation bar
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Open"),
                         withParent(withId(R.id.nav_action)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
+        //Verify that email is displayed properly
         ViewInteraction textView = onView(
                 allOf(withId(R.id.navigation_email), withText("momo_lebest@hotmail.fr"),
-
                         isDisplayed()));
         textView.check(matches(withText("momo_lebest@hotmail.fr")));
 
+        //Verify that the username is displayed properly
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.navigation_username), withText("mewtrandell"),
-
                         isDisplayed()));
         textView2.check(matches(withText("mewtrandell")));
 
+        //Verify that the image is there
         ViewInteraction imageButton2 = onView(
                 allOf(withId(R.id.imageButton1),
-
                         isDisplayed()));
         imageButton2.check(matches(isDisplayed()));
 
