@@ -83,8 +83,23 @@ allOf(withId(R.id.design_menu_item_text), withText("Add Class"), isDisplayed()))
         ViewInteraction appCompatRadioButton = onView(
 allOf(withId(R.id.radioButton), withText("I am a TA"), isDisplayed()));
         appCompatRadioButton.perform(click());
-        
+        //Enter password (moodle)
+        ViewInteraction editText4 = onView(
+                allOf(withClassName(is("android.widget.EditText")),
+                        withParent(allOf(withId(android.R.id.custom),
+                                withParent(withClassName(is("android.widget.FrameLayout"))))),
+                        isDisplayed()));
+        editText4.perform(replaceText("moodle"), closeSoftKeyboard());
+
+        //Click OK
         ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        withParent(allOf(withClassName(is("android.widget.LinearLayout")),
+                                withParent(withClassName(is("android.widget.LinearLayout"))))),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        appCompatButton = onView(
 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
         
@@ -112,7 +127,7 @@ allOf(withId(R.id.openDiscussionBoard), withText("Open Discussion Board"), isDis
 allOf(withId(R.id.add_discussion_group), withText("+"), isDisplayed()));
         appCompatButton3.perform(click());
         
-        ViewInteraction editText4 = onView(
+        editText4 = onView(
 allOf(withClassName(is("android.widget.EditText")),
 withParent(allOf(withId(R.id.custom),
 withParent(withId(R.id.customPanel)))),
@@ -125,8 +140,6 @@ allOf(withId(android.R.id.button1), withText("Add")));
         
         ViewInteraction appCompatTextView2 = onView(
 allOf(withId(android.R.id.text1), withText("DiscTest"),
-
-
 isDisplayed()));
         appCompatTextView2.perform(click());
 
