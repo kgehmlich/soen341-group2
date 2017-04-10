@@ -33,8 +33,10 @@ public class TAGradeFragment extends Fragment {
     private ListView studentNames; // ListView to display the all the students in the class
     private ArrayAdapter<String> studentNamesAdapter; // Adapter to display list of student names on ListView
     private ArrayList<String> studentNamesListFromDatabase; // List of student names items for the class
+    private ArrayList<String> userIdsListFromDatabase; // List of user id for the class
     private String className; // Holds the class name retrieved from the ClassPageFragment
     private List<GetAllClass.User> studentList = new ArrayList<GetAllClass.User>(); // List of User Object which holds several information
+    // Data that would be pass to another fragment
     private String userID;
     private String studentName;
 
@@ -44,6 +46,7 @@ public class TAGradeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_grades_ta, container, false);
 
         studentNamesListFromDatabase = new ArrayList<String>(); // Initialize the list of students to hold data from database
+        userIdsListFromDatabase = new ArrayList<String>(); // Initialize the list of user ID to hold data from database
         studentNames = (ListView) view.findViewById(R.id.listOfStudents); // Link to the xml page
         studentNamesAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, studentNamesListFromDatabase); // Set up the adapter
         studentNames.setAdapter(studentNamesAdapter);
@@ -59,8 +62,9 @@ public class TAGradeFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 SelectedStudentGradesFragment selectedStudentGradesFragment = new SelectedStudentGradesFragment();
-                userID = studentList.get(position).getUserId();
-                studentName = studentList.get(position).getUsername();
+                //String currentName = (String) parent.getItemAtPosition(position);
+                userID = userIdsListFromDatabase.get(position);
+                studentName = studentNamesListFromDatabase.get(position);
                 // Bundle to add arguments the fragment will need to function(like what a constructor does)
                 Bundle bundle = new Bundle();
                 bundle.putString("className", className);
@@ -128,7 +132,8 @@ public class TAGradeFragment extends Fragment {
         }
 
         // Sets used to store temporal data
-        Set<String> setOfStudentNames = new HashSet<>();
+        ArrayList<String> setOfStudentNames = new ArrayList<>();
+        ArrayList<String> setOfUserIds = new ArrayList<>();
 
         // Loop which will put all student names into the sets created above
         for(int usersCount = 0; usersCount < studentList.size(); usersCount++ ) {
@@ -136,6 +141,7 @@ public class TAGradeFragment extends Fragment {
             // Make sure TAs are not in the list
             if(studentList.get(usersCount).getTaOrStu() != 1.0){
                 setOfStudentNames.add(studentList.get(usersCount).getUsername());
+                setOfUserIds.add(studentList.get(usersCount).getUserId());
             }
         }
 
@@ -143,5 +149,8 @@ public class TAGradeFragment extends Fragment {
         studentNamesListFromDatabase.clear();
         studentNamesListFromDatabase.addAll(setOfStudentNames);
         studentNamesAdapter.notifyDataSetChanged();
+
+        userIdsListFromDatabase.clear();
+        userIdsListFromDatabase.addAll(setOfUserIds);
     }
 }

@@ -40,7 +40,6 @@ public class SelectedStudentGradesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_selected_student_grades, container, false);
 
         classTitle = (TextView) view.findViewById(R.id.selectedStudentGradesTitle);
-        classTitle.setText("Grades for " + studentName);
         gradesListFromDatabase = new ArrayList<Double>(); // Initialize the list of grades to hold data from database
         gradesItemsListFromDatabase = new ArrayList<String>(); // Initialize the list of grades items to hold data from database
 
@@ -52,6 +51,8 @@ public class SelectedStudentGradesFragment extends Fragment {
         className =  bundle.getString("className");
         userID = bundle.getString("userID");
         studentName = bundle.getString("studentName");
+
+        classTitle.setText("Grades for " + studentName);
 
 
         // Set adapter with our list and layout
@@ -85,8 +86,8 @@ public class SelectedStudentGradesFragment extends Fragment {
         }
 
         // Sets used to store temporal data
-        Set<Double> setOfGrades = new HashSet<>();
-        Set<String> setOfGradesItems = new HashSet<>();
+        ArrayList<Double> setOfGrades = new ArrayList<>();
+        ArrayList<String> setOfGradesItems = new ArrayList<>();
 
         // Loop which will put all grades and titles into the sets created above
         for(int gradesCount = 0; gradesCount < gradesList.size(); gradesCount++ ) {
