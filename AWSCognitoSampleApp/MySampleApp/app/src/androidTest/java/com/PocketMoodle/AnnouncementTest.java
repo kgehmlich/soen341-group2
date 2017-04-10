@@ -28,6 +28,7 @@ import static android.support.test.espresso.matcher.RootMatchers.isPlatformPopup
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -92,7 +93,23 @@ public class AnnouncementTest {
                 allOf(withId(R.id.radioButton), withText("I am a TA"), isDisplayed()));
         appCompatRadioButton.perform(click());
 
+//Enter password (moodle)
+        ViewInteraction editText4 = onView(
+                allOf(withClassName(is("android.widget.EditText")),
+                        withParent(allOf(withId(android.R.id.custom),
+                                withParent(withClassName(is("android.widget.FrameLayout"))))),
+                        isDisplayed()));
+        editText4.perform(replaceText("moodle"), closeSoftKeyboard());
+
+        //Click OK
         ViewInteraction appCompatButton = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        withParent(allOf(withClassName(is("android.widget.LinearLayout")),
+                                withParent(withClassName(is("android.widget.LinearLayout"))))),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        appCompatButton = onView(
                 allOf(withId(R.id.button), withText("Submit"), isDisplayed()));
         appCompatButton.perform(click());
 
@@ -142,7 +159,8 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(android.R.id.text1), withText("a test"),
                         isDisplayed()));
-        appCompatTextView2.perform(click());
+        
+        appCompatTextView2.perform(closeSoftKeyboard(), click());
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.setAnnouncementDescription), withText("testing"),
@@ -166,6 +184,7 @@ public class AnnouncementTest {
         ViewInteraction appCompatTextView3 = onView(
                 allOf(withId(android.R.id.text1), withText("COEN 341"),
                         isDisplayed()));
+
         appCompatTextView3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
