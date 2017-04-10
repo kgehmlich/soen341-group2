@@ -79,7 +79,7 @@ public class AddGradeFragment extends Fragment {
 
                 // Scan through student list to find student whose username was selected, then get their userid
                 for(int usersCount=0; usersCount<studentNameList.size(); usersCount++){
-                    if(studentNameList.get(usersCount) == studentChoice){
+                    if(studentNameList.get(usersCount).equals(studentChoice)){
                         userID = studentIdList.get(usersCount);
                     }
                 }
