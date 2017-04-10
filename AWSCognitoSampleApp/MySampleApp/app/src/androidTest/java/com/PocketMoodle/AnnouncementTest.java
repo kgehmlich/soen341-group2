@@ -1,6 +1,7 @@
 package com.PocketMoodle;
 
 
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -150,7 +151,7 @@ public class AnnouncementTest {
 
         //Wait for toast message to dissapear
         try {
-            Thread.sleep(10000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -167,7 +168,7 @@ public class AnnouncementTest {
                 allOf(withId(android.R.id.text1), withText("a test"),
                         isDisplayed()));
 
-        appCompatTextView2.perform(closeSoftKeyboard());
+        Espresso.closeSoftKeyboard();
         appCompatTextView2.perform(click());
 
         ViewInteraction textView2 = onView(
