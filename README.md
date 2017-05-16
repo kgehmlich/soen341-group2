@@ -3,7 +3,7 @@
 ###Group 2's SOEN 341 project
 ***
 ####Members:
-  - David Benalal (6295975)
+  - David B
   - Kyle Gehmlich (26743749)
   - Yufeng Ding (27749317)
   - Charles-Antoine Hardy (27417888)
